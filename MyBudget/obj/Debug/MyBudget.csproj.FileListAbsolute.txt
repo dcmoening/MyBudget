@@ -1,0 +1,9 @@
+C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\bin\Debug\MyBudget.exe.config
+C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\bin\Debug\MyBudget.exe
+C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\bin\Debug\MyBudget.pdb
+C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.Form1.resources
+C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.Properties.Resources.resources
+C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.csproj.GenerateResource.Cache
+C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.csproj.CoreCompileInputs.cache
+C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.exe
+C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.pdb
