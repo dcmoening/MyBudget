@@ -1,6 +1,6 @@
 ﻿namespace MyBudget
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.listView1 = new System.Windows.Forms.ListView();
             this.TransactionEntries = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TransactionEntryAmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -50,11 +50,13 @@
             this.btn_transModify = new System.Windows.Forms.Button();
             this.btn_BudgetModify = new System.Windows.Forms.Button();
             this.btn_moneyreceivedModify = new System.Windows.Forms.Button();
+            this.TransactionEntryID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.TransactionEntryID,
             this.TransactionEntries,
             this.TransactionEntryAmt});
             this.listView1.Location = new System.Drawing.Point(12, 28);
@@ -66,11 +68,13 @@
             // 
             // TransactionEntries
             // 
+            this.TransactionEntries.DisplayIndex = 0;
             this.TransactionEntries.Text = "Name";
             this.TransactionEntries.Width = 169;
             // 
             // TransactionEntryAmt
             // 
+            this.TransactionEntryAmt.DisplayIndex = 1;
             this.TransactionEntryAmt.Text = "Amt";
             this.TransactionEntryAmt.Width = 51;
             // 
@@ -153,6 +157,7 @@
             this.btn_transAdd.Size = new System.Drawing.Size(32, 32);
             this.btn_transAdd.TabIndex = 6;
             this.btn_transAdd.UseVisualStyleBackColor = true;
+            this.btn_transAdd.Click += new System.EventHandler(this.btn_transAdd_Click);
             // 
             // btn_budgetAdd
             // 
@@ -234,7 +239,12 @@
             this.btn_moneyreceivedModify.Text = "Modify";
             this.btn_moneyreceivedModify.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // TransactionEntryID
+            // 
+            this.TransactionEntryID.DisplayIndex = 2;
+            this.TransactionEntryID.Width = 0;
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -254,8 +264,8 @@
             this.Controls.Add(this.listView3);
             this.Controls.Add(this.listView2);
             this.Controls.Add(this.listView1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "MainForm";
+            this.Text = "My Budget";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -284,6 +294,7 @@
         private System.Windows.Forms.Button btn_transModify;
         private System.Windows.Forms.Button btn_BudgetModify;
         private System.Windows.Forms.Button btn_moneyreceivedModify;
+        private System.Windows.Forms.ColumnHeader TransactionEntryID;
     }
 }
 
