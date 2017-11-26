@@ -15,6 +15,12 @@ namespace MyBudget
 {
     public partial class TransactionEntry : Form
     {
+        String categoryName;
+        Decimal categoryAmt;
+        DateTime categoryBudgetDate;
+        String connStr;
+        MySqlConnection conn;
+        MySqlCommand cmd;
         public Boolean isAddTransactionEntry;
         public Boolean isModifyTransactionEntry;
         
@@ -23,51 +29,16 @@ namespace MyBudget
             InitializeComponent();
         }
 
-        private void lbl_label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void TransactionEntry_Load(object sender, EventArgs e)
         {
-            String connStr = MainForm.ReturnConnectionString();
-            String cmdStr;
-            String categoryName;
-            Decimal categoryAmt;
-            DateTime categoryBudgetDate;
+            connStr = MainForm.ReturnConnectionString();
+            conn = new MySqlConnection(connStr);
+            cmd = new MySqlCommand();
 
             //Determine if modify or add btn was pressed for transaction entries
-            if (isAddTransactionEntry)
+            if (isModifyTransactionEntry)
             {
-                //if add
-                //Get list of budgets located on the server
-                MySqlConnection conn = new MySqlConnection(connStr);
-                MySqlCommand cmd = new MySqlCommand();
-
-                categoryName = this.lstBox_BudgetName.SelectedItem.ToString();
-
-                //Try to convert text entered into decimal
-                if (decimal.TryParse(this.txt_textBox2.Text, out categoryAmt))
-                {
-                    //do nothing with categoryAmt
-                }
-                else
-                {
-                    //Post notification that entered value is incorrect.
-                }
-
-                categoryBudgetDate = DateTime.Now;
-                cmd.Connection = conn;
-                cmd.CommandText = "INSERT INTO table_transaction (CategoryName, CategoryAmt, CategoryBudgetDate) VALUES (?categoryName, ?categoryAmt, ?categoryBudgetDate)";
-                cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
-                cmd.Parameters.Add("?categoryAmt", MySqlDbType.Decimal).Value = categoryAmt;
-                cmd.Parameters.Add("?categoryBudgetDate", MySqlDbType.DateTime).Value = categoryBudgetDate;
-
-                //show them in listbox on form
-            }
-            else if (isModifyTransactionEntry)
-            {
-
+                //TODO add modification of Transaction Entry
                 //if modify
                 //get selected item from the transaction listview and show it in the
                 //list box on the transaction entry form
@@ -76,6 +47,28 @@ namespace MyBudget
             {
                 this.Close();
             }  
+        }
+
+        private void btn_OK_Click(object sender, EventArgs e)
+        {
+            
+
+            //Try to convert text entered into decimal
+            if (decimal.TryParse(this.txt_TransactionAmt.Text, out categoryAmt))
+            {
+                categoryName = this.lstBox_BudgetName.SelectedItem.ToString();
+                categoryBudgetDate = DateTime.Now;
+                cmd.Connection = conn;
+                cmd.CommandText = "INSERT INTO table_transaction (CategoryName, ItemAmt, DatePurchased) VALUES (?categoryName, ?itemAmt, ?datePurchased)";
+                cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
+                cmd.Parameters.Add("?itemAmt", MySqlDbType.Decimal).Value = categoryAmt;
+                cmd.Parameters.Add("?datePurchased", MySqlDbType.DateTime).Value = categoryBudgetDate;
+            }
+            else
+            {
+                //TODO notify that entered value for transaction amount is incorrect.
+            }
+           
         }
     }
 }

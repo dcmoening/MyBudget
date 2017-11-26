@@ -47,6 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BudgetEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BudgetEntry.Designer.cs">
+      <DependentUpon>BudgetEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorNotify.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ErrorNotify.Designer.cs">
+      <DependentUpon>ErrorNotify.cs</DependentUpon>
+    </Compile>
     <Compile Include="TransactionEntry.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -61,6 +73,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BudgetEntry.resx">
+      <DependentUpon>BudgetEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorNotify.resx">
+      <DependentUpon>ErrorNotify.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TransactionEntry.resx">
       <DependentUpon>TransactionEntry.cs</DependentUpon>
     </EmbeddedResource>
