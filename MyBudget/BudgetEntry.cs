@@ -39,9 +39,15 @@ namespace MyBudget
             categoryName = catName;
         }
 
+        public void setCategoryAmt(decimal catAmt)
+        {
+            categoryAmt = catAmt;
+        }
+
         private void btn_OK_Click(object sender, EventArgs e)
         {
-            if(txt_BudgetName.Text != "")
+           
+            if (txt_BudgetName.Text != "")
             {
                 errorNotify = new ErrorNotify();
                 categoryName = txt_BudgetName.Text;
@@ -53,15 +59,24 @@ namespace MyBudget
                     {
                         try
                         {
+                            if (conn.State != ConnectionState.Open)
+                            {
+                                conn.Open();
+                            }
+                            cmd = new MySqlCommand();
                             cmd.Connection = conn;
                             cmd.CommandText = "SELECT * FROM table_Budget WHERE CategoryName = ?categoryName";
                             cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
-                            MySqlDataReader rdr = cmd.ExecuteReader();                            
+                            MySqlDataReader rdr = cmd.ExecuteReader();
+                            conn.Close();
 
                             //check if budget name has already been created before adding
                             if (!rdr.HasRows)
                             {
-                                rdr.Close();
+                                if (conn.State != ConnectionState.Open)
+                                {
+                                    conn.Open();
+                                }
                                 cmd = new MySqlCommand();
                                 categoryBudgetDate = DateTime.Now;
                                 cmd.Connection = conn;
@@ -81,10 +96,8 @@ namespace MyBudget
                                 //for catch add budget entry log the values of connection string, categoryName, categoryBudgetDate, categoryAmt
                                 errorNotify.errDescription = "Category Name: " + categoryName + "\n"
                                     + "Category Amount: " + categoryAmt + "\n"
-                                    + "Category Budget Date: " + categoryBudgetDate;
-
-                                errorNotify.Show();
-                            }
+                                    + "Category Budget Date: " + categoryBudgetDate;   
+                            }                            
                         }
                         catch (Exception ex)
                         {
@@ -92,16 +105,23 @@ namespace MyBudget
                             errorNotify.errDescription = ex.Message;
                             errorNotify.errLocalDescription = "Error adding budget item.";
                             errorNotify.Show();
-                        }
+                            conn.Close();
+                        }                        
                     }
                     else if (isModifyBudgetEntry)
                     {
                         try
                         {
+                            if (conn.State != ConnectionState.Open)
+                            {
+                                conn.Open();
+                            }
                             //Update database
+                            cmd = new MySqlCommand();
                             categoryBudgetDate = DateTime.Now;
                             cmd.Connection = conn;
-                            cmd.CommandText = "UPDATE table_budget SET CategoryAmt=?categoryAmt, CategoryBudgetDate=?categoryBudgetDate)";
+                            cmd.CommandText = "UPDATE table_budget SET CategoryAmt=?categoryAmt, CategoryBudgetDate=?categoryBudgetDate WHERE CategoryName=?categoryName";
+                            cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
                             cmd.Parameters.Add("?categoryAmt", MySqlDbType.Decimal).Value = categoryAmt;
                             cmd.Parameters.Add("?categoryBudgetDate", MySqlDbType.DateTime).Value = categoryBudgetDate;
                             cmd.ExecuteNonQuery();
@@ -113,6 +133,7 @@ namespace MyBudget
                             errorNotify.errDescription = ex.Message;
                             errorNotify.errLocalDescription = "Error updating budget item.";
                             errorNotify.Show();
+                            conn.Close();
                         }
                     }
                 }
@@ -138,6 +159,12 @@ namespace MyBudget
 
         private void BudgetEntry_Load(object sender, EventArgs e)
         {
+            if (isModifyBudgetEntry)
+            {
+                txt_BudgetName.Text = categoryName;
+                txt_BudgetAmt.Text = categoryAmt.ToString();
+                txt_BudgetName.ReadOnly = true;
+            }
             try
             {
                 connStr = MainForm.ReturnConnectionString();

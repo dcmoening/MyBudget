@@ -30,14 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.lstvw_TransactionEntry = new System.Windows.Forms.ListView();
             this.TransactionEntryID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TransactionEntries = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TransactionEntryAmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.listView2 = new System.Windows.Forms.ListView();
+            this.lstvw_Budget = new System.Windows.Forms.ListView();
             this.BudgetName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.budgetAmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.listView3 = new System.Windows.Forms.ListView();
+            this.lstvw_MoneyReceived = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
@@ -73,18 +73,19 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BudgetReport)).BeginInit();
             this.SuspendLayout();
             // 
-            // listView1
+            // lstvw_TransactionEntry
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lstvw_TransactionEntry.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.TransactionEntryID,
             this.TransactionEntries,
             this.TransactionEntryAmt});
-            this.listView1.Location = new System.Drawing.Point(12, 28);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(224, 534);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.lstvw_TransactionEntry.Location = new System.Drawing.Point(12, 28);
+            this.lstvw_TransactionEntry.MultiSelect = false;
+            this.lstvw_TransactionEntry.Name = "lstvw_TransactionEntry";
+            this.lstvw_TransactionEntry.Size = new System.Drawing.Size(224, 534);
+            this.lstvw_TransactionEntry.TabIndex = 0;
+            this.lstvw_TransactionEntry.UseCompatibleStateImageBehavior = false;
+            this.lstvw_TransactionEntry.View = System.Windows.Forms.View.Details;
             // 
             // TransactionEntryID
             // 
@@ -103,17 +104,18 @@
             this.TransactionEntryAmt.Text = "Amt";
             this.TransactionEntryAmt.Width = 51;
             // 
-            // listView2
+            // lstvw_Budget
             // 
-            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lstvw_Budget.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.BudgetName,
             this.budgetAmt});
-            this.listView2.Location = new System.Drawing.Point(787, 28);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(224, 225);
-            this.listView2.TabIndex = 1;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.Details;
+            this.lstvw_Budget.Location = new System.Drawing.Point(787, 28);
+            this.lstvw_Budget.MultiSelect = false;
+            this.lstvw_Budget.Name = "lstvw_Budget";
+            this.lstvw_Budget.Size = new System.Drawing.Size(224, 225);
+            this.lstvw_Budget.TabIndex = 1;
+            this.lstvw_Budget.UseCompatibleStateImageBehavior = false;
+            this.lstvw_Budget.View = System.Windows.Forms.View.Details;
             // 
             // BudgetName
             // 
@@ -124,17 +126,18 @@
             // 
             this.budgetAmt.Text = "amt";
             // 
-            // listView3
+            // lstvw_MoneyReceived
             // 
-            this.listView3.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lstvw_MoneyReceived.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
-            this.listView3.Location = new System.Drawing.Point(786, 320);
-            this.listView3.Name = "listView3";
-            this.listView3.Size = new System.Drawing.Size(224, 242);
-            this.listView3.TabIndex = 2;
-            this.listView3.UseCompatibleStateImageBehavior = false;
-            this.listView3.View = System.Windows.Forms.View.Details;
+            this.lstvw_MoneyReceived.Location = new System.Drawing.Point(786, 320);
+            this.lstvw_MoneyReceived.MultiSelect = false;
+            this.lstvw_MoneyReceived.Name = "lstvw_MoneyReceived";
+            this.lstvw_MoneyReceived.Size = new System.Drawing.Size(224, 242);
+            this.lstvw_MoneyReceived.TabIndex = 2;
+            this.lstvw_MoneyReceived.UseCompatibleStateImageBehavior = false;
+            this.lstvw_MoneyReceived.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader1
             // 
@@ -470,9 +473,9 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.listView3);
-            this.Controls.Add(this.listView2);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.lstvw_MoneyReceived);
+            this.Controls.Add(this.lstvw_Budget);
+            this.Controls.Add(this.lstvw_TransactionEntry);
             this.Name = "MainForm";
             this.Text = "My Budget";
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -484,13 +487,13 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView lstvw_TransactionEntry;
         private System.Windows.Forms.ColumnHeader TransactionEntries;
         private System.Windows.Forms.ColumnHeader TransactionEntryAmt;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ListView lstvw_Budget;
         private System.Windows.Forms.ColumnHeader BudgetName;
         private System.Windows.Forms.ColumnHeader budgetAmt;
-        private System.Windows.Forms.ListView listView3;
+        private System.Windows.Forms.ListView lstvw_MoneyReceived;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label label1;
