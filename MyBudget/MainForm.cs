@@ -15,29 +15,11 @@ namespace MyBudget
 {
     public partial class MainForm : Form
     {
-        MySqlCommand cmd;
-        MySqlConnection conn;
-        ErrorNotify errorNotify;
-        String connStr;
+        private BudgetDB myBudget = new BudgetDB();
 
         public MainForm()
         {
             InitializeComponent();
-        }
-
-        public static String ReturnConnectionString()
-        {
-            string connString = "server=" + ConfigurationManager.AppSettings["server"].ToString() + ";" +
-                                     "user=" + ConfigurationManager.AppSettings["user"].ToString() + ";" +
-                                     "database=" + ConfigurationManager.AppSettings["database"].ToString() + ";" +
-                                     "port=" + ConfigurationManager.AppSettings["port"].ToString() + ";" +
-                                     "password=" + ConfigurationManager.AppSettings["password"] + ";";
-            return connString;
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void btn_transAdd_Click(object sender, EventArgs e)
@@ -49,22 +31,10 @@ namespace MyBudget
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            int errNbr;
+            errNbr = myBudget.OpenDBConnection();
 
-            //Setup connection information for updating the main form.
-            try
-            {
-                connStr = MainForm.ReturnConnectionString();
-                conn = new MySqlConnection(connStr);
-                cmd = new MySqlCommand();
-            }
-            catch (Exception ex)
-            {
-                //Catch connection for budget entry error
-                errorNotify = new ErrorNotify();
-                errorNotify.errDescription = ex.Message;
-                errorNotify.errLocalDescription = "Error connecting to the database";
-                errorNotify.Show();
-            }
+           //TODO alert user if db did not connect
 
             //Update main form
             UpdateMainForm();
@@ -76,7 +46,7 @@ namespace MyBudget
 
         private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            conn.Close();
+            myBudget.CloseConnection();
         }
 
         private void btn_transMinus_Click(object sender, EventArgs e)
@@ -103,38 +73,18 @@ namespace MyBudget
         private void btn_budgetMinus_Click(object sender, EventArgs e)
         {
             String categoryName;
-            // add code for deleting budget
+            int errNbr;
             // if budget is income, do not allow delete
             if(lstvw_Budget.SelectedItems.Count > 0)
             {
                 categoryName = lstvw_Budget.SelectedItems[0].Text;
                 if (categoryName != "income")
                 {
-                    try
+                    errNbr = myBudget.BudgetTableDeleteCategoryName(categoryName);
+                    if (errNbr == 0)
                     {
-                        if (conn.State != ConnectionState.Open)
-                        {
-                            conn.Open();
-                        }
-                        cmd = new MySqlCommand();
-                        cmd.Connection = conn;
-                        cmd.CommandText = "DELETE FROM table_Budget WHERE CategoryName=?categoryName";
-                        cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
-                        cmd.ExecuteNonQuery();
-
-                        conn.Close();
-                        cmd.Dispose();
                         UpdateBudgetListView();
-                    }
-                    catch (Exception ex)
-                    {
-                        //TODO catch exception in updating budget list view.
-                        errorNotify = new ErrorNotify();
-                        errorNotify.errDescription = ex.Message;
-                        errorNotify.errLocalDescription = "Error Deleting a Budget";
-                        errorNotify.Show();
-                        conn.Close();
-                    }
+                    }                    
                 }
             }                
         }
@@ -186,32 +136,9 @@ namespace MyBudget
         
         public void UpdateBudgetListView()
         {
-            try
-            {
-                if (conn.State != ConnectionState.Open)
-                {
-                    conn.Open();
-                }
-                cmd.Connection = conn;
-                cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget";
-                MySqlDataReader rdr = cmd.ExecuteReader();
-
-                lstvw_Budget.Items.Clear();
-
-                while (rdr.Read())
-                {
-                    ListViewItem lstvwItem = new ListViewItem();
-                    lstvwItem.SubItems[0].Text = rdr[0].ToString();
-                    lstvwItem.SubItems.Add(rdr[1].ToString());
-                    lstvw_Budget.Items.Add(lstvwItem);
-                }
-                rdr.Close();
-                conn.Close();
-            }
-            catch(Exception ex)
-            {
-                //TODO catch exception in updating budget list view.
-            }
+            ListViewItem BudgetCategoryLstVwItem = new ListViewItem();
+            myBudget.BudgetTableGetCategory(BudgetCategoryLstVwItem);
+            lstvw_Budget.Items.Add(BudgetCategoryLstVwItem);
         }
     }
 }
