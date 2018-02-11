@@ -13,38 +13,12 @@ using MySql.Data.MySqlClient;
 
 namespace MyBudget
 {
-    class BudgetDB
+    class BudgetDB: DatabaseConnection
     {
-        #region fields
-            private MySqlConnection conn;
-            private MySqlCommand cmd;
-            private ErrorNotify errorNotify;
-            private String connStr;
-        #endregion
+       
 
         #region Public Members
-        public int OpenDBConnection()
-        {
-            int errNbr = 0;
-            try
-            {
-                connStr = ReturnConnectionString();
-                conn = new MySqlConnection(connStr);
-                conn.Open();
-                cmd = new MySqlCommand();
-            }
-            catch (Exception ex)
-            {
-                //TODO add better error catching.
-                errNbr = 1;
-            }
-        return errNbr;
-        }
-
-        public void CloseConnection()
-        {
-            conn.Close();
-        }
+        
         public int BudgetTableModifyCategoryData(string categoryName, string categoryAmtStr)
         {
             int errNbr = 0;
@@ -201,11 +175,12 @@ namespace MyBudget
             catch (Exception ex)
             {
                 //TODO catch exception in updating budget list view.
-                errorNotify = new ErrorNotify();
-                errorNotify.errDescription = ex.Message;
-                errorNotify.errLocalDescription = "Error Deleting a Budget";
-                errorNotify.Show();
-                conn.Close();
+                errNbr = -1;
+                //errorNotify = new ErrorNotify();
+                //errorNotify.errDescription = ex.Message;
+                //errorNotify.errLocalDescription = "Error Deleting a Budget";
+                //errorNotify.Show();
+                //conn.Close();
             }
 
             return errNbr;
@@ -216,9 +191,11 @@ namespace MyBudget
         /// </summary>
         /// <param name="CategorylstvwItem"></param>
         /// <returns></returns>
-        public int BudgetTableGetCategory(ListViewItem CategorylstvwItem)
+        public int BudgetTableGetCategory(ref ListView Categorylstv)
         {
             int errNbr = 0;
+            ListViewItem CategorylstvwItem = new ListViewItem();
+
             try
             {
                 if (conn.State != ConnectionState.Open)
@@ -228,15 +205,24 @@ namespace MyBudget
                 cmd.Connection = conn;
                 cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget";
                 MySqlDataReader rdr = cmd.ExecuteReader();
-                
-                while (rdr.Read())
+                if (conn.State == ConnectionState.Open)                    
                 {
-                    CategorylstvwItem = new ListViewItem();
-                    CategorylstvwItem.SubItems[0].Text = rdr[0].ToString();
-                    CategorylstvwItem.SubItems.Add(rdr[1].ToString());
+                    while (rdr.Read())
+                    {
+                        CategorylstvwItem = new ListViewItem();
+                        CategorylstvwItem.SubItems[0].Text = rdr[0].ToString();
+                        CategorylstvwItem.SubItems.Add(rdr[1].ToString());
+                        Categorylstv.Items.Add(CategorylstvwItem);
+                    }
+                    rdr.Close();
+                    conn.Close();                    
+                } 
+                else
+                {
+                    //TODO add error number for not connecting to database when select all category data from Budget table
+                    errNbr = -1;
                 }
-                rdr.Close();
-                conn.Close();
+            
             }
             catch (Exception ex)
             {
@@ -256,15 +242,7 @@ namespace MyBudget
         #endregion
 
         #region Private Members
-        private static String ReturnConnectionString()
-        {
-            string connString = "server=" + ConfigurationManager.AppSettings["server"].ToString() + ";" +
-                                     "user=" + ConfigurationManager.AppSettings["user"].ToString() + ";" +
-                                     "database=" + ConfigurationManager.AppSettings["database"].ToString() + ";" +
-                                     "port=" + ConfigurationManager.AppSettings["port"].ToString() + ";" +
-                                     "password=" + ConfigurationManager.AppSettings["password"] + ";";
-            return connString;
-        }
+        
         #endregion
     }
 }

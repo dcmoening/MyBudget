@@ -22,19 +22,12 @@ namespace MyBudget
             InitializeComponent();
         }
 
-        private void btn_transAdd_Click(object sender, EventArgs e)
-        {
-            TransactionEntry form_TransactionEntry = new TransactionEntry();
-            form_TransactionEntry.isAddTransactionEntry = true;
-            form_TransactionEntry.Show();
-        }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
             int errNbr;
             errNbr = myBudget.OpenDBConnection();
 
-           //TODO alert user if db did not connect
+            //TODO alert user if db did not connect
 
             //Update main form
             UpdateMainForm();
@@ -48,7 +41,14 @@ namespace MyBudget
         {
             myBudget.CloseConnection();
         }
-
+        
+        private void btn_transAdd_Click(object sender, EventArgs e)
+        {
+            TransactionEntry form_TransactionEntry = new TransactionEntry();
+            form_TransactionEntry.isAddTransactionEntry = true;
+            form_TransactionEntry.Show();
+        }
+        
         private void btn_transMinus_Click(object sender, EventArgs e)
         {
             //TODO add code for deleting Transaction
@@ -83,6 +83,7 @@ namespace MyBudget
                     errNbr = myBudget.BudgetTableDeleteCategoryName(categoryName);
                     if (errNbr == 0)
                     {
+                        lstvw_Budget.Items.Clear();
                         UpdateBudgetListView();
                     }                    
                 }
@@ -137,8 +138,7 @@ namespace MyBudget
         public void UpdateBudgetListView()
         {
             ListViewItem BudgetCategoryLstVwItem = new ListViewItem();
-            myBudget.BudgetTableGetCategory(BudgetCategoryLstVwItem);
-            lstvw_Budget.Items.Add(BudgetCategoryLstVwItem);
+            myBudget.BudgetTableGetCategory(ref lstvw_Budget);            
         }
     }
 }

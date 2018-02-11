@@ -47,43 +47,45 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BudgetDB.cs" />
-    <Compile Include="BudgetEntry.cs">
+    <Compile Include="Data\BudgetDB.cs" />
+    <Compile Include="Data\TransactionDB.cs" />
+    <Compile Include="UI\BudgetEntry.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BudgetEntry.Designer.cs">
+    <Compile Include="UI\BudgetEntry.Designer.cs">
       <DependentUpon>BudgetEntry.cs</DependentUpon>
     </Compile>
-    <Compile Include="ErrorNotify.cs">
+    <Compile Include="Data\DatabaseConnection.cs" />
+    <Compile Include="UI\ErrorNotify.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ErrorNotify.Designer.cs">
+    <Compile Include="UI\ErrorNotify.Designer.cs">
       <DependentUpon>ErrorNotify.cs</DependentUpon>
     </Compile>
-    <Compile Include="TransactionEntry.cs">
+    <Compile Include="UI\TransactionEntry.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TransactionEntry.Designer.cs">
+    <Compile Include="UI\TransactionEntry.Designer.cs">
       <DependentUpon>TransactionEntry.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="UI\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="BudgetEntry.resx">
+    <EmbeddedResource Include="UI\BudgetEntry.resx">
       <DependentUpon>BudgetEntry.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ErrorNotify.resx">
+    <EmbeddedResource Include="UI\ErrorNotify.resx">
       <DependentUpon>ErrorNotify.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TransactionEntry.resx">
+    <EmbeddedResource Include="UI\TransactionEntry.resx">
       <DependentUpon>TransactionEntry.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -109,5 +111,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

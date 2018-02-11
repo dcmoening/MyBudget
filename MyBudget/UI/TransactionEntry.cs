@@ -31,7 +31,7 @@ namespace MyBudget
 
         private void TransactionEntry_Load(object sender, EventArgs e)
         {
-            connStr = MainForm.ReturnConnectionString();
+            //connStr = MainForm.ReturnConnectionString();
             conn = new MySqlConnection(connStr);
             cmd = new MySqlCommand();
 
