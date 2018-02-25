@@ -17,19 +17,19 @@ namespace MyBudget
     
     public partial class BudgetEntry : Form
     {
-        private BudgetDB myBudget = new BudgetDB();
         const int ERROR_BUDGET = 1000;
-        const int ERROR_BUDGET_ENTRY_EXIST = ERROR_BUDGET + 1;        
-        
+        const int ERROR_BUDGET_ENTRY_EXIST = ERROR_BUDGET + 1;
+        private BudgetDB myBudget;
         DateTime categoryBudgetDate;
         public Boolean isAddBudgetEntry;
         public Boolean isModifyBudgetEntry;
-        ErrorNotify errorNotify;
+        //ErrorNotify errorNotify;
         String categoryName;
         Decimal categoryAmt;
 
-        public BudgetEntry()
+        public BudgetEntry(BudgetDB budget)
         {
+            myBudget = budget;
             InitializeComponent();
         }
 
@@ -63,17 +63,18 @@ namespace MyBudget
                     errNbr = myBudget.BudgetTableModifyCategoryData(categoryName, categoryAmtStr);
                     //TODO Handle error retrieved modifying Budget category data
                 }
-            }                        
+            }
+            closeForm();
         }
 
         private void btn_Cancel_Click(object sender, EventArgs e)
         {
+            myBudget = null;
             closeForm();
         }
 
         private void closeForm()
         {
-            myBudget.CloseConnection();
             this.Close();
         }
 

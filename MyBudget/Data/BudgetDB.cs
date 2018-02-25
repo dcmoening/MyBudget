@@ -13,7 +13,7 @@ using MySql.Data.MySqlClient;
 
 namespace MyBudget
 {
-    class BudgetDB: DatabaseConnection
+    public class BudgetDB: DatabaseConnection
     {
        
 
@@ -28,17 +28,13 @@ namespace MyBudget
             if (decimal.TryParse(categoryAmtStr, out categoryAmtDec))
             {
                 try
-                {
-                    if (conn.State != ConnectionState.Open)
-                    {
-                        conn.Open();
-                    }
+                {                    
                     if (conn.State == ConnectionState.Open)
                     {
                         //Update database
-                        cmd = new MySqlCommand();
+                        //cmd = new MySqlCommand();
                         categoryBudgetDate = DateTime.Now;
-                        cmd.Connection = conn;
+                        //cmd.Connection = conn;
                         cmd.CommandText = "UPDATE table_budget SET CategoryAmt=?categoryAmt, CategoryBudgetDate=?categoryBudgetDate WHERE CategoryName=?categoryName";
                         cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
                         cmd.Parameters.Add("?categoryAmt", MySqlDbType.Decimal).Value = categoryAmtDec;
@@ -61,7 +57,6 @@ namespace MyBudget
             else
             {
                 //TODO create error number for budget category amount entered not in decimal formal when modifying data in Budget table
-
                 errNbr = -1;
             }
 
@@ -79,27 +74,21 @@ namespace MyBudget
             int errNbr = 0;
             decimal categoryAmtDec = 0;
             DateTime categoryBudgetDate;
-
             //Check if categoryAmtStr is in decimal format
             if (decimal.TryParse(categoryAmtStr, out categoryAmtDec))
             {
-                MySqlDataReader rdr = cmd.ExecuteReader();
                 try
                 {
                     //Select CategoryName from Budget table.
-                    if (conn.State != ConnectionState.Open)
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
                     {
-                        conn.Open();
-                    }
-
-                    if (conn.State == ConnectionState.Open)
-                    {
-                        cmd = new MySqlCommand();
-                        cmd.Connection = conn;
+                        //cmd = new MySqlCommand();
+                        //cmd.Connection = conn;
                         cmd.CommandText = "SELECT * FROM table_Budget WHERE CategoryName = ?categoryName";
                         cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
                         
-                        conn.Close();
+                        //conn.Close();
                     }
                     else
                     {
@@ -109,9 +98,12 @@ namespace MyBudget
                     
                     if (errNbr == 0)
                     {
+                        MySqlDataReader rdr = cmd.ExecuteReader();
+
                         //check if budget name has already been created before adding
                         if (!rdr.HasRows)
                         {
+                            rdr.Close();
                             if (conn.State != ConnectionState.Open)
                             {
                                 conn.Open();
@@ -131,11 +123,11 @@ namespace MyBudget
                             //
                             errNbr = -1;
                         }
-                    }
-                    
+                    }                    
                 }
                 catch (Exception ex)
                 {
+
                     //TODO create error number for general database error adding Budget Data
                     errNbr = -1;
                 }
@@ -159,18 +151,23 @@ namespace MyBudget
             int errNbr = 0;
             try
             {
-                if (conn.State != ConnectionState.Open)
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
                 {
-                    conn.Open();
-                }
-                cmd = new MySqlCommand();
-                cmd.Connection = conn;
-                cmd.CommandText = "DELETE FROM table_Budget WHERE CategoryName=?categoryName";
-                cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
-                cmd.ExecuteNonQuery();
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "DELETE FROM table_Budget WHERE CategoryName=?categoryName";
+                    cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
+                    cmd.ExecuteNonQuery();
 
-                conn.Close();
-                cmd.Dispose();
+                    //conn.Close();
+                    cmd.Dispose();
+                }
+                //if (conn.State != ConnectionState.Open)
+                //{
+                //    conn.Open();
+                //}
+                
             }
             catch (Exception ex)
             {
@@ -198,30 +195,32 @@ namespace MyBudget
 
             try
             {
-                if (conn.State != ConnectionState.Open)
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
                 {
-                    conn.Open();
-                }
-                cmd.Connection = conn;
-                cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget";
-                MySqlDataReader rdr = cmd.ExecuteReader();
-                if (conn.State == ConnectionState.Open)                    
-                {
-                    while (rdr.Read())
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget";
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
                     {
-                        CategorylstvwItem = new ListViewItem();
-                        CategorylstvwItem.SubItems[0].Text = rdr[0].ToString();
-                        CategorylstvwItem.SubItems.Add(rdr[1].ToString());
-                        Categorylstv.Items.Add(CategorylstvwItem);
+                        while (rdr.Read())
+                        {
+                            CategorylstvwItem = new ListViewItem();
+                            CategorylstvwItem.SubItems[0].Text = rdr[0].ToString();
+                            CategorylstvwItem.SubItems.Add(rdr[1].ToString());
+                            Categorylstv.Items.Add(CategorylstvwItem);
+                        }
+                        rdr.Close();                 
                     }
-                    rdr.Close();
-                    conn.Close();                    
-                } 
-                else
-                {
-                    //TODO add error number for not connecting to database when select all category data from Budget table
-                    errNbr = -1;
+                    else
+                    {
+                        //TODO add error number for not connecting to database when select all category data from Budget table
+                        errNbr = -1;
+                    }
                 }
+                
             
             }
             catch (Exception ex)

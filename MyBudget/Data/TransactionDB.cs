@@ -81,7 +81,7 @@ namespace MyBudget.Data
             //Check if categoryAmtStr is in decimal format
             if (decimal.TryParse(itemAmtStr, out itemAmtDec))
             {
-                MySqlDataReader rdr = cmd.ExecuteReader();
+                //MySqlDataReader rdr = cmd.ExecuteReader();
                 try
                 {
 
@@ -126,7 +126,7 @@ namespace MyBudget.Data
                 cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
                 cmd.ExecuteNonQuery();
 
-                conn.Close();
+                //conn.Close();
                 cmd.Dispose();
             }
             catch (Exception ex)
@@ -172,14 +172,15 @@ namespace MyBudget.Data
                         CategorylstvwItem.SubItems.Add(rdr[1].ToString());
                         Categorylstv.Items.Add(CategorylstvwItem);
                     }
-                    rdr.Close();
-                    conn.Close();
+                    
+                    //conn.Close();
                 }
                 else
                 {
                     //TODO add error number for not connecting to database when select all category data from Budget table
                     errNbr = -1;
                 }
+                rdr.Close();
 
             }
             catch (Exception ex)

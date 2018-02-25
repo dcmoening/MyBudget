@@ -15,8 +15,8 @@ namespace MyBudget
 {
     public partial class MainForm : Form
     {
-        private BudgetDB myBudget = new BudgetDB();
-
+        private ListViewItem BudgetCategoryLstVwItem;
+        public BudgetDB myBudget = new BudgetDB();
         public MainForm()
         {
             InitializeComponent();
@@ -26,7 +26,7 @@ namespace MyBudget
         {
             int errNbr;
             errNbr = myBudget.OpenDBConnection();
-
+            BudgetCategoryLstVwItem = new ListViewItem();
             //TODO alert user if db did not connect
 
             //Update main form
@@ -56,7 +56,7 @@ namespace MyBudget
 
         private void btn_budgetAdd_Click(object sender, EventArgs e)
         {
-            BudgetEntry form_BudgetEntry = new BudgetEntry();
+            BudgetEntry form_BudgetEntry = new BudgetEntry(myBudget);
             
             form_BudgetEntry.FormClosed += new FormClosedEventHandler(BudgetEntry_FormClosed);
                             
@@ -83,7 +83,6 @@ namespace MyBudget
                     errNbr = myBudget.BudgetTableDeleteCategoryName(categoryName);
                     if (errNbr == 0)
                     {
-                        lstvw_Budget.Items.Clear();
                         UpdateBudgetListView();
                     }                    
                 }
@@ -93,12 +92,12 @@ namespace MyBudget
         private void btn_BudgetModify_Click(object sender, EventArgs e)
         {
             //TODO add code for modifying budget
-            BudgetEntry form_BudgetEntry = new BudgetEntry();
+            BudgetEntry form_BudgetEntry = new BudgetEntry(myBudget);
 
             form_BudgetEntry.FormClosed += new FormClosedEventHandler(BudgetEntry_FormClosed);
 
             form_BudgetEntry.isModifyBudgetEntry = true;
-            form_BudgetEntry.setCategoryName(lstvw_Budget.SelectedItems[0].Text);
+            form_BudgetEntry.setCategoryName(lstvw_Budget.SelectedItems[0].Text);            
             form_BudgetEntry.setCategoryAmt(System.Convert.ToDecimal(lstvw_Budget.SelectedItems[0].SubItems[1].Text));
             form_BudgetEntry.Show();
         }
@@ -137,7 +136,7 @@ namespace MyBudget
         
         public void UpdateBudgetListView()
         {
-            ListViewItem BudgetCategoryLstVwItem = new ListViewItem();
+            lstvw_Budget.Items.Clear();
             myBudget.BudgetTableGetCategory(ref lstvw_Budget);            
         }
     }

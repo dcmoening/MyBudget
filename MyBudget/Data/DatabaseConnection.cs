@@ -40,6 +40,7 @@ namespace MyBudget
                 conn = new MySqlConnection(connStr);
                 conn.Open();
                 cmd = new MySqlCommand();
+                cmd.Connection = conn;
             }
             catch (Exception ex)
             {
@@ -48,9 +49,43 @@ namespace MyBudget
             }
             return errNbr;
         }
+        public int CheckDBConnection()
+        {
+            bool isConnected = false;
+            int errNbr = -1;
+            const int tryNbrTimes = 3;
+            int nbrTimesTried = 0;
+            try
+            {
+                while ((nbrTimesTried < tryNbrTimes) || !isConnected)
+                {
+                    if (conn.State != ConnectionState.Open)
+                    {
+                        OpenDBConnection();
+                    }
+                    else
+                    {
+                        isConnected = true;
+                        errNbr = 0;
+                    }
+                    nbrTimesTried++;
+                }
+                if(isConnected == false)
+                {
+                    errNbr = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                errNbr = -1;
+            }
+            
+                
+            return errNbr;
+        }
 
         public void CloseConnection()
-        {
+       {
             conn.Close();
         }
     }
