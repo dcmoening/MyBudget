@@ -15,10 +15,56 @@ namespace MyBudget
 {
     public class BudgetDB: DatabaseConnection
     {
-       
+
 
         #region Public Members
-        
+        /// <summary>
+        /// Returns a list of budgets in the database.
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <param name="categoryAmtStr"></param>
+        /// <returns></returns>
+        public int BudgetTableGetCategory(ref List<string> Categorylst)
+        {
+            int errNbr = 0;
+            //ListViewItem CategorylstvwItem = new ListViewItem();
+
+            try
+            {
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
+                {
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget";
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
+                    {
+                        while (rdr.Read())
+                        { 
+                            Categorylst.Add(rdr[0].ToString());
+                        }
+                        rdr.Close();
+                    }
+                    else
+                    {
+                        //TODO add error number for not connecting to database when select all category data from Budget table
+                        errNbr = -1;
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                //TODO catch exception in updating budget list view.
+                errNbr = -1;
+            }
+
+            return errNbr;
+        }
+
         public int BudgetTableModifyCategoryData(string categoryName, string categoryAmtStr)
         {
             int errNbr = 0;
@@ -104,10 +150,10 @@ namespace MyBudget
                         if (!rdr.HasRows)
                         {
                             rdr.Close();
-                            if (conn.State != ConnectionState.Open)
-                            {
-                                conn.Open();
-                            }
+                            //if (conn.State != ConnectionState.Open)
+                            //{
+                            //    conn.Open();
+                            //}
                             cmd = new MySqlCommand();
                             categoryBudgetDate = DateTime.Now;
                             cmd.Connection = conn;
@@ -161,7 +207,7 @@ namespace MyBudget
                     cmd.ExecuteNonQuery();
 
                     //conn.Close();
-                    cmd.Dispose();
+                    //cmd.Dispose();
                 }
                 //if (conn.State != ConnectionState.Open)
                 //{

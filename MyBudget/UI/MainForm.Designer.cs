@@ -79,6 +79,7 @@
             this.TransactionEntryID,
             this.TransactionEntries,
             this.TransactionEntryAmt});
+            this.lstvw_TransactionEntry.FullRowSelect = true;
             this.lstvw_TransactionEntry.Location = new System.Drawing.Point(12, 28);
             this.lstvw_TransactionEntry.MultiSelect = false;
             this.lstvw_TransactionEntry.Name = "lstvw_TransactionEntry";
@@ -250,6 +251,7 @@
             this.btn_transModify.TabIndex = 12;
             this.btn_transModify.Text = "Modify";
             this.btn_transModify.UseVisualStyleBackColor = true;
+            this.btn_transModify.Click += new System.EventHandler(this.btn_transModify_Click);
             // 
             // btn_BudgetModify
             // 

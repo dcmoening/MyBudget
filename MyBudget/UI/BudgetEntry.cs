@@ -20,7 +20,7 @@ namespace MyBudget
         const int ERROR_BUDGET = 1000;
         const int ERROR_BUDGET_ENTRY_EXIST = ERROR_BUDGET + 1;
         private BudgetDB myBudget;
-        DateTime categoryBudgetDate;
+        //DateTime categoryBudgetDate;
         public Boolean isAddBudgetEntry;
         public Boolean isModifyBudgetEntry;
         //ErrorNotify errorNotify;

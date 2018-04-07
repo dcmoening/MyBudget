@@ -33,7 +33,7 @@
             this.lbl_label2 = new System.Windows.Forms.Label();
             this.btn_OK = new System.Windows.Forms.Button();
             this.btn_Cancel = new System.Windows.Forms.Button();
-            this.lstBox_BudgetName = new System.Windows.Forms.ListBox();
+            this.cmbo_BudgetName = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lbl_label1
@@ -80,20 +80,22 @@
             this.btn_Cancel.Text = "Cancel";
             this.btn_Cancel.UseVisualStyleBackColor = true;
             // 
-            // lstBox_BudgetName
+            // cmbo_BudgetName
             // 
-            this.lstBox_BudgetName.FormattingEnabled = true;
-            this.lstBox_BudgetName.Location = new System.Drawing.Point(83, 17);
-            this.lstBox_BudgetName.Name = "lstBox_BudgetName";
-            this.lstBox_BudgetName.Size = new System.Drawing.Size(163, 17);
-            this.lstBox_BudgetName.TabIndex = 6;
+            this.cmbo_BudgetName.AllowDrop = true;
+            this.cmbo_BudgetName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbo_BudgetName.FormattingEnabled = true;
+            this.cmbo_BudgetName.Location = new System.Drawing.Point(83, 14);
+            this.cmbo_BudgetName.Name = "cmbo_BudgetName";
+            this.cmbo_BudgetName.Size = new System.Drawing.Size(163, 21);
+            this.cmbo_BudgetName.TabIndex = 6;
             // 
             // TransactionEntry
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(259, 121);
-            this.Controls.Add(this.lstBox_BudgetName);
+            this.Controls.Add(this.cmbo_BudgetName);
             this.Controls.Add(this.btn_Cancel);
             this.Controls.Add(this.btn_OK);
             this.Controls.Add(this.txt_TransactionAmt);
@@ -114,6 +116,6 @@
         private System.Windows.Forms.Label lbl_label2;
         private System.Windows.Forms.Button btn_OK;
         private System.Windows.Forms.Button btn_Cancel;
-        private System.Windows.Forms.ListBox lstBox_BudgetName;
+        private System.Windows.Forms.ComboBox cmbo_BudgetName;
     }
 }

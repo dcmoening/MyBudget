@@ -17,6 +17,7 @@ namespace MyBudget
     {
         private ListViewItem BudgetCategoryLstVwItem;
         public BudgetDB myBudget = new BudgetDB();
+        public TransactionDB myTransaction = new TransactionDB();
         public MainForm()
         {
             InitializeComponent();
@@ -26,6 +27,7 @@ namespace MyBudget
         {
             int errNbr;
             errNbr = myBudget.OpenDBConnection();
+            
             BudgetCategoryLstVwItem = new ListViewItem();
             //TODO alert user if db did not connect
 
@@ -44,14 +46,52 @@ namespace MyBudget
         
         private void btn_transAdd_Click(object sender, EventArgs e)
         {
-            TransactionEntry form_TransactionEntry = new TransactionEntry();
+            TransactionEntry form_TransactionEntry = new TransactionEntry(myBudget, myTransaction);
+
+            form_TransactionEntry.FormClosed += new FormClosedEventHandler(TransactionEntry_FormClosed);
+
             form_TransactionEntry.isAddTransactionEntry = true;
             form_TransactionEntry.Show();
         }
-        
+
+        private void btn_transModify_Click(object sender, EventArgs e)
+        {
+            int transaction_ID;
+            string transaction_String;
+
+            if(lstvw_TransactionEntry.SelectedItems.Count > 0)
+            {
+                transaction_ID = Convert.ToInt32(lstvw_TransactionEntry.SelectedItems[0].SubItems[0].Text);
+                transaction_String = lstvw_TransactionEntry.SelectedItems[0].SubItems[1].Text;
+
+                //TODO: in TransactionEntry, if modify is selected get the Transaction ID of the item selected so it can be updated in the database.
+                myTransaction.SelectedTransaction = new Transaction
+                {
+                    transactionID = transaction_ID,
+                    transactionName = transaction_String
+                };
+
+                TransactionEntry form_TransactionEntry = new TransactionEntry(myBudget, myTransaction);
+                form_TransactionEntry.FormClosed += new FormClosedEventHandler(TransactionEntry_FormClosed);
+                form_TransactionEntry.isModifyTransactionEntry = true;
+                form_TransactionEntry.Show();
+            }                        
+        }
+
         private void btn_transMinus_Click(object sender, EventArgs e)
         {
-            //TODO add code for deleting Transaction
+            String categoryID;
+            int errNbr;
+            // if budget is income, do not allow delete
+            if (lstvw_TransactionEntry.SelectedItems.Count > 0)
+            {
+                categoryID = lstvw_TransactionEntry.SelectedItems[0].SubItems[0].Text;
+                errNbr = myTransaction.TransactionTableDeleteCategoryName(categoryID);
+                if (errNbr == 0)
+                {
+                    UpdateMainForm();
+                }                
+            }
         }
 
         private void btn_budgetAdd_Click(object sender, EventArgs e)
@@ -67,7 +107,13 @@ namespace MyBudget
         void BudgetEntry_FormClosed(object sender, FormClosedEventArgs e)
         {
             //When budget entry closes update the budget listview
-            UpdateBudgetListView();
+            UpdateMainForm();
+        }
+
+        void TransactionEntry_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //When budget entry closes update the budget listview
+            UpdateMainForm();
         }
 
         private void btn_budgetMinus_Click(object sender, EventArgs e)
@@ -126,18 +172,24 @@ namespace MyBudget
         {
             //update Budget Listview
             UpdateBudgetListView();
-
+            UpdateTransactionListView();
             //TODO update Money Received Listview
             //TODO update Transaction Entry Listview
             //TODO update Budget and Income totals
             //TODO update Budget Table
 
         }
+        public void UpdateTransactionListView()
+        {
+            lstvw_TransactionEntry.Items.Clear();
+            myTransaction.TransactionTableGetCurrentMonth(ref lstvw_TransactionEntry);
+        }
         
         public void UpdateBudgetListView()
         {
             lstvw_Budget.Items.Clear();
-            myBudget.BudgetTableGetCategory(ref lstvw_Budget);            
-        }
+            myBudget.BudgetTableGetCategory(ref lstvw_Budget);
+            
+        }        
     }
 }

@@ -8,8 +8,8 @@ C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.exe
 C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.pdb
 C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\bin\Debug\MySql.Data.dll
 C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\bin\Debug\MySql.Data.xml
-C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.csprojResolveAssemblyReference.cache
 C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.BudgetEntry.resources
 C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.ErrorNotify.resources
 C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.TransactionEntry.resources
 C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.MainForm.resources
+C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.csprojResolveAssemblyReference.cache

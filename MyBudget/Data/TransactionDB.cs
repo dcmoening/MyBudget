@@ -11,13 +11,39 @@ using System.Windows.Forms;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 
-namespace MyBudget.Data
+namespace MyBudget
 {
-    class TransactionDB : DatabaseConnection
+    public struct Transaction
     {
+        public int transactionID;
+        public string transactionName;
+    }
+
+    public class TransactionDB : DatabaseConnection
+    {
+        #region Private Members
+        //Transaction Table Constants
+        private const string TABLE_TRANSACTION = "table_Transaction";
+        private const string TRANSACTION_COL_CATEGORYID = "idTable_Transaction";
+        private const string TRANSACTION_COL_CATEGORYNAME = "CategoryName";
+        private const string TRANSACTION_COL_ITEMAMT = "ItemAmt";
+        private const string TRANSACTION_COL_DATEPURCHASED = "DatePurchased";
+
+        
+        #endregion
+
+        #region Properties
+        public Transaction SelectedTransaction
+        {
+          get;
+          set;
+        }
+
+        #endregion
+
         #region Public Members
 
-        public int TransactionTableModifyCategoryData(string categoryName, string itemAmtStr)
+        public int TransactionTableModifyCategoryData(int categoryID, string itemAmtStr)
         {
             int errNbr = 0;
             decimal itemAmtDec = 0;
@@ -27,18 +53,16 @@ namespace MyBudget.Data
             {
                 try
                 {
-                    if (conn.State != ConnectionState.Open)
-                    {
-                        conn.Open();
-                    }
                     if (conn.State == ConnectionState.Open)
                     {
                         //Update database
                         cmd = new MySqlCommand();
                         datePurchased = DateTime.Now;
                         cmd.Connection = conn;
-                        cmd.CommandText = "UPDATE table_transaction SET ItemAmt=?itemAmt, DatePurchased=?datePurchased WHERE CategoryName=?categoryName";
-                        cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
+                        cmd.CommandText = "UPDATE" + " " + TABLE_TRANSACTION + " " + "SET" + " " + TRANSACTION_COL_ITEMAMT + "=?itemAmt," +
+                                                                                                   TRANSACTION_COL_DATEPURCHASED + "=?datePurchased " +
+                                                                                     "WHERE" + " " + TRANSACTION_COL_CATEGORYID + "=?categoryID";
+                        cmd.Parameters.Add("?categoryID", MySqlDbType.Int32).Value = categoryID;
                         cmd.Parameters.Add("?itemAmt", MySqlDbType.Decimal).Value = itemAmtDec;
                         cmd.Parameters.Add("?datePurchased", MySqlDbType.DateTime).Value = datePurchased;
                         cmd.ExecuteNonQuery();
@@ -84,20 +108,19 @@ namespace MyBudget.Data
                 //MySqlDataReader rdr = cmd.ExecuteReader();
                 try
                 {
-
-
-                    if (conn.State != ConnectionState.Open)
-                    {
-                        conn.Open();
-                    }
-                    cmd = new MySqlCommand();
-                    datePurchased = DateTime.Now;
-                    cmd.Connection = conn;
-                    cmd.CommandText = "INSERT INTO table_budget(CategoryName, ItemAmt, DatePurchased) VALUES(?categoryName, ?itemAmt, ?datePurchased)";
-                    cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
-                    cmd.Parameters.Add("?itemAmt", MySqlDbType.Decimal).Value = itemAmtDec;
-                    cmd.Parameters.Add("?datePurchased", MySqlDbType.DateTime).Value = datePurchased;
-                    cmd.ExecuteNonQuery();
+                    //Select CategoryName from Budget table.
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
+                    {                      
+                            cmd = new MySqlCommand();
+                            datePurchased = DateTime.Now;
+                            cmd.Connection = conn;
+                            cmd.CommandText = "INSERT INTO" + " " + TABLE_TRANSACTION + "("+ TRANSACTION_COL_CATEGORYNAME + ", " + TRANSACTION_COL_ITEMAMT + ", " + TRANSACTION_COL_DATEPURCHASED + ") VALUES(?categoryName, ?itemAmt, ?datePurchased)";
+                            cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
+                            cmd.Parameters.Add("?itemAmt", MySqlDbType.Decimal).Value = itemAmtDec;
+                            cmd.Parameters.Add("?datePurchased", MySqlDbType.DateTime).Value = datePurchased;
+                            cmd.ExecuteNonQuery();
+                     }                    
                 }
                 catch
                 {
@@ -111,20 +134,20 @@ namespace MyBudget.Data
         /// </summary>
         /// <param name="categoryName"></param>
         /// <returns></returns>
-        public int TransactionTableDeleteCategoryName(string categoryName)
+        public int TransactionTableDeleteCategoryName(string categoryID)
         {
             int errNbr = 0;
             try
             {
-                if (conn.State != ConnectionState.Open)
-                {
-                    conn.Open();
-                }
-                cmd = new MySqlCommand();
-                cmd.Connection = conn;
-                cmd.CommandText = "DELETE FROM table_Transaction WHERE CategoryName=?categoryName";
-                cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
-                cmd.ExecuteNonQuery();
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
+                {                    
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "DELETE FROM" + " " + TABLE_TRANSACTION + " " + "WHERE" + " " + TRANSACTION_COL_CATEGORYID + "=?categoryId";
+                    cmd.Parameters.Add("?categoryId", MySqlDbType.VarChar).Value = categoryID;
+                    cmd.ExecuteNonQuery();
+                }                
 
                 //conn.Close();
                 cmd.Dispose();
@@ -151,37 +174,40 @@ namespace MyBudget.Data
         public int TransactionTableGetCurrentMonth(ref ListView Categorylstv)
         {
             int errNbr = 0;
-            DateTime endTIme;
             ListViewItem CategorylstvwItem = new ListViewItem();
 
             try
             {
-                if (conn.State != ConnectionState.Open)
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
                 {
-                    conn.Open();
-                }
-                cmd.Connection = conn;
-                cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget";
-                MySqlDataReader rdr = cmd.ExecuteReader();
-                if (conn.State == ConnectionState.Open)
-                {
-                    while (rdr.Read())
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    //SELECT * FROM table WHERE YEAR(date) = YEAR(CURDATE()) AND MONTH(date) = MONTH(CURDATE())
+                    cmd.CommandText = "SELECT * FROM" + " " + TABLE_TRANSACTION + " " + "WHERE YEAR(" + TRANSACTION_COL_DATEPURCHASED + ") = YEAR(CURDATE()) AND MONTH(" + TRANSACTION_COL_DATEPURCHASED + ") = MONTH(CURDATE())";
+
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    if (conn.State == ConnectionState.Open)
                     {
-                        CategorylstvwItem = new ListViewItem();
-                        CategorylstvwItem.SubItems[0].Text = rdr[0].ToString();
-                        CategorylstvwItem.SubItems.Add(rdr[1].ToString());
-                        Categorylstv.Items.Add(CategorylstvwItem);
+                        while (rdr.Read())
+                        {
+                            CategorylstvwItem = new ListViewItem();
+                            CategorylstvwItem.SubItems[0].Text = rdr[0].ToString();
+                            CategorylstvwItem.SubItems.Add(rdr[1].ToString());
+                            CategorylstvwItem.SubItems.Add(rdr[2].ToString());
+                            Categorylstv.Items.Add(CategorylstvwItem);
+                        }
+                        rdr.Close();
+
+                        //conn.Close();
+                    }
+                    else
+                    {
+                        //TODO add error number for not connecting to database when select all category data from Budget table
+                        errNbr = -1;
                     }
                     
-                    //conn.Close();
                 }
-                else
-                {
-                    //TODO add error number for not connecting to database when select all category data from Budget table
-                    errNbr = -1;
-                }
-                rdr.Close();
-
             }
             catch (Exception ex)
             {

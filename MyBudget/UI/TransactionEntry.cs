@@ -15,17 +15,21 @@ namespace MyBudget
 {
     public partial class TransactionEntry : Form
     {
-        String categoryName;
+        
         Decimal categoryAmt;
         DateTime categoryBudgetDate;
         String connStr;
         MySqlConnection conn;
         MySqlCommand cmd;
+        private BudgetDB myBudget;
+        private TransactionDB myTransaction;
         public Boolean isAddTransactionEntry;
         public Boolean isModifyTransactionEntry;
         
-        public TransactionEntry()
+        public TransactionEntry(BudgetDB budget, TransactionDB transaction)
         {
+            myBudget = budget;
+            myTransaction = transaction;
             InitializeComponent();
         }
 
@@ -34,41 +38,69 @@ namespace MyBudget
             //connStr = MainForm.ReturnConnectionString();
             conn = new MySqlConnection(connStr);
             cmd = new MySqlCommand();
+            List<string> budgetLst = new List<string>();
+
+            //Populate listview with current budget entries.
+            myBudget.BudgetTableGetCategory(ref budgetLst);
+            cmbo_BudgetName.DataSource = budgetLst;
 
             //Determine if modify or add btn was pressed for transaction entries
             if (isModifyTransactionEntry)
             {
+                int selectedIndex;
+                selectedIndex = cmbo_BudgetName.FindString(myTransaction.SelectedTransaction.transactionName);
+                cmbo_BudgetName.SelectedIndex = selectedIndex;
+                cmbo_BudgetName.Enabled = false;
+
                 //TODO add modification of Transaction Entry
                 //if modify
                 //get selected item from the transaction listview and show it in the
                 //list box on the transaction entry form
-            }
-            else
-            {
-                this.Close();
-            }  
+            }            
         }
 
         private void btn_OK_Click(object sender, EventArgs e)
         {
-            
 
-            //Try to convert text entered into decimal
-            if (decimal.TryParse(this.txt_TransactionAmt.Text, out categoryAmt))
+            int errNbr = 0;
+            string categoryAmtStr;
+            decimal categoryAmtDec = 0;
+
+            
+            categoryAmtStr = txt_TransactionAmt.Text;
+            if (decimal.TryParse(categoryAmtStr, out categoryAmtDec))
             {
-                categoryName = this.lstBox_BudgetName.SelectedItem.ToString();
-                categoryBudgetDate = DateTime.Now;
-                cmd.Connection = conn;
-                cmd.CommandText = "INSERT INTO table_transaction (CategoryName, ItemAmt, DatePurchased) VALUES (?categoryName, ?itemAmt, ?datePurchased)";
-                cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
-                cmd.Parameters.Add("?itemAmt", MySqlDbType.Decimal).Value = categoryAmt;
-                cmd.Parameters.Add("?datePurchased", MySqlDbType.DateTime).Value = categoryBudgetDate;
+                if (isAddTransactionEntry)
+                {
+                    string categoryName;
+                    categoryName = cmbo_BudgetName.SelectedItem.ToString();
+                    if (!(string.IsNullOrEmpty(categoryName) | string.IsNullOrEmpty(categoryAmtStr)))
+                    {
+                        errNbr = myTransaction.TransactionTableAddCategoryData(categoryName, categoryAmtStr);
+                        //TODO Handle error retrieved adding Budget category data
+                    }
+                }
+                else if (isModifyTransactionEntry)
+                {
+                    int categoryID;
+                    categoryID = myTransaction.SelectedTransaction.transactionID;
+                    errNbr = myTransaction.TransactionTableModifyCategoryData(categoryID, categoryAmtStr);
+                    //TODO Handle error retrieved modifying Budget category data
+                }
             }
             else
             {
-                //TODO notify that entered value for transaction amount is incorrect.
+                //TODO Handel error category amount not in decimal format
             }
-           
+            
+            
+            closeForm();
+
+        }
+
+        private void closeForm()
+        {
+            this.Close();
         }
     }
 }

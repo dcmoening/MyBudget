@@ -55,9 +55,10 @@ namespace MyBudget
             int errNbr = -1;
             const int tryNbrTimes = 3;
             int nbrTimesTried = 0;
-            try
+            
+            while ((nbrTimesTried < tryNbrTimes) || !isConnected)
             {
-                while ((nbrTimesTried < tryNbrTimes) || !isConnected)
+                try
                 {
                     if (conn.State != ConnectionState.Open)
                     {
@@ -68,19 +69,19 @@ namespace MyBudget
                         isConnected = true;
                         errNbr = 0;
                     }
-                    nbrTimesTried++;
                 }
-                if(isConnected == false)
+                catch
                 {
-                    errNbr = -1;
+                    OpenDBConnection();
                 }
+                    
+                nbrTimesTried++;
             }
-            catch (Exception ex)
+            if(isConnected == false)
             {
                 errNbr = -1;
             }
             
-                
             return errNbr;
         }
 
