@@ -13,7 +13,7 @@ using MySql.Data.MySqlClient;
 
 namespace MyBudget
 {
-    public partial class TransactionEntry : Form
+    public partial class MoneyReceivedEntry : Form
     {
         
         Decimal categoryAmt;
@@ -22,18 +22,18 @@ namespace MyBudget
         MySqlConnection conn;
         MySqlCommand cmd;
         private BudgetDB myBudget;
-        private TransactionDB myTransaction;
+        private MoneyReceivedDB myIncome;
         public Boolean isAddTransactionEntry;
         public Boolean isModifyTransactionEntry;
         
-        public TransactionEntry(BudgetDB budget, TransactionDB transaction)
+        public MoneyReceivedEntry(BudgetDB budget, MoneyReceivedDB income)
         {
             myBudget = budget;
-            myTransaction = transaction;
+            myIncome = income;
             InitializeComponent();
         }
 
-        private void TransactionEntry_Load(object sender, EventArgs e)
+        private void MoneyReceivedEntry_Load(object sender, EventArgs e)
         {
             //connStr = MainForm.ReturnConnectionString();
             conn = new MySqlConnection(connStr);
@@ -41,14 +41,14 @@ namespace MyBudget
             List<string> budgetLst = new List<string>();
 
             //Populate listview with current budget entries.
-            myBudget.BudgetTableGetExpenseCategory(ref budgetLst);
+            myBudget.BudgetTableGetIncomeCategory(ref budgetLst);
             cmbo_BudgetName.DataSource = budgetLst;
 
             //Determine if modify or add btn was pressed for transaction entries
             if (isModifyTransactionEntry)
             {
                 int selectedIndex;
-                selectedIndex = cmbo_BudgetName.FindString(myTransaction.SelectedTransaction.transactionName);
+                selectedIndex = cmbo_BudgetName.FindString(myIncome.SelectedTransaction.transactionName);
                 cmbo_BudgetName.SelectedIndex = selectedIndex;
                 cmbo_BudgetName.Enabled = false;
 
@@ -76,15 +76,15 @@ namespace MyBudget
                     categoryName = cmbo_BudgetName.SelectedItem.ToString();
                     if (!(string.IsNullOrEmpty(categoryName) | string.IsNullOrEmpty(categoryAmtStr)))
                     {
-                        errNbr = myTransaction.TransactionTableAddCategoryData(categoryName, categoryAmtStr);
+                        errNbr = myIncome.IncomeTableAddCategoryData(categoryName, categoryAmtStr);
                         //TODO Handle error retrieved adding Budget category data
                     }
                 }
                 else if (isModifyTransactionEntry)
                 {
                     int categoryID;
-                    categoryID = myTransaction.SelectedTransaction.transactionID;
-                    errNbr = myTransaction.TransactionTableModifyCategoryData(categoryID, categoryAmtStr);
+                    categoryID = myIncome.SelectedTransaction.transactionID;
+                    errNbr = myIncome.IncomeTableModifyCategoryData(categoryID, categoryAmtStr);
                     //TODO Handle error retrieved modifying Budget category data
                 }
             }

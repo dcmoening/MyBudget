@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\BudgetDB.cs" />
+    <Compile Include="Data\Transaction.cs" />
+    <Compile Include="Data\MoneyReceivedDB.cs" />
     <Compile Include="Data\TransactionDB.cs" />
     <Compile Include="UI\BudgetEntry.cs">
       <SubType>Form</SubType>
@@ -61,6 +63,12 @@
     </Compile>
     <Compile Include="UI\ErrorNotify.Designer.cs">
       <DependentUpon>ErrorNotify.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MoneyReceivedEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MoneyReceivedEntry.Designer.cs">
+      <DependentUpon>MoneyReceivedEntry.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\TransactionEntry.cs">
       <SubType>Form</SubType>
@@ -81,6 +89,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ErrorNotify.resx">
       <DependentUpon>ErrorNotify.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MoneyReceivedEntry.resx">
+      <DependentUpon>MoneyReceivedEntry.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\TransactionEntry.resx">
       <DependentUpon>TransactionEntry.cs</DependentUpon>

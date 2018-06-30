@@ -1,6 +1,6 @@
 ﻿namespace MyBudget
 {
-    partial class BudgetEntry
+    partial class MoneyReceivedEntry
     {
         /// <summary>
         /// Required designer variable.
@@ -29,12 +29,11 @@
         private void InitializeComponent()
         {
             this.lbl_label1 = new System.Windows.Forms.Label();
-            this.txt_BudgetAmt = new System.Windows.Forms.TextBox();
+            this.txt_TransactionAmt = new System.Windows.Forms.TextBox();
             this.lbl_label2 = new System.Windows.Forms.Label();
             this.btn_OK = new System.Windows.Forms.Button();
             this.btn_Cancel = new System.Windows.Forms.Button();
-            this.txt_BudgetName = new System.Windows.Forms.TextBox();
-            this.chkbox_IsIncome = new System.Windows.Forms.CheckBox();
+            this.cmbo_BudgetName = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lbl_label1
@@ -46,13 +45,12 @@
             this.lbl_label1.TabIndex = 0;
             this.lbl_label1.Text = "Budget Name";
             // 
-            // txt_BudgetAmt
+            // txt_TransactionAmt
             // 
-            this.txt_BudgetAmt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txt_BudgetAmt.Location = new System.Drawing.Point(83, 40);
-            this.txt_BudgetAmt.Name = "txt_BudgetAmt";
-            this.txt_BudgetAmt.Size = new System.Drawing.Size(163, 20);
-            this.txt_BudgetAmt.TabIndex = 2;
+            this.txt_TransactionAmt.Location = new System.Drawing.Point(83, 40);
+            this.txt_TransactionAmt.Name = "txt_TransactionAmt";
+            this.txt_TransactionAmt.Size = new System.Drawing.Size(163, 20);
+            this.txt_TransactionAmt.TabIndex = 3;
             // 
             // lbl_label2
             // 
@@ -65,58 +63,48 @@
             // 
             // btn_OK
             // 
-            this.btn_OK.Location = new System.Drawing.Point(83, 100);
+            this.btn_OK.Location = new System.Drawing.Point(83, 76);
             this.btn_OK.Name = "btn_OK";
             this.btn_OK.Size = new System.Drawing.Size(75, 33);
-            this.btn_OK.TabIndex = 3;
+            this.btn_OK.TabIndex = 4;
             this.btn_OK.Text = "OK";
             this.btn_OK.UseVisualStyleBackColor = true;
             this.btn_OK.Click += new System.EventHandler(this.btn_OK_Click);
             // 
             // btn_Cancel
             // 
-            this.btn_Cancel.Location = new System.Drawing.Point(173, 100);
+            this.btn_Cancel.Location = new System.Drawing.Point(173, 76);
             this.btn_Cancel.Name = "btn_Cancel";
             this.btn_Cancel.Size = new System.Drawing.Size(75, 33);
-            this.btn_Cancel.TabIndex = 4;
+            this.btn_Cancel.TabIndex = 5;
             this.btn_Cancel.Text = "Cancel";
             this.btn_Cancel.UseVisualStyleBackColor = true;
             this.btn_Cancel.Click += new System.EventHandler(this.btn_Cancel_Click);
             // 
-            // txt_BudgetName
+            // cmbo_BudgetName
             // 
-            this.txt_BudgetName.Location = new System.Drawing.Point(83, 14);
-            this.txt_BudgetName.Name = "txt_BudgetName";
-            this.txt_BudgetName.Size = new System.Drawing.Size(163, 20);
-            this.txt_BudgetName.TabIndex = 1;
+            this.cmbo_BudgetName.AllowDrop = true;
+            this.cmbo_BudgetName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbo_BudgetName.FormattingEnabled = true;
+            this.cmbo_BudgetName.Location = new System.Drawing.Point(83, 14);
+            this.cmbo_BudgetName.Name = "cmbo_BudgetName";
+            this.cmbo_BudgetName.Size = new System.Drawing.Size(163, 21);
+            this.cmbo_BudgetName.TabIndex = 6;
             // 
-            // chkbox_IsIncome
+            // MoneyReceivedEntry
             // 
-            this.chkbox_IsIncome.AutoSize = true;
-            this.chkbox_IsIncome.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkbox_IsIncome.Location = new System.Drawing.Point(18, 66);
-            this.chkbox_IsIncome.Name = "chkbox_IsIncome";
-            this.chkbox_IsIncome.Size = new System.Drawing.Size(78, 17);
-            this.chkbox_IsIncome.TabIndex = 5;
-            this.chkbox_IsIncome.Text = "Is Income?";
-            this.chkbox_IsIncome.UseVisualStyleBackColor = true;
-            // 
-            // BudgetEntry
-            // 
-            this.AcceptButton = this.btn_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(259, 144);
-            this.Controls.Add(this.chkbox_IsIncome);
-            this.Controls.Add(this.txt_BudgetName);
+            this.ClientSize = new System.Drawing.Size(259, 121);
+            this.Controls.Add(this.cmbo_BudgetName);
             this.Controls.Add(this.btn_Cancel);
             this.Controls.Add(this.btn_OK);
-            this.Controls.Add(this.txt_BudgetAmt);
+            this.Controls.Add(this.txt_TransactionAmt);
             this.Controls.Add(this.lbl_label2);
             this.Controls.Add(this.lbl_label1);
-            this.Name = "BudgetEntry";
-            this.Text = "Budget Entry";
-            this.Load += new System.EventHandler(this.BudgetEntry_Load);
+            this.Name = "MoneyReceivedEntry";
+            this.Text = "Money Received Entry";
+            this.Load += new System.EventHandler(this.MoneyReceivedEntry_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -125,11 +113,10 @@
         #endregion
 
         private System.Windows.Forms.Label lbl_label1;
-        private System.Windows.Forms.TextBox txt_BudgetAmt;
+        private System.Windows.Forms.TextBox txt_TransactionAmt;
         private System.Windows.Forms.Label lbl_label2;
         private System.Windows.Forms.Button btn_OK;
         private System.Windows.Forms.Button btn_Cancel;
-        private System.Windows.Forms.TextBox txt_BudgetName;
-        private System.Windows.Forms.CheckBox chkbox_IsIncome;
+        private System.Windows.Forms.ComboBox cmbo_BudgetName;
     }
 }

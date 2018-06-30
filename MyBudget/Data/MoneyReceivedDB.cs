@@ -13,34 +13,33 @@ using MySql.Data.MySqlClient;
 
 namespace MyBudget
 {
-    
-    public class TransactionDB : DatabaseConnection
+    public class MoneyReceivedDB : DatabaseConnection
     {
         #region Private Members
-        //Transaction Table Constants
-        private const string TABLE_TRANSACTION = "table_Transaction";
-        private const string TRANSACTION_COL_CATEGORYID = "idTable_Transaction";
-        private const string TRANSACTION_COL_CATEGORYNAME = "CategoryName";
-        private const string TRANSACTION_COL_ITEMAMT = "ItemAmt";
-        private const string TRANSACTION_COL_DATEPURCHASED = "DatePurchased";
 
+
+
+        //Income Table Constants
+        private const string TABLE_INCOME = "table_income";
+        private const string INCOME_COL_CATEGORYID = "idTable_Income";
+        private const string INCOME_COL_CATEGORYNAME = "CategoryName";
+        private const string INCOME_COL_ITEMAMT = "ItemAmt";
+        private const string INCOME_COL_DATEPURCHASED = "DateReceived";
 
         #endregion
 
         #region Properties
-        
-
         public Transaction SelectedTransaction
         {
-          get;
-          set;
+            get;
+            set;
         }
 
         #endregion
 
         #region Public Members
 
-        public int TransactionTableModifyCategoryData(int categoryID, string itemAmtStr)
+        public int IncomeTableModifyCategoryData(int categoryID, string itemAmtStr)
         {
             int errNbr = 0;
             decimal itemAmtDec = 0;
@@ -56,30 +55,30 @@ namespace MyBudget
                         cmd = new MySqlCommand();
                         datePurchased = DateTime.Now;
                         cmd.Connection = conn;
-                        cmd.CommandText = "UPDATE" + " " + TABLE_TRANSACTION + " " + "SET" + " " + TRANSACTION_COL_ITEMAMT + "=?itemAmt," +
-                                                                                                   TRANSACTION_COL_DATEPURCHASED + "=?datePurchased " +
-                                                                                     "WHERE" + " " + TRANSACTION_COL_CATEGORYID + "=?categoryID";
+                        cmd.CommandText = "UPDATE" + " " + TABLE_INCOME + " " + "SET" + " " + INCOME_COL_ITEMAMT + "=?itemAmt," +
+                                                                                                   INCOME_COL_DATEPURCHASED + "=?dateReceived " +
+                                                                                     "WHERE" + " " + INCOME_COL_CATEGORYID + "=?categoryID";
                         cmd.Parameters.Add("?categoryID", MySqlDbType.Int32).Value = categoryID;
                         cmd.Parameters.Add("?itemAmt", MySqlDbType.Decimal).Value = itemAmtDec;
-                        cmd.Parameters.Add("?datePurchased", MySqlDbType.DateTime).Value = datePurchased;
+                        cmd.Parameters.Add("?dateReceived", MySqlDbType.DateTime).Value = datePurchased;
                         cmd.ExecuteNonQuery();
                     }
                     else
                     {
-                        //TODO create error number for tried to open database and connection did not open when modifying data in budget table
+                        //TODO create error number for tried to open database and connection did not open when modifying data in income table
                         errNbr = -1;
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    //TODO create error number for general database error modifying Budget Data
+                    //TODO create error number for general database error modifying Income Data
                     errNbr = -1;
                 }
             }
             else
             {
-                //TODO create error number for budget category amount entered not in decimal formal when modifying data in Budget table
+                //TODO create error number for budget category amount entered not in decimal formal when modifying data in Income table
 
                 errNbr = -1;
             }
@@ -88,12 +87,12 @@ namespace MyBudget
             return errNbr;
         }
         /// <summary>
-        /// Insert category name and ammount into the Budget database
+        /// Insert category name and ammount into the Income database
         /// </summary>
         /// <param name="categoryName"></param>
         /// <param name="categoryAmtStr"></param>
         /// <returns></returns>
-        public int TransactionTableAddCategoryData(string categoryName, string itemAmtStr)
+        public int IncomeTableAddCategoryData(string categoryName, string itemAmtStr)
         {
             int errNbr = 0;
             decimal itemAmtDec = 0;
@@ -105,59 +104,54 @@ namespace MyBudget
                 //MySqlDataReader rdr = cmd.ExecuteReader();
                 try
                 {
-                    //Select CategoryName from Budget table.
+                    //Add entry into Income table.
                     errNbr = CheckDBConnection();
                     if (errNbr == 0)
-                    {                      
-                            cmd = new MySqlCommand();
-                            datePurchased = DateTime.Now;
-                            cmd.Connection = conn;
-                            cmd.CommandText = "INSERT INTO" + " " + TABLE_TRANSACTION + "("+ TRANSACTION_COL_CATEGORYNAME + ", " + TRANSACTION_COL_ITEMAMT + ", " + TRANSACTION_COL_DATEPURCHASED + ") VALUES(?categoryName, ?itemAmt, ?datePurchased)";
-                            cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
-                            cmd.Parameters.Add("?itemAmt", MySqlDbType.Decimal).Value = itemAmtDec;
-                            cmd.Parameters.Add("?datePurchased", MySqlDbType.DateTime).Value = datePurchased;
-                            cmd.ExecuteNonQuery();
-                     }                    
+                    {
+                        cmd = new MySqlCommand();
+                        datePurchased = DateTime.Now;
+                        cmd.Connection = conn;
+                        cmd.CommandText = "INSERT INTO" + " " + TABLE_INCOME + "(" + INCOME_COL_CATEGORYNAME + ", " + INCOME_COL_ITEMAMT + ", " + INCOME_COL_DATEPURCHASED + ") VALUES(?categoryName, ?itemAmt, ?dateReceived)";
+                        cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
+                        cmd.Parameters.Add("?itemAmt", MySqlDbType.Decimal).Value = itemAmtDec;
+                        cmd.Parameters.Add("?dateReceived", MySqlDbType.DateTime).Value = datePurchased;
+                        cmd.ExecuteNonQuery();
+                    }
                 }
                 catch
                 {
                     errNbr = -1;
                 }
             }
-            return errNbr;                    
+            return errNbr;
         }
         /// <summary>
-        /// Delete the category from the Buddget table.
+        /// Delete the category from the Income table.
         /// </summary>
         /// <param name="categoryName"></param>
         /// <returns></returns>
-        public int TransactionTableDeleteCategoryName(string categoryID)
+        public int IncomeTableDeleteCategoryName(string categoryID)
         {
             int errNbr = 0;
             try
             {
                 errNbr = CheckDBConnection();
                 if (errNbr == 0)
-                {                    
+                {
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
-                    cmd.CommandText = "DELETE FROM" + " " + TABLE_TRANSACTION + " " + "WHERE" + " " + TRANSACTION_COL_CATEGORYID + "=?categoryId";
+                    cmd.CommandText = "DELETE FROM" + " " + TABLE_INCOME + " " + "WHERE" + " " + INCOME_COL_CATEGORYID + "=?categoryId";
                     cmd.Parameters.Add("?categoryId", MySqlDbType.VarChar).Value = categoryID;
                     cmd.ExecuteNonQuery();
-                }                
+                }
 
                 //conn.Close();
                 cmd.Dispose();
             }
             catch (Exception ex)
             {
-                //TODO catch exception in updating budget list view.
+                //TODO catch exception in updating Income list view.
                 errNbr = -1;
-                //errorNotify = new ErrorNotify();
-                //errorNotify.errDescription = ex.Message;
-                //errorNotify.errLocalDescription = "Error Deleting a Budget";
-                //errorNotify.Show();
-                //conn.Close();
             }
 
             return errNbr;
@@ -168,7 +162,7 @@ namespace MyBudget
         /// </summary>
         /// <param name="CategorylstvwItem"></param>
         /// <returns></returns>
-        public int TransactionTableGetCurrentMonth(ref ListView Categorylstv)
+        public int IncomeTableGetCurrentMonth(ref ListView Categorylstv)
         {
             int errNbr = 0;
             ListViewItem CategorylstvwItem = new ListViewItem();
@@ -181,7 +175,7 @@ namespace MyBudget
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
                     //SELECT * FROM table WHERE YEAR(date) = YEAR(CURDATE()) AND MONTH(date) = MONTH(CURDATE())
-                    cmd.CommandText = "SELECT * FROM" + " " + TABLE_TRANSACTION + " " + "WHERE YEAR(" + TRANSACTION_COL_DATEPURCHASED + ") = YEAR(CURDATE()) AND MONTH(" + TRANSACTION_COL_DATEPURCHASED + ") = MONTH(CURDATE())";
+                    cmd.CommandText = "SELECT * FROM" + " " + TABLE_INCOME + " " + "WHERE YEAR(" + INCOME_COL_DATEPURCHASED + ") = YEAR(CURDATE()) AND MONTH(" + INCOME_COL_DATEPURCHASED + ") = MONTH(CURDATE())";
 
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     if (conn.State == ConnectionState.Open)
@@ -200,15 +194,15 @@ namespace MyBudget
                     }
                     else
                     {
-                        //TODO add error number for not connecting to database when select all category data from Budget table
+                        //TODO add error number for not connecting to database when select all category data from Income table
                         errNbr = -1;
                     }
-                    
+
                 }
             }
             catch (Exception ex)
             {
-                //TODO catch exception in updating budget list view.
+                //TODO catch exception in updating Income list view.
                 errNbr = -1;
             }
 

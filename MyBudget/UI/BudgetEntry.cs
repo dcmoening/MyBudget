@@ -20,9 +20,11 @@ namespace MyBudget
         const int ERROR_BUDGET = 1000;
         const int ERROR_BUDGET_ENTRY_EXIST = ERROR_BUDGET + 1;
         private BudgetDB myBudget;
+        private bool isIncome;
         //DateTime categoryBudgetDate;
         public Boolean isAddBudgetEntry;
         public Boolean isModifyBudgetEntry;
+        
         //ErrorNotify errorNotify;
         String categoryName;
         Decimal categoryAmt;
@@ -47,20 +49,22 @@ namespace MyBudget
         {
             int errNbr = 0;
             string categoryAmtStr;
+            bool isIncome;
             if (txt_BudgetName.Text != "")
             {                
                 categoryName = txt_BudgetName.Text;
                 categoryAmtStr = txt_BudgetAmt.Text;
+                isIncome = chkbox_IsIncome.Checked;
 
             if (isAddBudgetEntry)
             {
-                errNbr = myBudget.BudgetTableAddCategoryData(categoryName, categoryAmtStr);
+                errNbr = myBudget.BudgetTableAddCategoryData(categoryName, categoryAmtStr, isIncome);
                 //TODO Handle error retrieved adding Budget category data
 
             }
                 else if (isModifyBudgetEntry)
                 {
-                    errNbr = myBudget.BudgetTableModifyCategoryData(categoryName, categoryAmtStr);
+                    errNbr = myBudget.BudgetTableModifyCategoryData(categoryName, categoryAmtStr, isIncome);
                     //TODO Handle error retrieved modifying Budget category data
                 }
             }
@@ -85,8 +89,11 @@ namespace MyBudget
                 txt_BudgetName.Text = categoryName;
                 txt_BudgetAmt.Text = categoryAmt.ToString();
                 txt_BudgetName.ReadOnly = true;
+
+                //Get Income status from Database 
+                chkbox_IsIncome.Checked = myBudget.BudgetTableIsIncome(categoryName);
             }            
-        }           
+        }
     }
 }
 

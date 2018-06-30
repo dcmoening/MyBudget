@@ -19,10 +19,9 @@ namespace MyBudget
 
         #region Public Members
         /// <summary>
-        /// Returns a list of budgets in the database.
+        /// Returns all items in budget categroy
         /// </summary>
-        /// <param name="categoryName"></param>
-        /// <param name="categoryAmtStr"></param>
+        /// <param name="Categorylst"></param>
         /// <returns></returns>
         public int BudgetTableGetCategory(ref List<string> Categorylst)
         {
@@ -65,26 +64,161 @@ namespace MyBudget
             return errNbr;
         }
 
-        public int BudgetTableModifyCategoryData(string categoryName, string categoryAmtStr)
+        /// <summary>
+        /// Returns list of expected income
+        /// </summary>
+        /// <param name="Categorylst"></param>
+        /// <returns></returns>
+        public int BudgetTableGetIncomeCategory(ref List<string> Categorylst)
+        {
+            int errNbr = 0;
+            //ListViewItem CategorylstvwItem = new ListViewItem();
+
+            try
+            {
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
+                {
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget WHERE CategoryIsIncome=TRUE";
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
+                    {
+                        while (rdr.Read())
+                        {
+                            Categorylst.Add(rdr[0].ToString());
+                        }
+                        rdr.Close();
+                    }
+                    else
+                    {
+                        //TODO add error number for not connecting to database when select all category data from Budget table
+                        errNbr = -1;
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                //TODO catch exception in updating budget list view.
+                errNbr = -1;
+            }
+
+            return errNbr;
+        }
+
+        /// <summary>
+        /// Returns list of expected spent income
+        /// </summary>
+        /// <param name="Categorylst"></param>
+        /// <returns></returns>
+        public int BudgetTableGetExpenseCategory(ref List<string> Categorylst)
+        {
+            int errNbr = 0;
+            //ListViewItem CategorylstvwItem = new ListViewItem();
+
+            try
+            {
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
+                {
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget WHERE CategoryIsIncome=FALSE";
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
+                    {
+                        while (rdr.Read())
+                        {
+                            Categorylst.Add(rdr[0].ToString());
+                        }
+                        rdr.Close();
+                    }
+                    else
+                    {
+                        //TODO add error number for not connecting to database when select all category data from Budget table
+                        errNbr = -1;
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                //TODO catch exception in updating budget list view.
+                errNbr = -1;
+            }
+
+            return errNbr;
+        }
+
+        public bool BudgetTableIsIncome(string categoryName)
+        {
+            int errNbr = 0;
+            bool val = false;
+            string test;
+            try
+            {
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
+                {
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT CategoryIsIncome FROM table_Budget WHERE CategoryName=?categoryName";
+                    cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    
+                    while (rdr.Read())
+                    {
+                        test = rdr[0].ToString();
+                            Boolean.TryParse(test, out val);
+                    }
+                    rdr.Close();                
+                    
+                }
+                else
+                {
+                    //TODO add error number for not connecting to database when select all category data from Budget table
+                    errNbr = -1;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //TODO catch exception in updating budget list view.
+                errNbr = -1;
+            }
+
+            return val;
+        }
+
+        public int BudgetTableModifyCategoryData(string categoryName, string categoryAmtStr, bool categoryIsIncome)
         {
             int errNbr = 0;
             decimal categoryAmtDec = 0;
             DateTime categoryBudgetDate;
+            
             //Check if categoryAmtStr is in decimal format
             if (decimal.TryParse(categoryAmtStr, out categoryAmtDec))
             {
                 try
-                {                    
-                    if (conn.State == ConnectionState.Open)
+                {
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
                     {
                         //Update database
-                        //cmd = new MySqlCommand();
+                        cmd = new MySqlCommand();
+                        cmd.Connection = conn;
                         categoryBudgetDate = DateTime.Now;
-                        //cmd.Connection = conn;
-                        cmd.CommandText = "UPDATE table_budget SET CategoryAmt=?categoryAmt, CategoryBudgetDate=?categoryBudgetDate WHERE CategoryName=?categoryName";
+                        cmd.CommandText = "UPDATE table_budget SET CategoryAmt=?categoryAmt, CategoryBudgetDate=?categoryBudgetDate, CategoryIsIncome=?categoryIsIncome WHERE CategoryName=?categoryName";
                         cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
                         cmd.Parameters.Add("?categoryAmt", MySqlDbType.Decimal).Value = categoryAmtDec;
                         cmd.Parameters.Add("?categoryBudgetDate", MySqlDbType.DateTime).Value = categoryBudgetDate;
+                        cmd.Parameters.Add("?categoryIsIncome", MySqlDbType.Bit).Value = categoryIsIncome;
                         cmd.ExecuteNonQuery();
                     }
                     else
@@ -115,7 +249,7 @@ namespace MyBudget
         /// <param name="categoryName"></param>
         /// <param name="categoryAmtStr"></param>
         /// <returns></returns>
-        public int BudgetTableAddCategoryData(string categoryName, string categoryAmtStr)
+        public int BudgetTableAddCategoryData(string categoryName, string categoryAmtStr, bool categoryIsIncome)
         {
             int errNbr = 0;
             decimal categoryAmtDec = 0;
@@ -157,10 +291,11 @@ namespace MyBudget
                             cmd = new MySqlCommand();
                             categoryBudgetDate = DateTime.Now;
                             cmd.Connection = conn;
-                            cmd.CommandText = "INSERT INTO table_budget(CategoryName, CategoryAmt, CategoryBudgetDate) VALUES(?categoryName, ?categoryAmt, ?categoryBudgetDate)";
+                            cmd.CommandText = "INSERT INTO table_budget(CategoryName, CategoryAmt, CategoryBudgetDate,CategoryIsIncome) VALUES(?categoryName, ?categoryAmt, ?categoryBudgetDate, ?categoryIsIncome)";
                             cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
                             cmd.Parameters.Add("?categoryAmt", MySqlDbType.Decimal).Value = categoryAmtDec;
                             cmd.Parameters.Add("?categoryBudgetDate", MySqlDbType.DateTime).Value = categoryBudgetDate;
+                            cmd.Parameters.Add("?categoryIsIncome", MySqlDbType.Bit).Value = categoryIsIncome;
                             cmd.ExecuteNonQuery();
                         }
                         else

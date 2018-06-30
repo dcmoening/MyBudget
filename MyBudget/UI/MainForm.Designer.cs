@@ -38,8 +38,8 @@
             this.BudgetName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.budgetAmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lstvw_MoneyReceived = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.IncomeEntryID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.IncomeEntries = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -70,6 +70,7 @@
             this.col_BudgetSpent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_BudgetRemaining = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tmr_UpdateMainScreen = new System.Windows.Forms.Timer(this.components);
+            this.IncomeEntryAmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BudgetReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -130,8 +131,9 @@
             // lstvw_MoneyReceived
             // 
             this.lstvw_MoneyReceived.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2});
+            this.IncomeEntryID,
+            this.IncomeEntries,
+            this.IncomeEntryAmt});
             this.lstvw_MoneyReceived.Location = new System.Drawing.Point(786, 320);
             this.lstvw_MoneyReceived.MultiSelect = false;
             this.lstvw_MoneyReceived.Name = "lstvw_MoneyReceived";
@@ -140,14 +142,15 @@
             this.lstvw_MoneyReceived.UseCompatibleStateImageBehavior = false;
             this.lstvw_MoneyReceived.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader1
+            // IncomeEntryID
             // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 160;
+            this.IncomeEntryID.Text = "ID";
+            this.IncomeEntryID.Width = 0;
             // 
-            // columnHeader2
+            // IncomeEntries
             // 
-            this.columnHeader2.Text = "amt";
+            this.IncomeEntries.Text = "Name";
+            this.IncomeEntries.Width = 169;
             // 
             // label1
             // 
@@ -444,6 +447,11 @@
             this.tmr_UpdateMainScreen.Interval = 1000;
             this.tmr_UpdateMainScreen.Tick += new System.EventHandler(this.tmr_UpdateMainScreen_Tick);
             // 
+            // IncomeEntryAmt
+            // 
+            this.IncomeEntryAmt.Text = "Amt";
+            this.IncomeEntryAmt.Width = 51;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -495,8 +503,8 @@
         private System.Windows.Forms.ColumnHeader BudgetName;
         private System.Windows.Forms.ColumnHeader budgetAmt;
         private System.Windows.Forms.ListView lstvw_MoneyReceived;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader IncomeEntryID;
+        private System.Windows.Forms.ColumnHeader IncomeEntries;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -528,6 +536,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn col_BudgetSpent;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_BudgetRemaining;
         private System.Windows.Forms.Timer tmr_UpdateMainScreen;
+        private System.Windows.Forms.ColumnHeader IncomeEntryAmt;
     }
 }
 
