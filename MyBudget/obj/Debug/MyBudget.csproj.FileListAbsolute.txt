@@ -13,3 +13,4 @@ C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.Error
 C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.TransactionEntry.resources
 C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.MainForm.resources
 C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.MoneyReceivedEntry.resources
+C:\Users\daniel\source\repos\MyBudget\MyBudget\MyBudget\obj\Debug\MyBudget.csprojResolveAssemblyReference.cache

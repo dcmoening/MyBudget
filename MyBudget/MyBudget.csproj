@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\BudgetDB.cs" />
+    <Compile Include="Data\TotalData.cs" />
     <Compile Include="Data\Transaction.cs" />
     <Compile Include="Data\MoneyReceivedDB.cs" />
     <Compile Include="Data\TransactionDB.cs" />

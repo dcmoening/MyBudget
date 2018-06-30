@@ -214,6 +214,7 @@ namespace MyBudget
             UpdateTransactionListView();
             UpdateIncomeListView();
             //TODO update Budget and Income totals
+            UpdateIncomeTotals();
             //TODO update Budget Table
 
         }
@@ -236,5 +237,12 @@ namespace MyBudget
             myBudget.BudgetTableGetCategory(ref lstvw_Budget);
             
         }        
+
+        public void UpdateIncomeTotals()
+        {
+            TotalData myTotalData = new TotalData();
+
+            lbl_TotalExpectedIncome.Text = myTotalData.GetTotalExpectedIncome().ToString();
+        }
     }
 }

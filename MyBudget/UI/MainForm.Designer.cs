@@ -40,6 +40,7 @@
             this.lstvw_MoneyReceived = new System.Windows.Forms.ListView();
             this.IncomeEntryID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.IncomeEntries = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.IncomeEntryAmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -70,7 +71,6 @@
             this.col_BudgetSpent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_BudgetRemaining = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tmr_UpdateMainScreen = new System.Windows.Forms.Timer(this.components);
-            this.IncomeEntryAmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BudgetReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -151,6 +151,11 @@
             // 
             this.IncomeEntries.Text = "Name";
             this.IncomeEntries.Width = 169;
+            // 
+            // IncomeEntryAmt
+            // 
+            this.IncomeEntryAmt.Text = "Amt";
+            this.IncomeEntryAmt.Width = 51;
             // 
             // label1
             // 
@@ -281,7 +286,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(386, 28);
+            this.label4.Location = new System.Drawing.Point(367, 28);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(120, 13);
             this.label4.TabIndex = 15;
@@ -290,7 +295,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(386, 52);
+            this.label5.Location = new System.Drawing.Point(367, 52);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(119, 13);
             this.label5.TabIndex = 16;
@@ -299,7 +304,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(386, 76);
+            this.label6.Location = new System.Drawing.Point(367, 76);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(146, 13);
             this.label6.TabIndex = 17;
@@ -308,7 +313,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(386, 109);
+            this.label7.Location = new System.Drawing.Point(367, 109);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(72, 13);
             this.label7.TabIndex = 18;
@@ -317,7 +322,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(386, 133);
+            this.label8.Location = new System.Drawing.Point(367, 133);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(65, 13);
             this.label8.TabIndex = 19;
@@ -326,7 +331,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(386, 157);
+            this.label9.Location = new System.Drawing.Point(367, 157);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(125, 13);
             this.label9.TabIndex = 20;
@@ -335,7 +340,7 @@
             // lbl_TotalExpectedIncome
             // 
             this.lbl_TotalExpectedIncome.AutoSize = true;
-            this.lbl_TotalExpectedIncome.Location = new System.Drawing.Point(544, 25);
+            this.lbl_TotalExpectedIncome.Location = new System.Drawing.Point(525, 25);
             this.lbl_TotalExpectedIncome.Name = "lbl_TotalExpectedIncome";
             this.lbl_TotalExpectedIncome.Size = new System.Drawing.Size(127, 13);
             this.lbl_TotalExpectedIncome.TabIndex = 21;
@@ -344,7 +349,7 @@
             // lbl_TotalExpectedBudget
             // 
             this.lbl_TotalExpectedBudget.AutoSize = true;
-            this.lbl_TotalExpectedBudget.Location = new System.Drawing.Point(544, 52);
+            this.lbl_TotalExpectedBudget.Location = new System.Drawing.Point(525, 52);
             this.lbl_TotalExpectedBudget.Name = "lbl_TotalExpectedBudget";
             this.lbl_TotalExpectedBudget.Size = new System.Drawing.Size(126, 13);
             this.lbl_TotalExpectedBudget.TabIndex = 22;
@@ -353,7 +358,7 @@
             // lbl_ExpectedIncomeRemaing
             // 
             this.lbl_ExpectedIncomeRemaing.AutoSize = true;
-            this.lbl_ExpectedIncomeRemaing.Location = new System.Drawing.Point(544, 76);
+            this.lbl_ExpectedIncomeRemaing.Location = new System.Drawing.Point(525, 76);
             this.lbl_ExpectedIncomeRemaing.Name = "lbl_ExpectedIncomeRemaing";
             this.lbl_ExpectedIncomeRemaing.Size = new System.Drawing.Size(145, 13);
             this.lbl_ExpectedIncomeRemaing.TabIndex = 23;
@@ -362,7 +367,7 @@
             // lbl_TotalIncome
             // 
             this.lbl_TotalIncome.AutoSize = true;
-            this.lbl_TotalIncome.Location = new System.Drawing.Point(544, 109);
+            this.lbl_TotalIncome.Location = new System.Drawing.Point(525, 109);
             this.lbl_TotalIncome.Name = "lbl_TotalIncome";
             this.lbl_TotalIncome.Size = new System.Drawing.Size(82, 13);
             this.lbl_TotalIncome.TabIndex = 24;
@@ -371,7 +376,7 @@
             // lbl_TotalSpent
             // 
             this.lbl_TotalSpent.AutoSize = true;
-            this.lbl_TotalSpent.Location = new System.Drawing.Point(544, 133);
+            this.lbl_TotalSpent.Location = new System.Drawing.Point(525, 133);
             this.lbl_TotalSpent.Name = "lbl_TotalSpent";
             this.lbl_TotalSpent.Size = new System.Drawing.Size(75, 13);
             this.lbl_TotalSpent.TabIndex = 25;
@@ -380,7 +385,7 @@
             // lbl_TotalIncomeRemaining
             // 
             this.lbl_TotalIncomeRemaining.AutoSize = true;
-            this.lbl_TotalIncomeRemaining.Location = new System.Drawing.Point(544, 157);
+            this.lbl_TotalIncomeRemaining.Location = new System.Drawing.Point(525, 157);
             this.lbl_TotalIncomeRemaining.Name = "lbl_TotalIncomeRemaining";
             this.lbl_TotalIncomeRemaining.Size = new System.Drawing.Size(132, 13);
             this.lbl_TotalIncomeRemaining.TabIndex = 26;
@@ -446,11 +451,6 @@
             // 
             this.tmr_UpdateMainScreen.Interval = 1000;
             this.tmr_UpdateMainScreen.Tick += new System.EventHandler(this.tmr_UpdateMainScreen_Tick);
-            // 
-            // IncomeEntryAmt
-            // 
-            this.IncomeEntryAmt.Text = "Amt";
-            this.IncomeEntryAmt.Width = 51;
             // 
             // MainForm
             // 
