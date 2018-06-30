@@ -208,6 +208,47 @@ namespace MyBudget
 
             return errNbr;
         }
+
+        public int IncomeTableGetTotalIncomeAmt(ref decimal rslt)
+        {
+            rslt = 0;
+            int errNbr = 0;
+
+            try
+            {
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
+                {
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT sum(" + INCOME_COL_ITEMAMT + ") FROM " + " " + TABLE_INCOME + " " + "WHERE YEAR(" + INCOME_COL_DATEPURCHASED + ") = YEAR(CURDATE()) AND MONTH(" + INCOME_COL_DATEPURCHASED + ") = MONTH(CURDATE())";
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
+                    {
+                        while (rdr.Read())
+                        {
+                            decimal.TryParse(rdr[0].ToString(), out rslt);
+                        }
+                        rdr.Close();
+                    }
+                    else
+                    {
+                        //TODO add error number for not connecting to database when calculating sum of budgeted income
+                        errNbr = -1;
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                //TODO catch exception in updating sum of budgeted income.
+                errNbr = -1;
+            }
+
+            return errNbr;
+        }
         #endregion
     }
 

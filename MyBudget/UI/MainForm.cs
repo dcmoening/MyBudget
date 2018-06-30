@@ -242,7 +242,40 @@ namespace MyBudget
         {
             TotalData myTotalData = new TotalData();
 
-            lbl_TotalExpectedIncome.Text = myTotalData.GetTotalExpectedIncome().ToString();
+            //lbl_TotalExpectedIncome.Text = myTotalData.GetTotalExpectedIncome().ToString();
+            FormatForColor(ref lbl_TotalExpectedIncome, myTotalData.GetTotalExpectedIncome());
+
+            //lbl_TotalExpectedBudget.Text = myTotalData.GetTotalExpectedBudget().ToString();
+            FormatForColor(ref lbl_TotalExpectedBudget, myTotalData.GetTotalExpectedBudget());
+
+            //lbl_ExpectedIncomeRemaining.Text = myTotalData.GetExpectedIncomeRemaining().ToString();
+            FormatForColor(ref lbl_ExpectedIncomeRemaining, myTotalData.GetExpectedIncomeRemaining());
+
+            //lbl_TotalIncome.Text = myTotalData.GetTotalIncome().ToString();
+            FormatForColor(ref lbl_TotalIncome, myTotalData.GetTotalIncome());
+
+            //lbl_TotalSpent.Text = myTotalData.GetTotalSpent().ToString();
+            FormatForColor(ref lbl_TotalSpent, myTotalData.GetTotalSpent());
+
+            //lbl_TotalIncomeRemaining.Text = myTotalData.GetTotalIncomeRemaining().ToString();
+            FormatForColor(ref lbl_TotalIncomeRemaining, myTotalData.GetTotalIncomeRemaining());
+        }        
+
+        private void FormatForColor(ref Label lbl, decimal val)
+        {
+            string formatedVal = String.Empty;
+
+            if (val > 0)
+            {
+                lbl.ForeColor = Color.Green;
+                
+            }
+            else
+            {
+                lbl.ForeColor = Color.Red;
+            }
+
+            lbl.Text = val.ToString();
         }
     }
 }

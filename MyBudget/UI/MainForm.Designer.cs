@@ -61,7 +61,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.lbl_TotalExpectedIncome = new System.Windows.Forms.Label();
             this.lbl_TotalExpectedBudget = new System.Windows.Forms.Label();
-            this.lbl_ExpectedIncomeRemaing = new System.Windows.Forms.Label();
+            this.lbl_ExpectedIncomeRemaining = new System.Windows.Forms.Label();
             this.lbl_TotalIncome = new System.Windows.Forms.Label();
             this.lbl_TotalSpent = new System.Windows.Forms.Label();
             this.lbl_TotalIncomeRemaining = new System.Windows.Forms.Label();
@@ -80,6 +80,7 @@
             this.TransactionEntryID,
             this.TransactionEntries,
             this.TransactionEntryAmt});
+            this.lstvw_TransactionEntry.ForeColor = System.Drawing.Color.Red;
             this.lstvw_TransactionEntry.FullRowSelect = true;
             this.lstvw_TransactionEntry.Location = new System.Drawing.Point(12, 28);
             this.lstvw_TransactionEntry.MultiSelect = false;
@@ -111,6 +112,7 @@
             this.lstvw_Budget.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.BudgetName,
             this.budgetAmt});
+            this.lstvw_Budget.ForeColor = System.Drawing.Color.Black;
             this.lstvw_Budget.Location = new System.Drawing.Point(787, 28);
             this.lstvw_Budget.MultiSelect = false;
             this.lstvw_Budget.Name = "lstvw_Budget";
@@ -134,6 +136,7 @@
             this.IncomeEntryID,
             this.IncomeEntries,
             this.IncomeEntryAmt});
+            this.lstvw_MoneyReceived.ForeColor = System.Drawing.Color.Green;
             this.lstvw_MoneyReceived.Location = new System.Drawing.Point(786, 320);
             this.lstvw_MoneyReceived.MultiSelect = false;
             this.lstvw_MoneyReceived.Name = "lstvw_MoneyReceived";
@@ -355,14 +358,14 @@
             this.lbl_TotalExpectedBudget.TabIndex = 22;
             this.lbl_TotalExpectedBudget.Text = "lbl_TotalExpectedBudget";
             // 
-            // lbl_ExpectedIncomeRemaing
+            // lbl_ExpectedIncomeRemaining
             // 
-            this.lbl_ExpectedIncomeRemaing.AutoSize = true;
-            this.lbl_ExpectedIncomeRemaing.Location = new System.Drawing.Point(525, 76);
-            this.lbl_ExpectedIncomeRemaing.Name = "lbl_ExpectedIncomeRemaing";
-            this.lbl_ExpectedIncomeRemaing.Size = new System.Drawing.Size(145, 13);
-            this.lbl_ExpectedIncomeRemaing.TabIndex = 23;
-            this.lbl_ExpectedIncomeRemaing.Text = "lbl_ExpectedIncomeRemaing";
+            this.lbl_ExpectedIncomeRemaining.AutoSize = true;
+            this.lbl_ExpectedIncomeRemaining.Location = new System.Drawing.Point(525, 76);
+            this.lbl_ExpectedIncomeRemaining.Name = "lbl_ExpectedIncomeRemaining";
+            this.lbl_ExpectedIncomeRemaining.Size = new System.Drawing.Size(153, 13);
+            this.lbl_ExpectedIncomeRemaining.TabIndex = 23;
+            this.lbl_ExpectedIncomeRemaining.Text = "lbl_ExpectedIncomeRemaining";
             // 
             // lbl_TotalIncome
             // 
@@ -461,7 +464,7 @@
             this.Controls.Add(this.lbl_TotalIncomeRemaining);
             this.Controls.Add(this.lbl_TotalSpent);
             this.Controls.Add(this.lbl_TotalIncome);
-            this.Controls.Add(this.lbl_ExpectedIncomeRemaing);
+            this.Controls.Add(this.lbl_ExpectedIncomeRemaining);
             this.Controls.Add(this.lbl_TotalExpectedBudget);
             this.Controls.Add(this.lbl_TotalExpectedIncome);
             this.Controls.Add(this.label9);
@@ -526,7 +529,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label lbl_TotalExpectedIncome;
         private System.Windows.Forms.Label lbl_TotalExpectedBudget;
-        private System.Windows.Forms.Label lbl_ExpectedIncomeRemaing;
+        private System.Windows.Forms.Label lbl_ExpectedIncomeRemaining;
         private System.Windows.Forms.Label lbl_TotalIncome;
         private System.Windows.Forms.Label lbl_TotalSpent;
         private System.Windows.Forms.Label lbl_TotalIncomeRemaining;

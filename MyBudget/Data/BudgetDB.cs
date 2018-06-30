@@ -105,6 +105,47 @@ namespace MyBudget
             return errNbr;
         }
 
+        public int BudgetTableGetTotalBudgetAmt(ref decimal rslt)
+        {
+            rslt = 0;
+            int errNbr = 0;
+
+            try
+            {
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
+                {
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT sum(CategoryAmt) FROM table_Budget WHERE CategoryIsIncome=FALSE";
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
+                    {
+                        while (rdr.Read())
+                        {
+                            decimal.TryParse(rdr[0].ToString(), out rslt);
+                        }
+                        rdr.Close();
+                    }
+                    else
+                    {
+                        //TODO add error number for not connecting to database when calculating sum of budgeted income
+                        errNbr = -1;
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                //TODO catch exception in updating sum of budgeted income.
+                errNbr = -1;
+            }
+
+            return errNbr;
+        }
+
         /// <summary>
         /// Returns list of expected income
         /// </summary>

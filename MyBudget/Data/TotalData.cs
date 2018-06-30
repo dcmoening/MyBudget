@@ -32,7 +32,8 @@ namespace MyBudget
         public decimal GetTotalExpectedBudget()
         {
             decimal rslt = 0;
-
+            int errNbr = 0;
+            errNbr = mybudget.BudgetTableGetTotalBudgetAmt(ref rslt);
             return rslt;
         }
 
@@ -43,7 +44,7 @@ namespace MyBudget
         public decimal GetExpectedIncomeRemaining()
         {
             decimal rslt = 0;
-
+            rslt = GetTotalExpectedIncome() - GetTotalExpectedBudget();
             return rslt;
         }
 
@@ -54,7 +55,8 @@ namespace MyBudget
         public decimal GetTotalIncome()
         {
             decimal rslt = 0;
-
+            int errNbr = 0;
+            errNbr = myIncome.IncomeTableGetTotalIncomeAmt(ref rslt);
             return rslt;
         }
 
@@ -65,7 +67,8 @@ namespace MyBudget
         public decimal GetTotalSpent()
         {
             decimal rslt = 0;
-
+            int errNbr = 0;
+            errNbr = myTransaction.TransactionTableGetTotalTransactionAmt(ref rslt);
             return rslt;
         }
 
@@ -73,10 +76,10 @@ namespace MyBudget
         /// This is the difference between Money received and money spent
         /// </summary>
         /// <returns></returns>
-        public decimal GetTotalIncomeRemianing()
+        public decimal GetTotalIncomeRemaining()
         {
             decimal rslt = 0;
-
+            rslt = GetTotalIncome() - GetTotalSpent();
             return rslt;
         }
     }
