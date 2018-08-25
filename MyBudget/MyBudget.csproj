@@ -47,7 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\BudgetCurrentDate.cs" />
     <Compile Include="Data\BudgetDB.cs" />
+    <Compile Include="Data\BudgetTable.cs" />
     <Compile Include="Data\TotalData.cs" />
     <Compile Include="Data\Transaction.cs" />
     <Compile Include="Data\MoneyReceivedDB.cs" />

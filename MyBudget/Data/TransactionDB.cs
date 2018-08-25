@@ -255,6 +255,54 @@ namespace MyBudget
 
             return errNbr;
         }
+        /// <summary>
+        /// Get total amount spent for a budget category for the current month
+        /// </summary>
+        /// <param name="rslt"></param>
+        /// <param name="categoryName"></param>
+        /// <returns></returns>
+        public int TransactionTableGetTotalBudgetAmtSpent(ref decimal rslt, string categoryName)
+        {
+            rslt = 0;
+            int errNbr = 0;
+
+            try
+            {
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
+                {
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT sum(" + TRANSACTION_COL_ITEMAMT + ") FROM " + " " + TABLE_TRANSACTION + " " + "WHERE YEAR(" + TRANSACTION_COL_DATEPURCHASED + ") = YEAR(CURDATE()) AND MONTH(" + TRANSACTION_COL_DATEPURCHASED + ") = MONTH(CURDATE()) AND " + TRANSACTION_COL_CATEGORYNAME + "=?categoryName";
+                    cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
+                    {
+                        while (rdr.Read())
+                        {
+                            decimal.TryParse(rdr[0].ToString(), out rslt);
+                        }
+                        rdr.Close();
+                    }
+                    else
+                    {
+                        //TODO add error number for not connecting to database when calculating sum of budgeted income
+                        errNbr = -1;
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                //TODO catch exception in updating sum of budgeted income.
+                errNbr = -1;
+            }
+
+            return errNbr;
+        }
+        
         #endregion
     }
 

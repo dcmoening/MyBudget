@@ -38,7 +38,12 @@ namespace MyBudget
         #endregion
 
         #region Public Members
-
+        /// <summary>
+        /// Update money received
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <param name="itemAmtStr"></param>
+        /// <returns></returns>
         public int IncomeTableModifyCategoryData(int categoryID, string itemAmtStr)
         {
             int errNbr = 0;
@@ -156,7 +161,6 @@ namespace MyBudget
 
             return errNbr;
         }
-
         /// <summary>
         /// Returns a ListViewItem containing the items entered the current month
         /// </summary>
@@ -208,7 +212,11 @@ namespace MyBudget
 
             return errNbr;
         }
-
+        /// <summary>
+        /// Return total amount of money received
+        /// </summary>
+        /// <param name="rslt"></param>
+        /// <returns></returns>
         public int IncomeTableGetTotalIncomeAmt(ref decimal rslt)
         {
             rslt = 0;

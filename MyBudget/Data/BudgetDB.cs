@@ -15,7 +15,11 @@ namespace MyBudget
 {
     public class BudgetDB: DatabaseConnection
     {
-
+        public struct budgetNameAmt
+        {
+            public string name;
+            public decimal amt;
+        };
 
         #region Public Members
         /// <summary>
@@ -63,7 +67,11 @@ namespace MyBudget
 
             return errNbr;
         }
-
+        /// <summary>
+        /// Returns total budgeted income
+        /// </summary>
+        /// <param name="rslt"></param>
+        /// <returns></returns>
         public int BudgetTableGetTotalIncomeAmt(ref decimal rslt)
         {
             rslt = 0;
@@ -104,7 +112,11 @@ namespace MyBudget
 
             return errNbr;
         }
-
+        /// <summary>
+        /// Returns total amount of money budgeted
+        /// </summary>
+        /// <param name="rslt"></param>
+        /// <returns></returns>
         public int BudgetTableGetTotalBudgetAmt(ref decimal rslt)
         {
             rslt = 0;
@@ -145,7 +157,7 @@ namespace MyBudget
 
             return errNbr;
         }
-
+        
         /// <summary>
         /// Returns list of expected income
         /// </summary>
@@ -191,7 +203,6 @@ namespace MyBudget
 
             return errNbr;
         }
-
         /// <summary>
         /// Returns list of expected spent income
         /// </summary>
@@ -238,6 +249,58 @@ namespace MyBudget
             return errNbr;
         }
 
+        /// <summary>
+        /// Return a list budgetNameAmt type of budget expense names and decimal amounts
+        /// </summary>
+        /// <param name="Categorylst"></param>
+        /// <returns></returns>
+        public int BudgetTableGetExpenseCategory(ref List<budgetNameAmt> Categorylst)
+        {
+            int errNbr = 0;
+            //ListViewItem CategorylstvwItem = new ListViewItem();
+            
+            try
+            {
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
+                {
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget WHERE CategoryIsIncome=FALSE";
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
+                    {
+                        while (rdr.Read())
+                        {
+                            budgetNameAmt tmpCategory = new budgetNameAmt();
+                            tmpCategory.name = (rdr[0].ToString());
+                            decimal.TryParse(rdr[0].ToString(), out tmpCategory.amt);
+                        }
+                        rdr.Close();
+                    }
+                    else
+                    {
+                        //TODO add error number for not connecting to database when select all category data from Budget table
+                        errNbr = -1;
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                //TODO catch exception in updating budget list view.
+                errNbr = -1;
+            }
+
+            return errNbr;
+        }
+        /// <summary>
+        /// Determines if the categoryName is an expense or income budget
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <returns></returns>
         public bool BudgetTableIsIncome(string categoryName)
         {
             int errNbr = 0;
@@ -277,7 +340,13 @@ namespace MyBudget
 
             return val;
         }
-
+        /// <summary>
+        /// Update the amount for a specified category
+        /// </summary>
+        /// <param name="categoryName"></param>
+        /// <param name="categoryAmtStr"></param>
+        /// <param name="categoryIsIncome"></param>
+        /// <returns></returns>
         public int BudgetTableModifyCategoryData(string categoryName, string categoryAmtStr, bool categoryIsIncome)
         {
             int errNbr = 0;
@@ -445,7 +514,6 @@ namespace MyBudget
 
             return errNbr;
         }
-
         /// <summary>
         /// Returns a ListViewItem containing the categorys found in the Budget Table
         /// </summary>
@@ -494,17 +562,55 @@ namespace MyBudget
 
             return errNbr;
         }
-        #endregion
 
-        #region Constructor
-        internal BudgetDB()
+        /// <summary>
+        /// Get total amount spent for a budget category for the current month
+        /// </summary>
+        /// <param name="rslt"></param>
+        /// <param name="categoryName"></param>
+        /// <returns></returns>
+        public int BudgetTableGetBudgetAmtForCategory(ref decimal rslt, string categoryName)
+        {
+            rslt = 0;
+            int errNbr = 0;
+
+            try
             {
+                errNbr = CheckDBConnection();
+                if (errNbr == 0)
+                {
+                    cmd = new MySqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT CategoryAmt FROM table_Budget WHERE CategoryIsIncome = FALSE AND CategoryName = ?categoryName";
+                    cmd.Parameters.Add("?categoryName", MySqlDbType.VarChar).Value = categoryName;
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    errNbr = CheckDBConnection();
+                    if (errNbr == 0)
+                    {
+                        while (rdr.Read())
+                        {
+                            decimal.TryParse(rdr[0].ToString(), out rslt);
+                        }
+                        rdr.Close();
+                    }
+                    else
+                    {
+                        //TODO add error number for not connecting to database when calculating sum of budgeted income
+                        errNbr = -1;
+                    }
+                }
+
 
             }
-        #endregion
+            catch (Exception ex)
+            {
+                //TODO catch exception in updating sum of budgeted income.
+                errNbr = -1;
+            }
 
-        #region Private Members
-        
+            return errNbr;
+        }
+
         #endregion
     }
 }

@@ -215,8 +215,7 @@ namespace MyBudget
             UpdateIncomeListView();
             //TODO update Budget and Income totals
             UpdateIncomeTotals();
-            //TODO update Budget Table
-
+            FillBudgetDataGridView();
         }
 
         public void UpdateIncomeListView()
@@ -276,6 +275,49 @@ namespace MyBudget
             }
 
             lbl.Text = val.ToString();
+        }
+
+        private void FillBudgetDataGridView()
+        {
+            //https://stackoverflow.com/questions/29148568/filling-a-liststring-with-mysql-query
+            //https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/how-to-bind-objects-to-windows-forms-datagridview-controls
+            
+            BindingSource bindingSource = new BindingSource();
+            List<string> budgetLst = new List<string>();
+            BudgetDB myBudget = new BudgetDB();
+            TransactionDB myTransaction = new TransactionDB();
+            int errNbr = 0;
+            decimal budgetAmount = 0;
+            decimal budgetSpent = 0;
+            decimal budgetRemaing = 0;
+
+            //Get list of budgets that money is spent from
+            errNbr = myBudget.BudgetTableGetExpenseCategory(ref budgetLst);
+
+            //For each budget item get the budget amount, budget spent, and budget remaining 
+            if (errNbr == 0)
+            {
+                foreach (string budgetName in budgetLst)
+                {
+                    //Get budget amount from budget table
+                    errNbr = myBudget.BudgetTableGetBudgetAmtForCategory(ref budgetAmount, budgetName);
+                    //Get budget spent from transaction table
+                    errNbr = myTransaction.TransactionTableGetTotalBudgetAmtSpent(ref budgetSpent,budgetName);
+                    //Get budget remaining by subtracting total spent from total budget amount
+                    budgetRemaing = budgetAmount - budgetSpent;
+                    //Create new BudgetTable object initialized with above values
+                    BudgetTableEntry tmpEntry = new BudgetTableEntry(budgetName, budgetAmount.ToString(), budgetSpent.ToString(), budgetRemaing.ToString());
+                    //Add BudgetTable to Binding source
+                    bindingSource.Add(tmpEntry);
+                }
+                dgv_BudgetReport.DataSource = bindingSource;
+
+            }
+            
+
+
+
+
         }
     }
 }

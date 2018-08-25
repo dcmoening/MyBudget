@@ -66,11 +66,11 @@
             this.lbl_TotalSpent = new System.Windows.Forms.Label();
             this.lbl_TotalIncomeRemaining = new System.Windows.Forms.Label();
             this.dgv_BudgetReport = new System.Windows.Forms.DataGridView();
+            this.tmr_UpdateMainScreen = new System.Windows.Forms.Timer(this.components);
             this.col_BudgetName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_BudgetAmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_BudgetSpent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_BudgetRemaining = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tmr_UpdateMainScreen = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BudgetReport)).BeginInit();
             this.SuspendLayout();
             // 
@@ -414,9 +414,15 @@
             this.dgv_BudgetReport.Size = new System.Drawing.Size(440, 300);
             this.dgv_BudgetReport.TabIndex = 27;
             // 
+            // tmr_UpdateMainScreen
+            // 
+            this.tmr_UpdateMainScreen.Interval = 1000;
+            this.tmr_UpdateMainScreen.Tick += new System.EventHandler(this.tmr_UpdateMainScreen_Tick);
+            // 
             // col_BudgetName
             // 
             this.col_BudgetName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.col_BudgetName.DataPropertyName = "BudgetName";
             this.col_BudgetName.HeaderText = "Budget Name";
             this.col_BudgetName.Name = "col_BudgetName";
             this.col_BudgetName.ReadOnly = true;
@@ -426,6 +432,7 @@
             // col_BudgetAmt
             // 
             this.col_BudgetAmt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.col_BudgetAmt.DataPropertyName = "BudgetAmt";
             this.col_BudgetAmt.HeaderText = "Budget Amt";
             this.col_BudgetAmt.Name = "col_BudgetAmt";
             this.col_BudgetAmt.ReadOnly = true;
@@ -435,6 +442,7 @@
             // col_BudgetSpent
             // 
             this.col_BudgetSpent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.col_BudgetSpent.DataPropertyName = "BudgetSpent";
             this.col_BudgetSpent.HeaderText = "Budget Spent";
             this.col_BudgetSpent.Name = "col_BudgetSpent";
             this.col_BudgetSpent.ReadOnly = true;
@@ -444,16 +452,12 @@
             // col_BudgetRemaining
             // 
             this.col_BudgetRemaining.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.col_BudgetRemaining.DataPropertyName = "BudgetRemaining";
             this.col_BudgetRemaining.HeaderText = "Budget Remaining";
             this.col_BudgetRemaining.Name = "col_BudgetRemaining";
             this.col_BudgetRemaining.ReadOnly = true;
             this.col_BudgetRemaining.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.col_BudgetRemaining.Width = 110;
-            // 
-            // tmr_UpdateMainScreen
-            // 
-            this.tmr_UpdateMainScreen.Interval = 1000;
-            this.tmr_UpdateMainScreen.Tick += new System.EventHandler(this.tmr_UpdateMainScreen_Tick);
             // 
             // MainForm
             // 
@@ -534,12 +538,12 @@
         private System.Windows.Forms.Label lbl_TotalSpent;
         private System.Windows.Forms.Label lbl_TotalIncomeRemaining;
         private System.Windows.Forms.DataGridView dgv_BudgetReport;
+        private System.Windows.Forms.Timer tmr_UpdateMainScreen;
+        private System.Windows.Forms.ColumnHeader IncomeEntryAmt;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_BudgetName;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_BudgetAmt;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_BudgetSpent;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_BudgetRemaining;
-        private System.Windows.Forms.Timer tmr_UpdateMainScreen;
-        private System.Windows.Forms.ColumnHeader IncomeEntryAmt;
     }
 }
 
