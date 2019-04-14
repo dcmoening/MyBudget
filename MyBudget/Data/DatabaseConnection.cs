@@ -23,16 +23,19 @@ namespace MyBudget
         #endregion
         private static String ReturnConnectionString()
         {
+            //Connect Timeout=30
             string connString = "server=" + ConfigurationManager.AppSettings["server"].ToString() + ";" +
                                      "user=" + ConfigurationManager.AppSettings["user"].ToString() + ";" +
                                      "database=" + ConfigurationManager.AppSettings["database"].ToString() + ";" +
                                      "port=" + ConfigurationManager.AppSettings["port"].ToString() + ";" +
-                                     "password=" + ConfigurationManager.AppSettings["password"] + ";";
+                                     "password=" + ConfigurationManager.AppSettings["password"] + ";"+
+                                     "Connect Timeout=" + ConfigurationManager.AppSettings["timeout"] + ";";
             return connString;
         }
 
         public int OpenDBConnection()
         {
+            
             int errNbr = 0;
             try
             {

@@ -19,6 +19,18 @@ namespace MyBudget
         public BudgetDB myBudget = new BudgetDB();
         public TransactionDB myTransaction = new TransactionDB();
         public MoneyReceivedDB myIncome = new MoneyReceivedDB();
+        private const string JANUARY = "January";
+        private const string FEBRUARY = "February";
+        private const string MARCH = "March";
+        private const string APRIL = "April";
+        private const string MAY = "May";
+        private const string JUNE = "June";
+        private const string JULY = "July";
+        private const string AUGUST = "August";
+        private const string SEPTEMBER = "September";
+        private const string OCTOBER = "October";
+        private const string NOVEMBER = "November";
+        private const string DECEMBER = "December";
         public MainForm()
         {
             InitializeComponent();
@@ -32,8 +44,12 @@ namespace MyBudget
             BudgetCategoryLstVwItem = new ListViewItem();
             //TODO alert user if db did not connect
 
-            //Update main form
-            UpdateMainForm();
+            
+            if (errNbr == 0)
+            {
+                //Update main form
+                UpdateMainForm();
+            }            
 
             //TODO check if income budget is in database.  If not add it.
 
@@ -205,6 +221,8 @@ namespace MyBudget
         private void tmr_UpdateMainScreen_Tick(object sender, EventArgs e)
         {
             //TODO Update mainscreen labels and tables on timer event
+            UpdateMainForm();
+            
         }
 
         public void UpdateMainForm()
@@ -312,12 +330,67 @@ namespace MyBudget
                 }
                 dgv_BudgetReport.DataSource = bindingSource;
 
-            }
-            
+            }      
+        }       
 
+        private void januaryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = JANUARY;
+        }
 
+        private void februaryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = FEBRUARY;
+        }
 
+        private void marchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = MARCH;
+        }
 
+        private void aprilToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = APRIL;
+        }
+
+        private void mayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = MAY;
+        }
+
+        private void juneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = JUNE;
+        }
+
+        private void julyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = JULY;
+        }
+
+        private void augustToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = AUGUST;
+        }
+
+        private void septemberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = SEPTEMBER;
+        }
+
+        private void octoberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = OCTOBER;
+        }
+
+        private void novemberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = NOVEMBER;
+        }
+
+        private void decemberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = DECEMBER;
         }
     }
 }
