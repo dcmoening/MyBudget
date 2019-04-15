@@ -41,7 +41,7 @@ namespace MyBudget
             List<string> budgetLst = new List<string>();
 
             //Populate listview with current budget entries.
-            myBudget.BudgetTableGetIncomeCategory(ref budgetLst);
+            myBudget.BudgetTableGetIncomeCategoryCurrentMonth(ref budgetLst);
             cmbo_BudgetName.DataSource = budgetLst;
 
             //Determine if modify or add btn was pressed for transaction entries

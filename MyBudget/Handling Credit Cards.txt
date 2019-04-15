@@ -1,0 +1,13 @@
+Month N
+-------
+Each item bought with the credit card is a debit on the Credit Card (savings account).
+
+
+Month N + 1
+-----------
+bill for credit card is posted
+budget entry contains total amount owed (or to be spent) on credit card bill.
+Money from a savings account (including checking) are spent.
+a savings account will now have a debit entry 
+Credit Card account will now have a credit entry
+

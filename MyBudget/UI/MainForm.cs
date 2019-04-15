@@ -19,6 +19,18 @@ namespace MyBudget
         public BudgetDB myBudget = new BudgetDB();
         public TransactionDB myTransaction = new TransactionDB();
         public MoneyReceivedDB myIncome = new MoneyReceivedDB();
+        private const string JANUARY = "January";
+        private const string FEBRUARY = "February";
+        private const string MARCH = "March";
+        private const string APRIL = "April";
+        private const string MAY = "May";
+        private const string JUNE = "June";
+        private const string JULY = "July";
+        private const string AUGUST = "August";
+        private const string SEPTEMBER = "September";
+        private const string OCTOBER = "October";
+        private const string NOVEMBER = "November";
+        private const string DECEMBER = "December";
         public MainForm()
         {
             InitializeComponent();
@@ -32,8 +44,12 @@ namespace MyBudget
             BudgetCategoryLstVwItem = new ListViewItem();
             //TODO alert user if db did not connect
 
-            //Update main form
-            UpdateMainForm();
+            
+            if (errNbr == 0)
+            {
+                //Update main form
+                UpdateMainForm();
+            }            
 
             //TODO check if income budget is in database.  If not add it.
 
@@ -169,7 +185,7 @@ namespace MyBudget
             if (lstvw_MoneyReceived.SelectedItems.Count > 0)
             {
                 categoryID = lstvw_MoneyReceived.SelectedItems[0].SubItems[0].Text;
-                errNbr = myIncome.IncomeTableDeleteCategoryName(categoryID);
+                errNbr = myIncome.IncomeTableDeleteCategoryNameCurrentMonth(categoryID);
                 if (errNbr == 0)
                 {
                     UpdateMainForm();
@@ -183,7 +199,7 @@ namespace MyBudget
             int income_ID;
             string income_String;
 
-            if (lstvw_TransactionEntry.SelectedItems.Count > 0)
+            if (lstvw_MoneyReceived.SelectedItems.Count > 0)
             {
                 income_ID = Convert.ToInt32(lstvw_MoneyReceived.SelectedItems[0].SubItems[0].Text);
                 income_String = lstvw_MoneyReceived.SelectedItems[0].SubItems[1].Text;
@@ -205,6 +221,8 @@ namespace MyBudget
         private void tmr_UpdateMainScreen_Tick(object sender, EventArgs e)
         {
             //TODO Update mainscreen labels and tables on timer event
+            UpdateMainForm();
+            
         }
 
         public void UpdateMainForm()
@@ -213,7 +231,6 @@ namespace MyBudget
             UpdateBudgetListView();
             UpdateTransactionListView();
             UpdateIncomeListView();
-            //TODO update Budget and Income totals
             UpdateIncomeTotals();
             FillBudgetDataGridView();
         }
@@ -233,7 +250,7 @@ namespace MyBudget
         public void UpdateBudgetListView()
         {
             lstvw_Budget.Items.Clear();
-            myBudget.BudgetTableGetCategory(ref lstvw_Budget);
+            myBudget.BudgetTableGetCategoryCurrentMonth(ref lstvw_Budget);
             
         }        
 
@@ -242,22 +259,22 @@ namespace MyBudget
             TotalData myTotalData = new TotalData();
 
             //lbl_TotalExpectedIncome.Text = myTotalData.GetTotalExpectedIncome().ToString();
-            FormatForColor(ref lbl_TotalExpectedIncome, myTotalData.GetTotalExpectedIncome());
+            FormatForColor(ref lbl_TotalExpectedIncome, myTotalData.GetTotalExpectedIncomeCurrentMonth());
 
             //lbl_TotalExpectedBudget.Text = myTotalData.GetTotalExpectedBudget().ToString();
-            FormatForColor(ref lbl_TotalExpectedBudget, myTotalData.GetTotalExpectedBudget());
+            FormatForColor(ref lbl_TotalExpectedBudget, myTotalData.GetTotalExpectedBudgetCurrentMonth());
 
             //lbl_ExpectedIncomeRemaining.Text = myTotalData.GetExpectedIncomeRemaining().ToString();
-            FormatForColor(ref lbl_ExpectedIncomeRemaining, myTotalData.GetExpectedIncomeRemaining());
+            FormatForColor(ref lbl_ExpectedIncomeRemaining, myTotalData.GetExpectedIncomeRemainingCurrentMonth());
 
             //lbl_TotalIncome.Text = myTotalData.GetTotalIncome().ToString();
-            FormatForColor(ref lbl_TotalIncome, myTotalData.GetTotalIncome());
+            FormatForColor(ref lbl_TotalIncome, myTotalData.GetTotalIncomeCurrentMonth());
 
             //lbl_TotalSpent.Text = myTotalData.GetTotalSpent().ToString();
-            FormatForColor(ref lbl_TotalSpent, myTotalData.GetTotalSpent());
+            FormatForColor(ref lbl_TotalSpent, myTotalData.GetTotalSpentCurrentMonth());
 
             //lbl_TotalIncomeRemaining.Text = myTotalData.GetTotalIncomeRemaining().ToString();
-            FormatForColor(ref lbl_TotalIncomeRemaining, myTotalData.GetTotalIncomeRemaining());
+            FormatForColor(ref lbl_TotalIncomeRemaining, myTotalData.GetTotalIncomeRemainingCurrentMonth());
         }        
 
         private void FormatForColor(ref Label lbl, decimal val)
@@ -292,7 +309,7 @@ namespace MyBudget
             decimal budgetRemaing = 0;
 
             //Get list of budgets that money is spent from
-            errNbr = myBudget.BudgetTableGetExpenseCategory(ref budgetLst);
+            errNbr = myBudget.BudgetTableGetExpenseCategoryCurrentMonth(ref budgetLst);
 
             //For each budget item get the budget amount, budget spent, and budget remaining 
             if (errNbr == 0)
@@ -312,12 +329,67 @@ namespace MyBudget
                 }
                 dgv_BudgetReport.DataSource = bindingSource;
 
-            }
-            
+            }      
+        }       
 
+        private void januaryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = JANUARY;
+        }
 
+        private void februaryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = FEBRUARY;
+        }
 
+        private void marchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = MARCH;
+        }
 
+        private void aprilToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = APRIL;
+        }
+
+        private void mayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = MAY;
+        }
+
+        private void juneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = JUNE;
+        }
+
+        private void julyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = JULY;
+        }
+
+        private void augustToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = AUGUST;
+        }
+
+        private void septemberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = SEPTEMBER;
+        }
+
+        private void octoberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = OCTOBER;
+        }
+
+        private void novemberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = NOVEMBER;
+        }
+
+        private void decemberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripMonthSelected.Text = DECEMBER;
         }
     }
 }

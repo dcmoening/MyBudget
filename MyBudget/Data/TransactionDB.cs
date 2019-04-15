@@ -171,6 +171,22 @@ namespace MyBudget
         public int TransactionTableGetCurrentMonth(ref ListView Categorylstv)
         {
             int errNbr = 0;
+            int monthValue = DateTime.Now.Month;
+            int yearValue = DateTime.Now.Year;
+            errNbr = TransactionTableGetForMonthYear(ref Categorylstv, monthValue, yearValue);
+
+            return errNbr;
+        }
+
+        /// <summary>
+        /// Returns a ListviewItem containing the items entered for a given month
+        /// </summary>
+        /// <param name="categorylstv"></param>
+        /// <param name="monthValue">The month expressed as a number from 1 to 12 (January to December)</param>
+        /// <returns></returns>
+        public int TransactionTableGetForMonthYear(ref ListView categorylstv, int monthValue, int yearValue)
+        {
+            int errNbr = 0;
             ListViewItem CategorylstvwItem = new ListViewItem();
 
             try
@@ -181,7 +197,7 @@ namespace MyBudget
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
                     //SELECT * FROM table WHERE YEAR(date) = YEAR(CURDATE()) AND MONTH(date) = MONTH(CURDATE())
-                    cmd.CommandText = "SELECT * FROM" + " " + TABLE_TRANSACTION + " " + "WHERE YEAR(" + TRANSACTION_COL_DATEPURCHASED + ") = YEAR(CURDATE()) AND MONTH(" + TRANSACTION_COL_DATEPURCHASED + ") = MONTH(CURDATE())";
+                    cmd.CommandText = "SELECT * FROM" + " " + TABLE_TRANSACTION + " " + "WHERE YEAR(" + TRANSACTION_COL_DATEPURCHASED + ") = " + yearValue + " AND MONTH(" + TRANSACTION_COL_DATEPURCHASED + ") = " + monthValue;
 
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     if (conn.State == ConnectionState.Open)
@@ -192,7 +208,7 @@ namespace MyBudget
                             CategorylstvwItem.SubItems[0].Text = rdr[0].ToString();
                             CategorylstvwItem.SubItems.Add(rdr[1].ToString());
                             CategorylstvwItem.SubItems.Add(rdr[2].ToString());
-                            Categorylstv.Items.Add(CategorylstvwItem);
+                            categorylstv.Items.Add(CategorylstvwItem);
                         }
                         rdr.Close();
 
@@ -203,7 +219,7 @@ namespace MyBudget
                         //TODO add error number for not connecting to database when select all category data from Budget table
                         errNbr = -1;
                     }
-                    
+
                 }
             }
             catch (Exception ex)
@@ -215,7 +231,19 @@ namespace MyBudget
             return errNbr;
         }
 
-        public int TransactionTableGetTotalTransactionAmt(ref decimal rslt)
+        public int TransactionTableGetTotalTransactionAmtCurrentMonth(ref decimal rslt)
+        {
+            rslt = 0;
+            int errNbr = 0;
+            int monthValue = DateTime.Now.Month;
+            int yearValue = DateTime.Now.Year;
+
+            errNbr = TransactionTableGetTotalTransactionAmtYearMonth(ref rslt, yearValue, monthValue);
+
+            return errNbr;
+        }
+
+        public int TransactionTableGetTotalTransactionAmtYearMonth(ref decimal rslt, int yearValue, int monthValue)
         {
             rslt = 0;
             int errNbr = 0;
@@ -227,7 +255,10 @@ namespace MyBudget
                 {
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
-                    cmd.CommandText = "SELECT sum(" + TRANSACTION_COL_ITEMAMT + ") FROM " + " " + TABLE_TRANSACTION + " " + "WHERE YEAR(" + TRANSACTION_COL_DATEPURCHASED + ") = YEAR(CURDATE()) AND MONTH(" + TRANSACTION_COL_DATEPURCHASED + ") = MONTH(CURDATE())";
+                    cmd.CommandText = "SELECT sum(" + TRANSACTION_COL_ITEMAMT + ") FROM " + " " + TABLE_TRANSACTION + " " + "WHERE YEAR(" + TRANSACTION_COL_DATEPURCHASED + ") =?yearValue AND MONTH(" + TRANSACTION_COL_DATEPURCHASED + ") =?monthValue";
+                    cmd.Parameters.Add("?yearValue", MySqlDbType.VarChar).Value = yearValue;
+                    cmd.Parameters.Add("?monthValue", MySqlDbType.VarChar).Value = monthValue;
+
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     errNbr = CheckDBConnection();
                     if (errNbr == 0)
@@ -255,6 +286,7 @@ namespace MyBudget
 
             return errNbr;
         }
+
         /// <summary>
         /// Get total amount spent for a budget category for the current month
         /// </summary>

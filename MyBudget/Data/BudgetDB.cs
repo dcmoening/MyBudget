@@ -68,11 +68,11 @@ namespace MyBudget
             return errNbr;
         }
         /// <summary>
-        /// Returns total budgeted income
+        /// Returns total budgeted income for a specific month in a specific year
         /// </summary>
         /// <param name="rslt"></param>
         /// <returns></returns>
-        public int BudgetTableGetTotalIncomeAmt(ref decimal rslt)
+        public int BudgetTableGetTotalIncomeAmtForMonthYear(ref decimal rslt, int monthValue, int yearValue)
         {
             rslt = 0;
             int errNbr = 0;
@@ -84,7 +84,9 @@ namespace MyBudget
                 {
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
-                    cmd.CommandText = "SELECT sum(CategoryAmt) FROM table_Budget WHERE CategoryIsIncome=TRUE";
+                    cmd.CommandText = "SELECT sum(CategoryAmt) FROM table_Budget WHERE CategoryIsIncome=TRUE AND YEAR(categoryBudgetDate) =?yearValue AND MONTH(categoryBudgetDate) =?monthValue";
+                    cmd.Parameters.Add("?yearValue", MySqlDbType.VarChar).Value = yearValue;
+                    cmd.Parameters.Add("?monthValue", MySqlDbType.VarChar).Value = monthValue;
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     errNbr = CheckDBConnection();
                     if (errNbr == 0)
@@ -112,12 +114,30 @@ namespace MyBudget
 
             return errNbr;
         }
+
+        /// <summary>
+        /// Returns total budgeted income for the current month
+        /// </summary>
+        /// <param name="rslt"></param>
+        /// <returns></returns>
+        public int BudgetTableGetTotalIncomeAmtCurrentMonth(ref decimal rslt)
+        {
+            rslt = 0;
+            int errNbr = 0;
+            int monthValue = DateTime.Now.Month;
+            int yearValue = DateTime.Now.Year;
+
+            errNbr = BudgetTableGetTotalIncomeAmtForMonthYear(ref rslt, monthValue, yearValue);
+
+            return errNbr;
+        }
+
         /// <summary>
         /// Returns total amount of money budgeted
         /// </summary>
         /// <param name="rslt"></param>
         /// <returns></returns>
-        public int BudgetTableGetTotalBudgetAmt(ref decimal rslt)
+        public int BudgetTableGetTotalBudgetAmtYearMonth(ref decimal rslt, int yearValue, int monthValue)
         {
             rslt = 0;
             int errNbr = 0;
@@ -129,7 +149,9 @@ namespace MyBudget
                 {
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
-                    cmd.CommandText = "SELECT sum(CategoryAmt) FROM table_Budget WHERE CategoryIsIncome=FALSE";
+                    cmd.CommandText = "SELECT sum(CategoryAmt) FROM table_Budget WHERE CategoryIsIncome=FALSE AND YEAR(categoryBudgetDate) =?yearValue AND MONTH(categoryBudgetDate) =?monthValue";
+                    cmd.Parameters.Add("?yearValue", MySqlDbType.VarChar).Value = yearValue;
+                    cmd.Parameters.Add("?monthValue", MySqlDbType.VarChar).Value = monthValue;
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     errNbr = CheckDBConnection();
                     if (errNbr == 0)
@@ -161,9 +183,20 @@ namespace MyBudget
         /// <summary>
         /// Returns list of expected income
         /// </summary>
-        /// <param name="Categorylst"></param>
+        /// <param name="categorylst"></param>
         /// <returns></returns>
-        public int BudgetTableGetIncomeCategory(ref List<string> Categorylst)
+        public int BudgetTableGetIncomeCategoryCurrentMonth(ref List<string> categorylst)
+        {
+            int errNbr = 0;
+            int monthVal = DateTime.Now.Month;
+            int yearVal = DateTime.Now.Year;
+
+            errNbr = BudgetTableGetIncomeCategoryYearMonth(ref categorylst, yearVal, monthVal);
+
+            return errNbr;
+        }
+
+        public int BudgetTableGetIncomeCategoryYearMonth(ref List<string> Categorylst, int yearValue, int monthValue)
         {
             int errNbr = 0;
             //ListViewItem CategorylstvwItem = new ListViewItem();
@@ -175,7 +208,9 @@ namespace MyBudget
                 {
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
-                    cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget WHERE CategoryIsIncome=TRUE";
+                    cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget WHERE CategoryIsIncome=TRUE AND YEAR(categoryBudgetDate) =?yearValue AND MONTH(categoryBudgetDate) =?monthValue";
+                    cmd.Parameters.Add("?yearValue", MySqlDbType.VarChar).Value = yearValue;
+                    cmd.Parameters.Add("?monthValue", MySqlDbType.VarChar).Value = monthValue;
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     errNbr = CheckDBConnection();
                     if (errNbr == 0)
@@ -208,7 +243,18 @@ namespace MyBudget
         /// </summary>
         /// <param name="Categorylst"></param>
         /// <returns></returns>
-        public int BudgetTableGetExpenseCategory(ref List<string> Categorylst)
+        public int BudgetTableGetExpenseCategoryCurrentMonth(ref List<string> Categorylst)
+        {
+            int errNbr = 0;
+            int yearValue = DateTime.Now.Year;
+            int monthValue = DateTime.Now.Month;
+
+            BudgetTableGetExpenseCategoryYearMonth(ref Categorylst, yearValue, monthValue);
+
+            return errNbr;
+        }
+
+        public int BudgetTableGetExpenseCategoryYearMonth(ref List<string> Categorylst, int yearValue, int monthValue)
         {
             int errNbr = 0;
             //ListViewItem CategorylstvwItem = new ListViewItem();
@@ -220,7 +266,9 @@ namespace MyBudget
                 {
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
-                    cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget WHERE CategoryIsIncome=FALSE";
+                    cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget WHERE CategoryIsIncome=FALSE AND YEAR(categoryBudgetDate) =?yearValue AND MONTH(categoryBudgetDate) =?monthValue";
+                    cmd.Parameters.Add("?yearValue", MySqlDbType.VarChar).Value = yearValue;
+                    cmd.Parameters.Add("?monthValue", MySqlDbType.VarChar).Value = monthValue;
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     errNbr = CheckDBConnection();
                     if (errNbr == 0)
@@ -248,7 +296,6 @@ namespace MyBudget
 
             return errNbr;
         }
-
         /// <summary>
         /// Return a list budgetNameAmt type of budget expense names and decimal amounts
         /// </summary>
@@ -514,12 +561,24 @@ namespace MyBudget
 
             return errNbr;
         }
+
         /// <summary>
         /// Returns a ListViewItem containing the categorys found in the Budget Table
         /// </summary>
         /// <param name="CategorylstvwItem"></param>
         /// <returns></returns>
-        public int BudgetTableGetCategory(ref ListView Categorylstv)
+        public int BudgetTableGetCategoryCurrentMonth(ref ListView categorylstv)
+        {
+            int errNbr = 0;
+            int yearValue = DateTime.Now.Year;
+            int monthValue = DateTime.Now.Month;
+
+            errNbr = BudgetTableGetCategoryMonthYear(ref categorylstv, monthValue, yearValue);
+
+            return errNbr;
+        }
+
+        public int BudgetTableGetCategoryMonthYear(ref ListView Categorylstv, int monthValue, int yearValue)
         {
             int errNbr = 0;
             ListViewItem CategorylstvwItem = new ListViewItem();
@@ -531,7 +590,9 @@ namespace MyBudget
                 {
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
-                    cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget";
+                    cmd.CommandText = "SELECT CategoryName, CategoryAmt FROM table_Budget WHERE YEAR(categoryBudgetDate) =?yearValue AND MONTH(categoryBudgetDate) =?monthValue";
+                    cmd.Parameters.Add("?yearValue", MySqlDbType.VarChar).Value = yearValue;
+                    cmd.Parameters.Add("?monthValue", MySqlDbType.VarChar).Value = monthValue;
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     errNbr = CheckDBConnection();
                     if (errNbr == 0)
@@ -543,7 +604,7 @@ namespace MyBudget
                             CategorylstvwItem.SubItems.Add(rdr[1].ToString());
                             Categorylstv.Items.Add(CategorylstvwItem);
                         }
-                        rdr.Close();                 
+                        rdr.Close();
                     }
                     else
                     {
@@ -551,8 +612,8 @@ namespace MyBudget
                         errNbr = -1;
                     }
                 }
-                
-            
+
+
             }
             catch (Exception ex)
             {

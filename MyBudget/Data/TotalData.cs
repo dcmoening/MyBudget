@@ -16,11 +16,11 @@ namespace MyBudget
         /// This is the sum amount of items in the budgeted marked as income
         /// </summary>
         /// <returns></returns>
-        public decimal GetTotalExpectedIncome()
+        public decimal GetTotalExpectedIncomeCurrentMonth()
         {
             decimal rslt = 0;
             int errNbr = 0;
-            errNbr = mybudget.BudgetTableGetTotalIncomeAmt(ref rslt);
+            errNbr = mybudget.BudgetTableGetTotalIncomeAmtCurrentMonth(ref rslt);
 
             return rslt;
         }
@@ -29,11 +29,14 @@ namespace MyBudget
         /// This is the sum amount of items in the budgeted not marked as income
         /// </summary>
         /// <returns></returns>
-        public decimal GetTotalExpectedBudget()
+        public decimal GetTotalExpectedBudgetCurrentMonth()
         {
             decimal rslt = 0;
             int errNbr = 0;
-            errNbr = mybudget.BudgetTableGetTotalBudgetAmt(ref rslt);
+            int monthValue = DateTime.Now.Month;
+            int yearValue = DateTime.Now.Year;
+
+            errNbr = mybudget.BudgetTableGetTotalBudgetAmtYearMonth(ref rslt, yearValue, monthValue);
             return rslt;
         }
 
@@ -41,10 +44,10 @@ namespace MyBudget
         /// This is the difference between income budgeted and income received
         /// </summary>
         /// <returns></returns>
-        public decimal GetExpectedIncomeRemaining()
+        public decimal GetExpectedIncomeRemainingCurrentMonth()
         {
             decimal rslt = 0;
-            rslt = GetTotalExpectedIncome() - GetTotalExpectedBudget();
+            rslt = GetTotalExpectedIncomeCurrentMonth() - GetTotalExpectedBudgetCurrentMonth();
             return rslt;
         }
 
@@ -52,11 +55,11 @@ namespace MyBudget
         /// Sum of all Money Received 
         /// </summary>
         /// <returns></returns>
-        public decimal GetTotalIncome()
+        public decimal GetTotalIncomeCurrentMonth()
         {
             decimal rslt = 0;
             int errNbr = 0;
-            errNbr = myIncome.IncomeTableGetTotalIncomeAmt(ref rslt);
+            errNbr = myIncome.IncomeTableGetTotalIncomeAmtCurrentMonth(ref rslt);
             return rslt;
         }
 
@@ -64,11 +67,11 @@ namespace MyBudget
         /// Sum of all items in the Transaction Entries
         /// </summary>
         /// <returns></returns>
-        public decimal GetTotalSpent()
+        public decimal GetTotalSpentCurrentMonth()
         {
             decimal rslt = 0;
             int errNbr = 0;
-            errNbr = myTransaction.TransactionTableGetTotalTransactionAmt(ref rslt);
+            errNbr = myTransaction.TransactionTableGetTotalTransactionAmtCurrentMonth(ref rslt);
             return rslt;
         }
 
@@ -76,10 +79,10 @@ namespace MyBudget
         /// This is the difference between Money received and money spent
         /// </summary>
         /// <returns></returns>
-        public decimal GetTotalIncomeRemaining()
+        public decimal GetTotalIncomeRemainingCurrentMonth()
         {
             decimal rslt = 0;
-            rslt = GetTotalIncome() - GetTotalSpent();
+            rslt = GetTotalIncomeCurrentMonth() - GetTotalSpentCurrentMonth();
             return rslt;
         }
     }

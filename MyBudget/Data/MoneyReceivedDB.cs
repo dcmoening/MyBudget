@@ -135,7 +135,17 @@ namespace MyBudget
         /// </summary>
         /// <param name="categoryName"></param>
         /// <returns></returns>
-        public int IncomeTableDeleteCategoryName(string categoryID)
+        public int IncomeTableDeleteCategoryNameCurrentMonth(string categoryID)
+        {
+            int errNbr = 0;
+            int monthValue = DateTime.Now.Month;
+            int yearValue = DateTime.Now.Year;
+            errNbr = IncomeTableDeleteCategoryNameMonthYear(categoryID, monthValue, yearValue);
+
+            return errNbr;
+        }
+
+        public int IncomeTableDeleteCategoryNameMonthYear(string categoryID, int monthValue, int yearValue)
         {
             int errNbr = 0;
             try
@@ -145,8 +155,10 @@ namespace MyBudget
                 {
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
-                    cmd.CommandText = "DELETE FROM" + " " + TABLE_INCOME + " " + "WHERE" + " " + INCOME_COL_CATEGORYID + "=?categoryId";
+                    cmd.CommandText = "DELETE FROM" + " " + TABLE_INCOME + " " + "WHERE" + " " + INCOME_COL_CATEGORYID + "=?categoryId" + " AND YEAR(" + INCOME_COL_DATEPURCHASED + ") =?yearValue AND MONTH(" + INCOME_COL_DATEPURCHASED + ") =?monthValue";
                     cmd.Parameters.Add("?categoryId", MySqlDbType.VarChar).Value = categoryID;
+                    cmd.Parameters.Add("?yearValue", MySqlDbType.Int32).Value = yearValue;
+                    cmd.Parameters.Add("?monthValue", MySqlDbType.Int32).Value = monthValue;
                     cmd.ExecuteNonQuery();
                 }
 
@@ -161,12 +173,30 @@ namespace MyBudget
 
             return errNbr;
         }
+
         /// <summary>
         /// Returns a ListViewItem containing the items entered the current month
         /// </summary>
         /// <param name="CategorylstvwItem"></param>
         /// <returns></returns>
         public int IncomeTableGetCurrentMonth(ref ListView Categorylstv)
+        {
+            int errNbr = 0;
+            int monthValue = DateTime.Now.Month;
+            int yearValue = DateTime.Now.Year;
+            IncomeTableGetForMonthYear(ref Categorylstv, monthValue, yearValue);
+
+            return errNbr;
+        }
+
+        /// <summary>
+        /// Returns a ListViewItem containing the items entered the for a specific month in a specific year
+        /// </summary>
+        /// <param name="categorylstv"></param>
+        /// <param name="monthValue"></param>
+        /// <param name="yearValue"></param>
+        /// <returns></returns>
+        public int IncomeTableGetForMonthYear(ref ListView categorylstv, int monthValue , int yearValue)
         {
             int errNbr = 0;
             ListViewItem CategorylstvwItem = new ListViewItem();
@@ -179,7 +209,7 @@ namespace MyBudget
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
                     //SELECT * FROM table WHERE YEAR(date) = YEAR(CURDATE()) AND MONTH(date) = MONTH(CURDATE())
-                    cmd.CommandText = "SELECT * FROM" + " " + TABLE_INCOME + " " + "WHERE YEAR(" + INCOME_COL_DATEPURCHASED + ") = YEAR(CURDATE()) AND MONTH(" + INCOME_COL_DATEPURCHASED + ") = MONTH(CURDATE())";
+                    cmd.CommandText = "SELECT * FROM" + " " + TABLE_INCOME + " " + "WHERE YEAR(" + INCOME_COL_DATEPURCHASED + ") = "+ yearValue +" AND MONTH(" + INCOME_COL_DATEPURCHASED + ") = " + monthValue;
 
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     if (conn.State == ConnectionState.Open)
@@ -190,7 +220,7 @@ namespace MyBudget
                             CategorylstvwItem.SubItems[0].Text = rdr[0].ToString();
                             CategorylstvwItem.SubItems.Add(rdr[1].ToString());
                             CategorylstvwItem.SubItems.Add(rdr[2].ToString());
-                            Categorylstv.Items.Add(CategorylstvwItem);
+                            categorylstv.Items.Add(CategorylstvwItem);
                         }
                         rdr.Close();
 
@@ -212,12 +242,31 @@ namespace MyBudget
 
             return errNbr;
         }
+
         /// <summary>
         /// Return total amount of money received
         /// </summary>
         /// <param name="rslt"></param>
         /// <returns></returns>
-        public int IncomeTableGetTotalIncomeAmt(ref decimal rslt)
+        public int IncomeTableGetTotalIncomeAmtCurrentMonth(ref decimal rslt)
+        {
+            rslt = 0;
+            int errNbr = 0;
+            int monthValue = DateTime.Now.Month;
+            int yearValue = DateTime.Now.Year;
+            IncomeTableGetTotalIncomeAmtForMonthYear(ref rslt, monthValue, yearValue);
+
+            return errNbr;
+        }
+
+        /// <summary>
+        /// Return total amount of money received for a specific month in a specific year
+        /// </summary>
+        /// <param name="rslt"></param>
+        /// <param name="monthValue"></param>
+        /// <param name="yearValue"></param>
+        /// <returns></returns>
+        public int IncomeTableGetTotalIncomeAmtForMonthYear(ref decimal rslt, int monthValue, int yearValue)
         {
             rslt = 0;
             int errNbr = 0;
@@ -229,7 +278,7 @@ namespace MyBudget
                 {
                     cmd = new MySqlCommand();
                     cmd.Connection = conn;
-                    cmd.CommandText = "SELECT sum(" + INCOME_COL_ITEMAMT + ") FROM " + " " + TABLE_INCOME + " " + "WHERE YEAR(" + INCOME_COL_DATEPURCHASED + ") = YEAR(CURDATE()) AND MONTH(" + INCOME_COL_DATEPURCHASED + ") = MONTH(CURDATE())";
+                    cmd.CommandText = "SELECT sum(" + INCOME_COL_ITEMAMT + ") FROM " + " " + TABLE_INCOME + " " + "WHERE YEAR(" + INCOME_COL_DATEPURCHASED + ") = " + yearValue + " AND MONTH(" + INCOME_COL_DATEPURCHASED + ") = " + monthValue;
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     errNbr = CheckDBConnection();
                     if (errNbr == 0)
