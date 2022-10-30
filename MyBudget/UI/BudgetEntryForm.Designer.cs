@@ -1,6 +1,6 @@
 ﻿namespace MyBudget
 {
-    partial class BudgetEntry
+    partial class BudgetEntryForm
     {
         /// <summary>
         /// Required designer variable.
@@ -53,6 +53,7 @@
             this.txt_BudgetAmt.Name = "txt_BudgetAmt";
             this.txt_BudgetAmt.Size = new System.Drawing.Size(163, 20);
             this.txt_BudgetAmt.TabIndex = 2;
+            this.txt_BudgetAmt.TextChanged += new System.EventHandler(this.txt_BudgetAmt_TextChanged);
             // 
             // lbl_label2
             // 
@@ -101,7 +102,7 @@
             this.chkbox_IsIncome.Text = "Is Income?";
             this.chkbox_IsIncome.UseVisualStyleBackColor = true;
             // 
-            // BudgetEntry
+            // BudgetEntryForm
             // 
             this.AcceptButton = this.btn_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -114,9 +115,8 @@
             this.Controls.Add(this.txt_BudgetAmt);
             this.Controls.Add(this.lbl_label2);
             this.Controls.Add(this.lbl_label1);
-            this.Name = "BudgetEntry";
+            this.Name = "BudgetEntryForm";
             this.Text = "Budget Entry";
-            this.Load += new System.EventHandler(this.BudgetEntry_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

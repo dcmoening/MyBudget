@@ -10,15 +10,17 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using MyBudget.Data;
 
 namespace MyBudget
 {
     public partial class MainForm : Form
     {
-        private ListViewItem BudgetCategoryLstVwItem;
-        public BudgetDB myBudget = new BudgetDB();
-        public TransactionDB myTransaction = new TransactionDB();
-        public MoneyReceivedDB myIncome = new MoneyReceivedDB();
+        private BudgetDataModel budgetData;
+        //private ListViewItem BudgetCategoryLstVwItem;
+        //public BudgetDB myBudget = new BudgetDB();
+        //public TransactionDB myTransaction = new TransactionDB();
+        //public MoneyReceivedDB myIncome = new MoneyReceivedDB();
         private const string JANUARY = "January";
         private const string FEBRUARY = "February";
         private const string MARCH = "March";
@@ -31,365 +33,161 @@ namespace MyBudget
         private const string OCTOBER = "October";
         private const string NOVEMBER = "November";
         private const string DECEMBER = "December";
-        public MainForm()
+
+        //Forms
+        TransactionEntryForm transactionEntryForm;
+        BudgetEntryForm budgetEntryForm;
+        IncomeEntryForm incomeEntryForm;
+
+        public MainForm(BudgetDataModel budgetData)
         {
             InitializeComponent();
+            this.budgetData = budgetData;
+            budgetData.Budgets.ListChanged += Budgets_ListChanged;
+            budgetEntryForm = new BudgetEntryForm(budgetData);
+            budgetEntryForm.FormClosing += EntryForm_FormClosing;
+
+            transactionEntryForm = new TransactionEntryForm(budgetData);
+            transactionEntryForm.FormClosing += EntryForm_FormClosing;
+
+            //transactionListView.Leave += ListView_Leave;
+
+            incomeEntryForm = new IncomeEntryForm(budgetData);
+            incomeEntryForm.FormClosing += EntryForm_FormClosing;
+
+            //incomeListView.Leave += ListView_Leave;
+
+            //Update listviews
+            UpdateTransactionListView();
+            UpdateBudgetListView();
+            UpdateIncomeListView();
+        }
+
+        
+
+        private void EntryForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                ((Form)sender).Hide();
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            int errNbr;
-            errNbr = myBudget.OpenDBConnection();
             
-            BudgetCategoryLstVwItem = new ListViewItem();
-            //TODO alert user if db did not connect
-
-            
-            if (errNbr == 0)
-            {
-                //Update main form
-                UpdateMainForm();
-            }            
-
-            //TODO check if income budget is in database.  If not add it.
-
-
-        }
-
-        private void MainForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            myBudget.CloseConnection();
-        }
-        
-        private void btn_transAdd_Click(object sender, EventArgs e)
-        {
-            TransactionEntry form_TransactionEntry = new TransactionEntry(myBudget, myTransaction);
-
-            form_TransactionEntry.FormClosed += new FormClosedEventHandler(TransactionEntry_FormClosed);
-
-            form_TransactionEntry.isAddTransactionEntry = true;
-            form_TransactionEntry.Show();
-        }
-
-        private void btn_transModify_Click(object sender, EventArgs e)
-        {
-            int transaction_ID;
-            string transaction_String;
-
-            if(lstvw_TransactionEntry.SelectedItems.Count > 0)
-            {
-                transaction_ID = Convert.ToInt32(lstvw_TransactionEntry.SelectedItems[0].SubItems[0].Text);
-                transaction_String = lstvw_TransactionEntry.SelectedItems[0].SubItems[1].Text;
-
-                //TODO: in TransactionEntry, if modify is selected get the Transaction ID of the item selected so it can be updated in the database.
-                myTransaction.SelectedTransaction = new Transaction
-                {
-                    transactionID = transaction_ID,
-                    transactionName = transaction_String
-                };
-
-                TransactionEntry form_TransactionEntry = new TransactionEntry(myBudget, myTransaction);
-                form_TransactionEntry.FormClosed += new FormClosedEventHandler(TransactionEntry_FormClosed);
-                form_TransactionEntry.isModifyTransactionEntry = true;
-                form_TransactionEntry.Show();
-            }                        
-        }
-
-        private void btn_transMinus_Click(object sender, EventArgs e)
-        {
-            String categoryID;
-            int errNbr;
-            // if budget is income, do not allow delete
-            if (lstvw_TransactionEntry.SelectedItems.Count > 0)
-            {
-                categoryID = lstvw_TransactionEntry.SelectedItems[0].SubItems[0].Text;
-                errNbr = myTransaction.TransactionTableDeleteCategoryName(categoryID);
-                if (errNbr == 0)
-                {
-                    UpdateMainForm();
-                }                
-            }
-        }
-
-        private void btn_budgetAdd_Click(object sender, EventArgs e)
-        {
-            BudgetEntry form_BudgetEntry = new BudgetEntry(myBudget);
-            
-            form_BudgetEntry.FormClosed += new FormClosedEventHandler(BudgetEntry_FormClosed);
-                            
-            form_BudgetEntry.isAddBudgetEntry = true;
-            form_BudgetEntry.Show();
-        }       
-
-        void BudgetEntry_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            //When budget entry closes update the budget listview
-            UpdateMainForm();
-        }
-
-        void TransactionEntry_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            //When budget entry closes update the budget listview
-            UpdateMainForm();
-        }
-
-        private void btn_budgetMinus_Click(object sender, EventArgs e)
-        {
-            String categoryName;
-            int errNbr;
-            // if budget is income, do not allow delete
-            if(lstvw_Budget.SelectedItems.Count > 0)
-            {
-                categoryName = lstvw_Budget.SelectedItems[0].Text;
-                if (categoryName != "income")
-                {
-                    errNbr = myBudget.BudgetTableDeleteCategoryName(categoryName);
-                    if (errNbr == 0)
-                    {
-                        UpdateBudgetListView();
-                    }                    
-                }
-            }                
-        }
-
-        private void btn_BudgetModify_Click(object sender, EventArgs e)
-        {
-            if (lstvw_Budget.SelectedItems.Count > 0)
-            {
-                BudgetEntry form_BudgetEntry = new BudgetEntry(myBudget);
-
-                form_BudgetEntry.FormClosed += new FormClosedEventHandler(BudgetEntry_FormClosed);
-
-                form_BudgetEntry.isModifyBudgetEntry = true;
-                form_BudgetEntry.setCategoryName(lstvw_Budget.SelectedItems[0].Text);
-                form_BudgetEntry.setCategoryAmt(System.Convert.ToDecimal(lstvw_Budget.SelectedItems[0].SubItems[1].Text));
-                form_BudgetEntry.Show();
-            }            
-        }
-
-        private void btn_moneyreceivedAdd_Click(object sender, EventArgs e)
-        {
-            MoneyReceivedEntry form_IncomeEntry = new MoneyReceivedEntry(myBudget, myIncome);
-
-            form_IncomeEntry.FormClosed += new FormClosedEventHandler(TransactionEntry_FormClosed);
-
-            form_IncomeEntry.isAddTransactionEntry = true;
-            form_IncomeEntry.Show();
-        }
-
-        private void btn_moneyreceivedMinus_Click(object sender, EventArgs e)
-        {
-            String categoryID;
-            int errNbr;
-            // if budget is income, do not allow delete
-            if (lstvw_MoneyReceived.SelectedItems.Count > 0)
-            {
-                categoryID = lstvw_MoneyReceived.SelectedItems[0].SubItems[0].Text;
-                errNbr = myIncome.IncomeTableDeleteCategoryNameCurrentMonth(categoryID);
-                if (errNbr == 0)
-                {
-                    UpdateMainForm();
-                }
-            }
-        }
-
-        private void btn_moneyreceivedModify_Click(object sender, EventArgs e)
-        {
-            //TODO add code from modifying income
-            int income_ID;
-            string income_String;
-
-            if (lstvw_MoneyReceived.SelectedItems.Count > 0)
-            {
-                income_ID = Convert.ToInt32(lstvw_MoneyReceived.SelectedItems[0].SubItems[0].Text);
-                income_String = lstvw_MoneyReceived.SelectedItems[0].SubItems[1].Text;
-
-                //TODO: in TransactionEntry, if modify is selected get the Transaction ID of the item selected so it can be updated in the database.
-                myIncome.SelectedTransaction = new Transaction
-                {
-                    transactionID = income_ID,
-                    transactionName = income_String
-                };
-
-                MoneyReceivedEntry form_IncomeEntry = new MoneyReceivedEntry(myBudget, myIncome);
-                form_IncomeEntry.FormClosed += new FormClosedEventHandler(TransactionEntry_FormClosed);
-                form_IncomeEntry.isModifyTransactionEntry = true;
-                form_IncomeEntry.Show();
-            }
-        }
-
-        private void tmr_UpdateMainScreen_Tick(object sender, EventArgs e)
-        {
-            //TODO Update mainscreen labels and tables on timer event
-            UpdateMainForm();
-            
-        }
-
-        public void UpdateMainForm()
-        {
-            //update Budget Listview
-            UpdateBudgetListView();
-            UpdateTransactionListView();
-            UpdateIncomeListView();
-            UpdateIncomeTotals();
-            FillBudgetDataGridView();
-        }
-
-        public void UpdateIncomeListView()
-        {
-            lstvw_MoneyReceived.Items.Clear();
-            myIncome.IncomeTableGetCurrentMonth(ref lstvw_MoneyReceived );
         }
 
         public void UpdateTransactionListView()
         {
-            lstvw_TransactionEntry.Items.Clear();
-            myTransaction.TransactionTableGetCurrentMonth(ref lstvw_TransactionEntry);
+            transactionListView.Items.Clear();
+            foreach(var transaction in budgetData.Transactions)
+            {
+                var item = new ListViewItem(transaction.Name);
+                item.SubItems.Add(transaction.Amount.ToString());
+                transactionListView.Items.Add(item);
+            }
         }
-        
+
+        public void UpdateIncomeListView()
+        {
+            incomeListView.Items.Clear();
+            foreach (var income in budgetData.Incomes)
+            {
+                var item = new ListViewItem(income.Name);
+                item.SubItems.Add(income.Amount.ToString());
+                incomeListView.Items.Add(item);
+            }
+        }
+
+        private void btn_transAdd_Click(object sender, EventArgs e)
+        {
+            transactionEntryForm.Show();
+        }
+
+        //Transaction
+        #region Transaction
+        private void transactionListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateAddModifyButtons(modifyTransactionButton, removeTransactionButton, (ListView)sender);
+        }
+        #endregion
+
+        //Budget
+        #region Budget
+        private void AddBudgetButton_Click(object sender, EventArgs e)
+        {
+            budgetEntryForm.SomeBudget = new Budget();
+            budgetEntryForm.Show();
+        }
+        private void ModifyBudgetButton_Click(object sender, EventArgs e)
+        {
+            //Get item to be modified
+
+            var index = budgetListView.SelectedIndices[0];
+            budgetEntryForm.SomeBudget = budgetData.Budgets[index];
+            budgetEntryForm.Show();
+        }
+        private void RemoveBudgetButton_Click(object sender, EventArgs e)
+        {
+            budgetData.Budgets.RemoveAt(budgetListView.SelectedIndices[0]);
+        }
+        private void Budgets_ListChanged(object sender, ListChangedEventArgs e)
+        {
+            UpdateBudgetListView();
+            UpdateAddModifyButtons(modifyBudgetButton, removeBudgetButton, budgetListView);
+        }
+
         public void UpdateBudgetListView()
         {
-            lstvw_Budget.Items.Clear();
-            myBudget.BudgetTableGetCategoryCurrentMonth(ref lstvw_Budget);
+            budgetListView.Items.Clear();
+            var budgetsExist = budgetData.Budgets.Count() > 0;
             
-        }        
+            modifyBudgetButton.Enabled = budgetsExist;
+            removeBudgetButton.Enabled = budgetsExist;
 
-        public void UpdateIncomeTotals()
-        {
-            TotalData myTotalData = new TotalData();
-
-            //lbl_TotalExpectedIncome.Text = myTotalData.GetTotalExpectedIncome().ToString();
-            FormatForColor(ref lbl_TotalExpectedIncome, myTotalData.GetTotalExpectedIncomeCurrentMonth());
-
-            //lbl_TotalExpectedBudget.Text = myTotalData.GetTotalExpectedBudget().ToString();
-            FormatForColor(ref lbl_TotalExpectedBudget, myTotalData.GetTotalExpectedBudgetCurrentMonth());
-
-            //lbl_ExpectedIncomeRemaining.Text = myTotalData.GetExpectedIncomeRemaining().ToString();
-            FormatForColor(ref lbl_ExpectedIncomeRemaining, myTotalData.GetExpectedIncomeRemainingCurrentMonth());
-
-            //lbl_TotalIncome.Text = myTotalData.GetTotalIncome().ToString();
-            FormatForColor(ref lbl_TotalIncome, myTotalData.GetTotalIncomeCurrentMonth());
-
-            //lbl_TotalSpent.Text = myTotalData.GetTotalSpent().ToString();
-            FormatForColor(ref lbl_TotalSpent, myTotalData.GetTotalSpentCurrentMonth());
-
-            //lbl_TotalIncomeRemaining.Text = myTotalData.GetTotalIncomeRemaining().ToString();
-            FormatForColor(ref lbl_TotalIncomeRemaining, myTotalData.GetTotalIncomeRemainingCurrentMonth());
-        }        
-
-        private void FormatForColor(ref Label lbl, decimal val)
-        {
-            string formatedVal = String.Empty;
-
-            if (val > 0)
+            foreach (var budget in budgetData.Budgets)
             {
-                lbl.ForeColor = Color.Green;
-                
+                var item = new ListViewItem(budget.Name);
+                item.SubItems.Add(budget.Amount.ToString());
+                budgetListView.Items.Add(item);
             }
-            else
+        }
+        private void lstvw_Budget_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var budgetListView = (ListView)sender;
+            UpdateAddModifyButtons(modifyBudgetButton, removeBudgetButton, (ListView)sender);
+        }
+        #endregion
+
+        //Income
+        #region Income
+        private void incomeListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //UpdateAddModifyButtons(modifyIncomeButton, removeIncomeButton, (ListView)sender);
+        }
+        #endregion
+
+        void UpdateAddModifyButtons(Button modify, Button remove, ListView listview)
+        {
+            bool itemSelected = listview.SelectedItems.Count > 0;
+            modify.Enabled = itemSelected;
+            remove.Enabled = itemSelected;
+        }
+
+        private void ListView_Leave(object sender, EventArgs e)
+        {
+            //clear selected items
+            var listView = (ListView)sender;
+            if(listView.SelectedItems.Count > 0)
             {
-                lbl.ForeColor = Color.Red;
+                listView.SelectedItems.Clear();
             }
-
-            lbl.Text = val.ToString();
         }
 
-        private void FillBudgetDataGridView()
-        {
-            //https://stackoverflow.com/questions/29148568/filling-a-liststring-with-mysql-query
-            //https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/how-to-bind-objects-to-windows-forms-datagridview-controls
-            
-            BindingSource bindingSource = new BindingSource();
-            List<string> budgetLst = new List<string>();
-            BudgetDB myBudget = new BudgetDB();
-            TransactionDB myTransaction = new TransactionDB();
-            int errNbr = 0;
-            decimal budgetAmount = 0;
-            decimal budgetSpent = 0;
-            decimal budgetRemaing = 0;
+        
 
-            //Get list of budgets that money is spent from
-            errNbr = myBudget.BudgetTableGetExpenseCategoryCurrentMonth(ref budgetLst);
-
-            //For each budget item get the budget amount, budget spent, and budget remaining 
-            if (errNbr == 0)
-            {
-                foreach (string budgetName in budgetLst)
-                {
-                    //Get budget amount from budget table
-                    errNbr = myBudget.BudgetTableGetBudgetAmtForCategory(ref budgetAmount, budgetName);
-                    //Get budget spent from transaction table
-                    errNbr = myTransaction.TransactionTableGetTotalBudgetAmtSpent(ref budgetSpent,budgetName);
-                    //Get budget remaining by subtracting total spent from total budget amount
-                    budgetRemaing = budgetAmount - budgetSpent;
-                    //Create new BudgetTable object initialized with above values
-                    BudgetTableEntry tmpEntry = new BudgetTableEntry(budgetName, budgetAmount.ToString(), budgetSpent.ToString(), budgetRemaing.ToString());
-                    //Add BudgetTable to Binding source
-                    bindingSource.Add(tmpEntry);
-                }
-                dgv_BudgetReport.DataSource = bindingSource;
-
-            }      
-        }       
-
-        private void januaryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = JANUARY;
-        }
-
-        private void februaryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = FEBRUARY;
-        }
-
-        private void marchToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = MARCH;
-        }
-
-        private void aprilToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = APRIL;
-        }
-
-        private void mayToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = MAY;
-        }
-
-        private void juneToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = JUNE;
-        }
-
-        private void julyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = JULY;
-        }
-
-        private void augustToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = AUGUST;
-        }
-
-        private void septemberToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = SEPTEMBER;
-        }
-
-        private void octoberToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = OCTOBER;
-        }
-
-        private void novemberToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = NOVEMBER;
-        }
-
-        private void decemberToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolStripMonthSelected.Text = DECEMBER;
-        }
+        
     }
 }

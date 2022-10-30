@@ -1,6 +1,6 @@
 ﻿namespace MyBudget
 {
-    partial class TransactionEntry
+    partial class IncomeEntryForm
     {
         /// <summary>
         /// Required designer variable.
@@ -69,7 +69,6 @@
             this.btn_OK.TabIndex = 4;
             this.btn_OK.Text = "OK";
             this.btn_OK.UseVisualStyleBackColor = true;
-            this.btn_OK.Click += new System.EventHandler(this.btn_OK_Click);
             // 
             // btn_Cancel
             // 
@@ -79,7 +78,6 @@
             this.btn_Cancel.TabIndex = 5;
             this.btn_Cancel.Text = "Cancel";
             this.btn_Cancel.UseVisualStyleBackColor = true;
-            this.btn_Cancel.Click += new System.EventHandler(this.btn_Cancel_Click);
             // 
             // cmbo_BudgetName
             // 
@@ -91,7 +89,7 @@
             this.cmbo_BudgetName.Size = new System.Drawing.Size(163, 21);
             this.cmbo_BudgetName.TabIndex = 6;
             // 
-            // TransactionEntry
+            // IncomeEntryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -102,9 +100,10 @@
             this.Controls.Add(this.txt_TransactionAmt);
             this.Controls.Add(this.lbl_label2);
             this.Controls.Add(this.lbl_label1);
-            this.Name = "TransactionEntry";
-            this.Text = "Transaction Entry";
-            this.Load += new System.EventHandler(this.TransactionEntry_Load);
+            this.Name = "IncomeEntryForm";
+            this.Text = "Money Received Entry";
+            this.Load += new System.EventHandler(this.MoneyReceivedEntry_Load);
+            this.VisibleChanged += new System.EventHandler(this.IncomeEntryForm_VisibleChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -1,6 +1,6 @@
 ﻿namespace MyBudget
 {
-    partial class MoneyReceivedEntry
+    partial class TransactionEntryForm
     {
         /// <summary>
         /// Required designer variable.
@@ -90,8 +90,9 @@
             this.cmbo_BudgetName.Name = "cmbo_BudgetName";
             this.cmbo_BudgetName.Size = new System.Drawing.Size(163, 21);
             this.cmbo_BudgetName.TabIndex = 6;
+            this.cmbo_BudgetName.VisibleChanged += new System.EventHandler(this.cmbo_BudgetName_VisibleChanged);
             // 
-            // MoneyReceivedEntry
+            // TransactionEntryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -102,9 +103,9 @@
             this.Controls.Add(this.txt_TransactionAmt);
             this.Controls.Add(this.lbl_label2);
             this.Controls.Add(this.lbl_label1);
-            this.Name = "MoneyReceivedEntry";
-            this.Text = "Money Received Entry";
-            this.Load += new System.EventHandler(this.MoneyReceivedEntry_Load);
+            this.Name = "TransactionEntryForm";
+            this.Text = "Transaction Entry";
+            this.Load += new System.EventHandler(this.TransactionEntry_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
