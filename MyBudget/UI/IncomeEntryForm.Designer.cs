@@ -51,6 +51,7 @@
             this.txt_TransactionAmt.Name = "txt_TransactionAmt";
             this.txt_TransactionAmt.Size = new System.Drawing.Size(163, 20);
             this.txt_TransactionAmt.TabIndex = 3;
+            this.txt_TransactionAmt.TextChanged += new System.EventHandler(this.txt_TransactionAmt_TextChanged);
             // 
             // lbl_label2
             // 
@@ -69,6 +70,7 @@
             this.btn_OK.TabIndex = 4;
             this.btn_OK.Text = "OK";
             this.btn_OK.UseVisualStyleBackColor = true;
+            this.btn_OK.Click += new System.EventHandler(this.btn_OK_Click);
             // 
             // btn_Cancel
             // 
@@ -78,6 +80,7 @@
             this.btn_Cancel.TabIndex = 5;
             this.btn_Cancel.Text = "Cancel";
             this.btn_Cancel.UseVisualStyleBackColor = true;
+            this.btn_Cancel.Click += new System.EventHandler(this.btn_Cancel_Click);
             // 
             // cmbo_BudgetName
             // 

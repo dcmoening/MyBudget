@@ -117,6 +117,7 @@
             this.Controls.Add(this.lbl_label1);
             this.Name = "BudgetEntryForm";
             this.Text = "Budget Entry";
+            this.VisibleChanged += new System.EventHandler(this.BudgetEntryForm_VisibleChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 

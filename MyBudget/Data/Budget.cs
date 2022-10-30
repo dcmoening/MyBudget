@@ -5,11 +5,6 @@ namespace MyBudget.Data
 {
     public class Budget : INotifyPropertyChanged
     {
-        public Budget ShallowCopy()
-        {
-            return (Budget)this.MemberwiseClone();
-        }
-
         public Budget(Budget budget)
         {
             Id = budget.Id;

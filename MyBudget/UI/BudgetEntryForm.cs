@@ -35,14 +35,14 @@ namespace MyBudget
             var modifedBudget = budgetData.Budgets.Where(b => b.Id == someBudget.Id).FirstOrDefault();
             if (modifedBudget != null)
             {
-                modifedBudget.Name = txt_BudgetName.Text;
-                modifedBudget.Amount = decimal.Parse(txt_BudgetAmt.Text);
+                modifedBudget.Name = someBudget.Name;
+                modifedBudget.Amount = someBudget.Amount;
                 modifedBudget.IsIncome = chkbox_IsIncome.Checked;
             }
             else
             {
-                var budget = new Budget(someBudget);
-                budgetData.Budgets.Add(budget);
+                var newBudget = new Budget(someBudget);
+                budgetData.Budgets.Add(newBudget);
             }
 
             Close();
@@ -61,6 +61,15 @@ namespace MyBudget
             {
                 txt_BudgetAmt.Text = txt_BudgetAmt.Text.Remove(txt_BudgetAmt.Text.Length - 1, 1);
             }
+            else
+            {
+                someBudget.Amount = val;
+            }
+        }
+
+        private void BudgetEntryForm_VisibleChanged(object sender, System.EventArgs e)
+        {
+            txt_BudgetName.Focus();
         }
     }
 }

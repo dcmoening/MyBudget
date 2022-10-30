@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.budgetDataGridView = new System.Windows.Forms.DataGridView();
             this.dgv_BudgetReport = new System.Windows.Forms.DataGridView();
             this.col_BudgetName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_BudgetAmt = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,13 +57,6 @@
             this.TransactionEntryID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TransactionEntries = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TransactionEntryAmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.budgetListView = new System.Windows.Forms.ListView();
-            this.BudgetName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.budgetAmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.incomeListView = new System.Windows.Forms.ListView();
-            this.IncomeEntryID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.IncomeEntries = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.IncomeEntryAmt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.removeIncomeButton = new System.Windows.Forms.Button();
             this.removeBudgetButton = new System.Windows.Forms.Button();
             this.removeTransactionButton = new System.Windows.Forms.Button();
@@ -98,12 +92,15 @@
             this.marchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.februaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.januaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.incomeDataGridView = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.budgetDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BudgetReport)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.incomeDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -111,14 +108,15 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(-1, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1369, 793);
+            this.tabControl1.Size = new System.Drawing.Size(1027, 644);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.incomeDataGridView);
+            this.tabPage1.Controls.Add(this.budgetDataGridView);
             this.tabPage1.Controls.Add(this.dgv_BudgetReport);
             this.tabPage1.Controls.Add(this.lbl_TotalIncomeRemaining);
             this.tabPage1.Controls.Add(this.lbl_TotalSpent);
@@ -136,8 +134,6 @@
             this.tabPage1.Controls.Add(this.modifyBudgetButton);
             this.tabPage1.Controls.Add(this.modifyTransactionButton);
             this.tabPage1.Controls.Add(this.transactionListView);
-            this.tabPage1.Controls.Add(this.budgetListView);
-            this.tabPage1.Controls.Add(this.incomeListView);
             this.tabPage1.Controls.Add(this.removeIncomeButton);
             this.tabPage1.Controls.Add(this.removeBudgetButton);
             this.tabPage1.Controls.Add(this.removeTransactionButton);
@@ -147,14 +143,24 @@
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(1361, 764);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Size = new System.Drawing.Size(1019, 618);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Monthly Summary";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // budgetDataGridView
+            // 
+            this.budgetDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.budgetDataGridView.Location = new System.Drawing.Point(784, 22);
+            this.budgetDataGridView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.budgetDataGridView.Name = "budgetDataGridView";
+            this.budgetDataGridView.RowHeadersWidth = 51;
+            this.budgetDataGridView.RowTemplate.Height = 24;
+            this.budgetDataGridView.Size = new System.Drawing.Size(225, 225);
+            this.budgetDataGridView.TabIndex = 56;
             // 
             // dgv_BudgetReport
             // 
@@ -165,8 +171,7 @@
             this.col_BudgetAmt,
             this.col_BudgetSpent,
             this.col_BudgetRemaining});
-            this.dgv_BudgetReport.Location = new System.Drawing.Point(385, 315);
-            this.dgv_BudgetReport.Margin = new System.Windows.Forms.Padding(4);
+            this.dgv_BudgetReport.Location = new System.Drawing.Point(289, 256);
             this.dgv_BudgetReport.Name = "dgv_BudgetReport";
             this.dgv_BudgetReport.ReadOnly = true;
             this.dgv_BudgetReport.RowHeadersVisible = false;
@@ -175,7 +180,7 @@
             this.dgv_BudgetReport.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgv_BudgetReport.ShowEditingIcon = false;
             this.dgv_BudgetReport.ShowRowErrors = false;
-            this.dgv_BudgetReport.Size = new System.Drawing.Size(587, 369);
+            this.dgv_BudgetReport.Size = new System.Drawing.Size(440, 300);
             this.dgv_BudgetReport.TabIndex = 55;
             // 
             // col_BudgetName
@@ -225,141 +230,128 @@
             // lbl_TotalIncomeRemaining
             // 
             this.lbl_TotalIncomeRemaining.AutoSize = true;
-            this.lbl_TotalIncomeRemaining.Location = new System.Drawing.Point(697, 186);
-            this.lbl_TotalIncomeRemaining.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl_TotalIncomeRemaining.Location = new System.Drawing.Point(523, 151);
             this.lbl_TotalIncomeRemaining.Name = "lbl_TotalIncomeRemaining";
-            this.lbl_TotalIncomeRemaining.Size = new System.Drawing.Size(174, 17);
+            this.lbl_TotalIncomeRemaining.Size = new System.Drawing.Size(132, 13);
             this.lbl_TotalIncomeRemaining.TabIndex = 54;
             this.lbl_TotalIncomeRemaining.Text = "lbl_TotalIncomeRemaining";
             // 
             // lbl_TotalSpent
             // 
             this.lbl_TotalSpent.AutoSize = true;
-            this.lbl_TotalSpent.Location = new System.Drawing.Point(697, 156);
-            this.lbl_TotalSpent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl_TotalSpent.Location = new System.Drawing.Point(523, 127);
             this.lbl_TotalSpent.Name = "lbl_TotalSpent";
-            this.lbl_TotalSpent.Size = new System.Drawing.Size(99, 17);
+            this.lbl_TotalSpent.Size = new System.Drawing.Size(75, 13);
             this.lbl_TotalSpent.TabIndex = 53;
             this.lbl_TotalSpent.Text = "lbl_TotalSpent";
             // 
             // lbl_TotalIncome
             // 
             this.lbl_TotalIncome.AutoSize = true;
-            this.lbl_TotalIncome.Location = new System.Drawing.Point(697, 127);
-            this.lbl_TotalIncome.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl_TotalIncome.Location = new System.Drawing.Point(523, 103);
             this.lbl_TotalIncome.Name = "lbl_TotalIncome";
-            this.lbl_TotalIncome.Size = new System.Drawing.Size(107, 17);
+            this.lbl_TotalIncome.Size = new System.Drawing.Size(82, 13);
             this.lbl_TotalIncome.TabIndex = 52;
             this.lbl_TotalIncome.Text = "lbl_TotalIncome";
             // 
             // lbl_ExpectedIncomeRemaining
             // 
             this.lbl_ExpectedIncomeRemaining.AutoSize = true;
-            this.lbl_ExpectedIncomeRemaining.Location = new System.Drawing.Point(697, 86);
-            this.lbl_ExpectedIncomeRemaining.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl_ExpectedIncomeRemaining.Location = new System.Drawing.Point(523, 70);
             this.lbl_ExpectedIncomeRemaining.Name = "lbl_ExpectedIncomeRemaining";
-            this.lbl_ExpectedIncomeRemaining.Size = new System.Drawing.Size(200, 17);
+            this.lbl_ExpectedIncomeRemaining.Size = new System.Drawing.Size(153, 13);
             this.lbl_ExpectedIncomeRemaining.TabIndex = 51;
             this.lbl_ExpectedIncomeRemaining.Text = "lbl_ExpectedIncomeRemaining";
             // 
             // lbl_TotalExpectedBudget
             // 
             this.lbl_TotalExpectedBudget.AutoSize = true;
-            this.lbl_TotalExpectedBudget.Location = new System.Drawing.Point(697, 57);
-            this.lbl_TotalExpectedBudget.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl_TotalExpectedBudget.Location = new System.Drawing.Point(523, 46);
             this.lbl_TotalExpectedBudget.Name = "lbl_TotalExpectedBudget";
-            this.lbl_TotalExpectedBudget.Size = new System.Drawing.Size(165, 17);
+            this.lbl_TotalExpectedBudget.Size = new System.Drawing.Size(126, 13);
             this.lbl_TotalExpectedBudget.TabIndex = 50;
             this.lbl_TotalExpectedBudget.Text = "lbl_TotalExpectedBudget";
             // 
             // lbl_TotalExpectedIncome
             // 
             this.lbl_TotalExpectedIncome.AutoSize = true;
-            this.lbl_TotalExpectedIncome.Location = new System.Drawing.Point(697, 23);
-            this.lbl_TotalExpectedIncome.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl_TotalExpectedIncome.Location = new System.Drawing.Point(523, 19);
             this.lbl_TotalExpectedIncome.Name = "lbl_TotalExpectedIncome";
-            this.lbl_TotalExpectedIncome.Size = new System.Drawing.Size(165, 17);
+            this.lbl_TotalExpectedIncome.Size = new System.Drawing.Size(127, 13);
             this.lbl_TotalExpectedIncome.TabIndex = 49;
             this.lbl_TotalExpectedIncome.Text = "lbl_TotalExpectedIncome";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(487, 186);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Location = new System.Drawing.Point(365, 151);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(164, 17);
+            this.label9.Size = new System.Drawing.Size(125, 13);
             this.label9.TabIndex = 48;
             this.label9.Text = "Total Income Remaining:";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(487, 156);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Location = new System.Drawing.Point(365, 127);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(85, 17);
+            this.label8.Size = new System.Drawing.Size(65, 13);
             this.label8.TabIndex = 47;
             this.label8.Text = "Total Spent:";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(487, 127);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Location = new System.Drawing.Point(365, 103);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(93, 17);
+            this.label7.Size = new System.Drawing.Size(72, 13);
             this.label7.TabIndex = 46;
             this.label7.Text = "Total Income:";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(487, 86);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Location = new System.Drawing.Point(365, 70);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(190, 17);
+            this.label6.Size = new System.Drawing.Size(146, 13);
             this.label6.TabIndex = 45;
             this.label6.Text = "Expected Income Remaining:";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(487, 57);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(365, 46);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(155, 17);
+            this.label5.Size = new System.Drawing.Size(119, 13);
             this.label5.TabIndex = 44;
             this.label5.Text = "Total Expected Budget:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(487, 27);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(365, 22);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(155, 17);
+            this.label4.Size = new System.Drawing.Size(120, 13);
             this.label4.TabIndex = 43;
             this.label4.Text = "Total Expected Income:";
             // 
             // modifyIncomeButton
             // 
             this.modifyIncomeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.modifyIncomeButton.Location = new System.Drawing.Point(1243, 692);
-            this.modifyIncomeButton.Margin = new System.Windows.Forms.Padding(4);
+            this.modifyIncomeButton.Location = new System.Drawing.Point(932, 562);
             this.modifyIncomeButton.Name = "modifyIncomeButton";
-            this.modifyIncomeButton.Size = new System.Drawing.Size(103, 39);
+            this.modifyIncomeButton.Size = new System.Drawing.Size(77, 32);
             this.modifyIncomeButton.TabIndex = 42;
             this.modifyIncomeButton.Text = "Modify";
             this.modifyIncomeButton.UseVisualStyleBackColor = true;
+            this.modifyIncomeButton.Click += new System.EventHandler(this.modifyIncomeButton_Click);
             // 
             // modifyBudgetButton
             // 
             this.modifyBudgetButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.modifyBudgetButton.Location = new System.Drawing.Point(1243, 311);
-            this.modifyBudgetButton.Margin = new System.Windows.Forms.Padding(4);
+            this.modifyBudgetButton.Location = new System.Drawing.Point(932, 253);
             this.modifyBudgetButton.Name = "modifyBudgetButton";
-            this.modifyBudgetButton.Size = new System.Drawing.Size(103, 39);
+            this.modifyBudgetButton.Size = new System.Drawing.Size(77, 32);
             this.modifyBudgetButton.TabIndex = 41;
             this.modifyBudgetButton.Text = "Modify";
             this.modifyBudgetButton.UseVisualStyleBackColor = true;
@@ -368,10 +360,9 @@
             // modifyTransactionButton
             // 
             this.modifyTransactionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.modifyTransactionButton.Location = new System.Drawing.Point(209, 690);
-            this.modifyTransactionButton.Margin = new System.Windows.Forms.Padding(4);
+            this.modifyTransactionButton.Location = new System.Drawing.Point(157, 561);
             this.modifyTransactionButton.Name = "modifyTransactionButton";
-            this.modifyTransactionButton.Size = new System.Drawing.Size(103, 39);
+            this.modifyTransactionButton.Size = new System.Drawing.Size(77, 32);
             this.modifyTransactionButton.TabIndex = 40;
             this.modifyTransactionButton.Text = "Modify";
             this.modifyTransactionButton.UseVisualStyleBackColor = true;
@@ -385,11 +376,10 @@
             this.transactionListView.ForeColor = System.Drawing.Color.Red;
             this.transactionListView.FullRowSelect = true;
             this.transactionListView.HideSelection = false;
-            this.transactionListView.Location = new System.Drawing.Point(13, 27);
-            this.transactionListView.Margin = new System.Windows.Forms.Padding(4);
+            this.transactionListView.Location = new System.Drawing.Point(10, 22);
             this.transactionListView.MultiSelect = false;
             this.transactionListView.Name = "transactionListView";
-            this.transactionListView.Size = new System.Drawing.Size(297, 656);
+            this.transactionListView.Size = new System.Drawing.Size(224, 534);
             this.transactionListView.TabIndex = 28;
             this.transactionListView.UseCompatibleStateImageBehavior = false;
             this.transactionListView.View = System.Windows.Forms.View.Details;
@@ -412,86 +402,24 @@
             this.TransactionEntryAmt.Text = "Amt";
             this.TransactionEntryAmt.Width = 51;
             // 
-            // budgetListView
-            // 
-            this.budgetListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.BudgetName,
-            this.budgetAmt});
-            this.budgetListView.ForeColor = System.Drawing.Color.Black;
-            this.budgetListView.FullRowSelect = true;
-            this.budgetListView.HideSelection = false;
-            this.budgetListView.Location = new System.Drawing.Point(1052, 23);
-            this.budgetListView.Margin = new System.Windows.Forms.Padding(4);
-            this.budgetListView.MultiSelect = false;
-            this.budgetListView.Name = "budgetListView";
-            this.budgetListView.Size = new System.Drawing.Size(297, 276);
-            this.budgetListView.TabIndex = 29;
-            this.budgetListView.UseCompatibleStateImageBehavior = false;
-            this.budgetListView.View = System.Windows.Forms.View.Details;
-            this.budgetListView.SelectedIndexChanged += new System.EventHandler(this.lstvw_Budget_SelectedIndexChanged);
-            // 
-            // BudgetName
-            // 
-            this.BudgetName.Text = "Name";
-            this.BudgetName.Width = 160;
-            // 
-            // budgetAmt
-            // 
-            this.budgetAmt.Text = "Amt";
-            // 
-            // incomeListView
-            // 
-            this.incomeListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.IncomeEntryID,
-            this.IncomeEntries,
-            this.IncomeEntryAmt});
-            this.incomeListView.ForeColor = System.Drawing.Color.Green;
-            this.incomeListView.FullRowSelect = true;
-            this.incomeListView.HideSelection = false;
-            this.incomeListView.Location = new System.Drawing.Point(1045, 386);
-            this.incomeListView.Margin = new System.Windows.Forms.Padding(4);
-            this.incomeListView.MultiSelect = false;
-            this.incomeListView.Name = "incomeListView";
-            this.incomeListView.Size = new System.Drawing.Size(297, 297);
-            this.incomeListView.TabIndex = 30;
-            this.incomeListView.UseCompatibleStateImageBehavior = false;
-            this.incomeListView.View = System.Windows.Forms.View.Details;
-            this.incomeListView.SelectedIndexChanged += new System.EventHandler(this.incomeListView_SelectedIndexChanged);
-            // 
-            // IncomeEntryID
-            // 
-            this.IncomeEntryID.Text = "ID";
-            this.IncomeEntryID.Width = 0;
-            // 
-            // IncomeEntries
-            // 
-            this.IncomeEntries.Text = "Name";
-            this.IncomeEntries.Width = 169;
-            // 
-            // IncomeEntryAmt
-            // 
-            this.IncomeEntryAmt.Text = "Amt";
-            this.IncomeEntryAmt.Width = 51;
-            // 
             // removeIncomeButton
             // 
             this.removeIncomeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("removeIncomeButton.BackgroundImage")));
             this.removeIncomeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.removeIncomeButton.Location = new System.Drawing.Point(1097, 690);
-            this.removeIncomeButton.Margin = new System.Windows.Forms.Padding(4);
+            this.removeIncomeButton.Location = new System.Drawing.Point(823, 561);
             this.removeIncomeButton.Name = "removeIncomeButton";
-            this.removeIncomeButton.Size = new System.Drawing.Size(43, 39);
+            this.removeIncomeButton.Size = new System.Drawing.Size(32, 32);
             this.removeIncomeButton.TabIndex = 39;
             this.removeIncomeButton.UseVisualStyleBackColor = true;
+            this.removeIncomeButton.Click += new System.EventHandler(this.removeIncomeButton_Click);
             // 
             // removeBudgetButton
             // 
             this.removeBudgetButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("removeBudgetButton.BackgroundImage")));
             this.removeBudgetButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.removeBudgetButton.Location = new System.Drawing.Point(1097, 311);
-            this.removeBudgetButton.Margin = new System.Windows.Forms.Padding(4);
+            this.removeBudgetButton.Location = new System.Drawing.Point(823, 253);
             this.removeBudgetButton.Name = "removeBudgetButton";
-            this.removeBudgetButton.Size = new System.Drawing.Size(43, 39);
+            this.removeBudgetButton.Size = new System.Drawing.Size(32, 32);
             this.removeBudgetButton.TabIndex = 38;
             this.removeBudgetButton.UseVisualStyleBackColor = true;
             this.removeBudgetButton.Click += new System.EventHandler(this.RemoveBudgetButton_Click);
@@ -500,10 +428,9 @@
             // 
             this.removeTransactionButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("removeTransactionButton.BackgroundImage")));
             this.removeTransactionButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.removeTransactionButton.Location = new System.Drawing.Point(64, 692);
-            this.removeTransactionButton.Margin = new System.Windows.Forms.Padding(4);
+            this.removeTransactionButton.Location = new System.Drawing.Point(48, 562);
             this.removeTransactionButton.Name = "removeTransactionButton";
-            this.removeTransactionButton.Size = new System.Drawing.Size(43, 39);
+            this.removeTransactionButton.Size = new System.Drawing.Size(32, 32);
             this.removeTransactionButton.TabIndex = 37;
             this.removeTransactionButton.UseVisualStyleBackColor = true;
             // 
@@ -511,21 +438,20 @@
             // 
             this.addIncomeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("addIncomeButton.BackgroundImage")));
             this.addIncomeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.addIncomeButton.Location = new System.Drawing.Point(1047, 692);
-            this.addIncomeButton.Margin = new System.Windows.Forms.Padding(4);
+            this.addIncomeButton.Location = new System.Drawing.Point(785, 562);
             this.addIncomeButton.Name = "addIncomeButton";
-            this.addIncomeButton.Size = new System.Drawing.Size(43, 39);
+            this.addIncomeButton.Size = new System.Drawing.Size(32, 32);
             this.addIncomeButton.TabIndex = 36;
             this.addIncomeButton.UseVisualStyleBackColor = true;
+            this.addIncomeButton.Click += new System.EventHandler(this.addIncomeButton_Click);
             // 
             // addBudgetButton
             // 
             this.addBudgetButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("addBudgetButton.BackgroundImage")));
             this.addBudgetButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.addBudgetButton.Location = new System.Drawing.Point(1047, 311);
-            this.addBudgetButton.Margin = new System.Windows.Forms.Padding(4);
+            this.addBudgetButton.Location = new System.Drawing.Point(785, 253);
             this.addBudgetButton.Name = "addBudgetButton";
-            this.addBudgetButton.Size = new System.Drawing.Size(43, 39);
+            this.addBudgetButton.Size = new System.Drawing.Size(32, 32);
             this.addBudgetButton.TabIndex = 35;
             this.addBudgetButton.UseVisualStyleBackColor = true;
             this.addBudgetButton.Click += new System.EventHandler(this.AddBudgetButton_Click);
@@ -534,10 +460,9 @@
             // 
             this.addTransactionButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("addTransactionButton.BackgroundImage")));
             this.addTransactionButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.addTransactionButton.Location = new System.Drawing.Point(13, 692);
-            this.addTransactionButton.Margin = new System.Windows.Forms.Padding(4);
+            this.addTransactionButton.Location = new System.Drawing.Point(10, 562);
             this.addTransactionButton.Name = "addTransactionButton";
-            this.addTransactionButton.Size = new System.Drawing.Size(43, 39);
+            this.addTransactionButton.Size = new System.Drawing.Size(32, 32);
             this.addTransactionButton.TabIndex = 34;
             this.addTransactionButton.UseVisualStyleBackColor = true;
             this.addTransactionButton.Click += new System.EventHandler(this.btn_transAdd_Click);
@@ -545,30 +470,27 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1043, 367);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(782, 314);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(113, 17);
+            this.label3.Size = new System.Drawing.Size(88, 13);
             this.label3.TabIndex = 33;
             this.label3.Text = "Money Received";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1043, 7);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(782, 6);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 17);
+            this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 32;
             this.label2.Text = " Budget";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 7);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(7, 6);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(131, 17);
+            this.label1.Size = new System.Drawing.Size(98, 13);
             this.label1.TabIndex = 31;
             this.label1.Text = "Transaction Entries";
             // 
@@ -577,11 +499,10 @@
             this.tabPage2.Controls.Add(this.dataGridView1);
             this.tabPage2.Controls.Add(this.listView1);
             this.tabPage2.Controls.Add(this.label10);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(1361, 764);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Size = new System.Drawing.Size(1019, 618);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Bank Accounts ";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -597,8 +518,7 @@
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3,
             this.dataGridViewTextBoxColumn4});
-            this.dataGridView1.Location = new System.Drawing.Point(315, 28);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridView1.Location = new System.Drawing.Point(236, 23);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
@@ -607,7 +527,7 @@
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dataGridView1.ShowEditingIcon = false;
             this.dataGridView1.ShowRowErrors = false;
-            this.dataGridView1.Size = new System.Drawing.Size(1031, 660);
+            this.dataGridView1.Size = new System.Drawing.Size(773, 536);
             this.dataGridView1.TabIndex = 56;
             // 
             // dataGridViewTextBoxColumn1
@@ -659,11 +579,10 @@
             this.listView1.ForeColor = System.Drawing.Color.Red;
             this.listView1.FullRowSelect = true;
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(8, 28);
-            this.listView1.Margin = new System.Windows.Forms.Padding(4);
+            this.listView1.Location = new System.Drawing.Point(6, 23);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(297, 659);
+            this.listView1.Size = new System.Drawing.Size(224, 536);
             this.listView1.TabIndex = 32;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -688,10 +607,9 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(4, 9);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Location = new System.Drawing.Point(3, 7);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(124, 17);
+            this.label10.Size = new System.Drawing.Size(96, 13);
             this.label10.TabIndex = 33;
             this.label10.Text = "Savings Accounts ";
             // 
@@ -704,10 +622,9 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMonthSelected});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 797);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 647);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1368, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(1026, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -730,101 +647,110 @@
             this.toolStripMonthSelected.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMonthSelected.Image")));
             this.toolStripMonthSelected.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMonthSelected.Name = "toolStripMonthSelected";
-            this.toolStripMonthSelected.Size = new System.Drawing.Size(66, 24);
+            this.toolStripMonthSelected.Size = new System.Drawing.Size(56, 20);
             this.toolStripMonthSelected.Text = "Month";
             // 
             // decemberToolStripMenuItem
             // 
             this.decemberToolStripMenuItem.Name = "decemberToolStripMenuItem";
-            this.decemberToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.decemberToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.decemberToolStripMenuItem.Text = "December";
             // 
             // novemberToolStripMenuItem
             // 
             this.novemberToolStripMenuItem.Name = "novemberToolStripMenuItem";
-            this.novemberToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.novemberToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.novemberToolStripMenuItem.Text = "November";
             // 
             // octoberToolStripMenuItem
             // 
             this.octoberToolStripMenuItem.Name = "octoberToolStripMenuItem";
-            this.octoberToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.octoberToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.octoberToolStripMenuItem.Text = "October";
             // 
             // septemberToolStripMenuItem
             // 
             this.septemberToolStripMenuItem.Name = "septemberToolStripMenuItem";
-            this.septemberToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.septemberToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.septemberToolStripMenuItem.Text = "September";
             // 
             // augustToolStripMenuItem
             // 
             this.augustToolStripMenuItem.Name = "augustToolStripMenuItem";
-            this.augustToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.augustToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.augustToolStripMenuItem.Text = "August";
             // 
             // julyToolStripMenuItem
             // 
             this.julyToolStripMenuItem.Name = "julyToolStripMenuItem";
-            this.julyToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.julyToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.julyToolStripMenuItem.Text = "July";
             // 
             // juneToolStripMenuItem
             // 
             this.juneToolStripMenuItem.Name = "juneToolStripMenuItem";
-            this.juneToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.juneToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.juneToolStripMenuItem.Text = "June";
             // 
             // mayToolStripMenuItem
             // 
             this.mayToolStripMenuItem.Name = "mayToolStripMenuItem";
-            this.mayToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.mayToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.mayToolStripMenuItem.Text = "May";
             // 
             // aprilToolStripMenuItem
             // 
             this.aprilToolStripMenuItem.Name = "aprilToolStripMenuItem";
-            this.aprilToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.aprilToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.aprilToolStripMenuItem.Text = "April";
             // 
             // marchToolStripMenuItem
             // 
             this.marchToolStripMenuItem.Name = "marchToolStripMenuItem";
-            this.marchToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.marchToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.marchToolStripMenuItem.Text = "March";
             // 
             // februaryToolStripMenuItem
             // 
             this.februaryToolStripMenuItem.Name = "februaryToolStripMenuItem";
-            this.februaryToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.februaryToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.februaryToolStripMenuItem.Text = "February";
             // 
             // januaryToolStripMenuItem
             // 
             this.januaryToolStripMenuItem.Name = "januaryToolStripMenuItem";
-            this.januaryToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
+            this.januaryToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.januaryToolStripMenuItem.Text = "January";
+            // 
+            // incomeDataGridView
+            // 
+            this.incomeDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.incomeDataGridView.Location = new System.Drawing.Point(784, 331);
+            this.incomeDataGridView.Name = "incomeDataGridView";
+            this.incomeDataGridView.Size = new System.Drawing.Size(225, 225);
+            this.incomeDataGridView.TabIndex = 57;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1368, 823);
+            this.ClientSize = new System.Drawing.Size(1026, 669);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "My Budget";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.budgetDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_BudgetReport)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.incomeDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -858,13 +784,6 @@
         private System.Windows.Forms.ColumnHeader TransactionEntryID;
         private System.Windows.Forms.ColumnHeader TransactionEntries;
         private System.Windows.Forms.ColumnHeader TransactionEntryAmt;
-        private System.Windows.Forms.ListView budgetListView;
-        private System.Windows.Forms.ColumnHeader BudgetName;
-        private System.Windows.Forms.ColumnHeader budgetAmt;
-        private System.Windows.Forms.ListView incomeListView;
-        private System.Windows.Forms.ColumnHeader IncomeEntryID;
-        private System.Windows.Forms.ColumnHeader IncomeEntries;
-        private System.Windows.Forms.ColumnHeader IncomeEntryAmt;
         private System.Windows.Forms.Button removeIncomeButton;
         private System.Windows.Forms.Button removeBudgetButton;
         private System.Windows.Forms.Button removeTransactionButton;
@@ -900,6 +819,8 @@
         private System.Windows.Forms.ToolStripMenuItem marchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem februaryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem januaryToolStripMenuItem;
+        private System.Windows.Forms.DataGridView budgetDataGridView;
+        private System.Windows.Forms.DataGridView incomeDataGridView;
     }
 }
 
