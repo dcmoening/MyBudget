@@ -33,46 +33,51 @@ namespace MyBudget
 
         public MainForm(BudgetDataModel budgetData)
         {
+            Action<DataGridView, Button, Button> enableButtons = (DataGridView dataGridView, Button modify, Button remove) =>
+            {
+                var buttonEnabled = dataGridView.SelectedRows.Count > 0;
+                modify.Enabled = buttonEnabled;
+                remove.Enabled = buttonEnabled;
+            };
+
             InitializeComponent();
+
+            //Budget
             this.budgetData = budgetData;
-            InitializeBudgetDataGridView(budgetData.Budgets);
+            InitializeBudgetDataGridView();
             budgetEntryForm = new BudgetEntryForm(budgetData);
             modifyBudgetButton.Enabled = false;
             removeBudgetButton.Enabled = false;
             budgetEntryForm.FormClosing += EntryForm_FormClosing;
             budgetDataGridView.SelectionChanged += (o, e) =>
-            {
-                var buttonEnabled = budgetDataGridView.SelectedRows.Count > 0;
-                modifyBudgetButton.Enabled = buttonEnabled;
-                removeBudgetButton.Enabled = buttonEnabled;
-            };
+                enableButtons(budgetDataGridView, modifyBudgetButton, removeBudgetButton);
 
             // Only allow income and transactions to be added if budgets exist.
             budgetData.Budgets.ListChanged += (o, e) =>
             {
-                var enabled = budgetData.Budgets.Count > 0;
-                addIncomeButton.Enabled = enabled;
-                addTransactionButton.Enabled = enabled;
+                addIncomeButton.Enabled = budgetData.Budgets.Where(b => b.IsIncome).Any();
+                addTransactionButton.Enabled = budgetData.Budgets.Where(b => !b.IsIncome).Any();
             };
 
-            InitializeIncomeDataGridView(budgetData.Incomes);
+            //Income
+            InitializeIncomeDataGridView();
             incomeEntryForm = new IncomeEntryForm(budgetData);
             addIncomeButton.Enabled = false;
             modifyIncomeButton.Enabled = false;
             removeIncomeButton.Enabled = false;
             incomeEntryForm.FormClosing += EntryForm_FormClosing;
             incomeDataGridView.SelectionChanged += (o, e) =>
-            {
-                var buttonEnabled = budgetDataGridView.SelectedRows.Count > 0;
-                modifyIncomeButton.Enabled = buttonEnabled;
-                removeIncomeButton.Enabled = buttonEnabled;
-            };
+                enableButtons(incomeDataGridView, modifyIncomeButton, addIncomeButton);
 
+            //Transaction
+            InitializeTransactionDataGridView();
             transactionEntryForm = new TransactionEntryForm(budgetData);
+            addTransactionButton.Enabled = false;
+            modifyTransactionButton.Enabled = false;
+            removeTransactionButton.Enabled = false;
             transactionEntryForm.FormClosing += EntryForm_FormClosing;
-
-            //Update listviews
-            UpdateTransactionListView();
+            transactionDataGridView.SelectionChanged += (o, e) =>
+                enableButtons(transactionDataGridView, modifyTransactionButton, removeTransactionButton);
         }
 
         private void EntryForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -89,36 +94,34 @@ namespace MyBudget
             
         }
 
-        public void UpdateTransactionListView()
-        {
-            transactionListView.Items.Clear();
-            foreach(var transaction in budgetData.Transactions)
-            {
-                var item = new ListViewItem(transaction.Name);
-                item.SubItems.Add(transaction.Amount.ToString());
-                transactionListView.Items.Add(item);
-            }
-        }
-
-        private void btn_transAdd_Click(object sender, EventArgs e)
-        {
-            transactionEntryForm.Show();
-        }
-
         //Transaction
         #region Transaction
-        private void transactionListView_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void InitializeTransactionDataGridView()
         {
-            //UpdateAddModifyButtons(modifyTransactionButton, removeTransactionButton, (ListView)sender);
+            transactionDataGridView.RowHeadersVisible = false;
+            transactionDataGridView.DataSource = budgetData.Transactions;
+            transactionDataGridView.Columns["Id"].Visible = false;
+            transactionDataGridView.Columns["Budget"].Visible = false;
+            transactionDataGridView.ReadOnly = true;
+            transactionDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            transactionDataGridView.AllowUserToAddRows = false;
+            //Name Column
+            transactionDataGridView.Columns["Name"].Resizable = DataGridViewTriState.False;
+            transactionDataGridView.Columns["Name"].Width = 150;
+
+            //Amount Column
+            transactionDataGridView.Columns["Amount"].Resizable = DataGridViewTriState.False;
+            transactionDataGridView.Columns["Amount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
         #endregion
 
         //Budget
         #region Budget
-        private void InitializeBudgetDataGridView(BindingList<Budget> budgets)
+        private void InitializeBudgetDataGridView()
         {
             budgetDataGridView.RowHeadersVisible = false;
-            budgetDataGridView.DataSource = budgets;
+            budgetDataGridView.DataSource = budgetData.Budgets;
             budgetDataGridView.Columns["Id"].Visible = false;
             budgetDataGridView.Columns["IsIncome"].Visible = false;
             budgetDataGridView.ReadOnly = true;
@@ -152,10 +155,14 @@ namespace MyBudget
 
         //Income
         #region Income
-        private void InitializeIncomeDataGridView(BindingList<Income> budgets)
+        private void addTransactionButton_Click(object sender, EventArgs e)
+        {
+            transactionEntryForm.Show();
+        }
+        private void InitializeIncomeDataGridView()
         {
             incomeDataGridView.RowHeadersVisible = false;
-            incomeDataGridView.DataSource = budgets;
+            incomeDataGridView.DataSource = budgetData.Incomes;
             incomeDataGridView.Columns["Id"].Visible = false;
             incomeDataGridView.Columns["Budget"].Visible = false;
             incomeDataGridView.ReadOnly = true;
@@ -168,19 +175,6 @@ namespace MyBudget
             //Amount Column
             incomeDataGridView.Columns["Amount"].Resizable = DataGridViewTriState.False;
             incomeDataGridView.Columns["Amount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-        }
-        #endregion
-
-        
-
-        private void ListView_Leave(object sender, EventArgs e)
-        {
-            //clear selected items
-            var listView = (ListView)sender;
-            if(listView.SelectedItems.Count > 0)
-            {
-                listView.SelectedItems.Clear();
-            }
         }
 
         private void addIncomeButton_Click(object sender, EventArgs e)
@@ -200,5 +194,6 @@ namespace MyBudget
             incomeEntryForm.SomeIncome = budgetData.Incomes[index];
             incomeEntryForm.Show();
         }
+        #endregion
     }
 }

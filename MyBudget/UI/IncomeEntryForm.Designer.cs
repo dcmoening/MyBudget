@@ -29,83 +29,89 @@
         private void InitializeComponent()
         {
             this.lbl_label1 = new System.Windows.Forms.Label();
-            this.txt_TransactionAmt = new System.Windows.Forms.TextBox();
+            this.incomeAmountTextBox = new System.Windows.Forms.TextBox();
             this.lbl_label2 = new System.Windows.Forms.Label();
-            this.btn_OK = new System.Windows.Forms.Button();
-            this.btn_Cancel = new System.Windows.Forms.Button();
-            this.cmbo_BudgetName = new System.Windows.Forms.ComboBox();
+            this.okButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.budgetNameComboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lbl_label1
             // 
             this.lbl_label1.AutoSize = true;
-            this.lbl_label1.Location = new System.Drawing.Point(5, 17);
+            this.lbl_label1.Location = new System.Drawing.Point(7, 21);
+            this.lbl_label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_label1.Name = "lbl_label1";
-            this.lbl_label1.Size = new System.Drawing.Size(72, 13);
+            this.lbl_label1.Size = new System.Drawing.Size(94, 17);
             this.lbl_label1.TabIndex = 0;
             this.lbl_label1.Text = "Budget Name";
             // 
-            // txt_TransactionAmt
+            // incomeAmountTextBox
             // 
-            this.txt_TransactionAmt.Location = new System.Drawing.Point(83, 40);
-            this.txt_TransactionAmt.Name = "txt_TransactionAmt";
-            this.txt_TransactionAmt.Size = new System.Drawing.Size(163, 20);
-            this.txt_TransactionAmt.TabIndex = 3;
-            this.txt_TransactionAmt.TextChanged += new System.EventHandler(this.txt_TransactionAmt_TextChanged);
+            this.incomeAmountTextBox.Location = new System.Drawing.Point(111, 49);
+            this.incomeAmountTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.incomeAmountTextBox.Name = "incomeAmountTextBox";
+            this.incomeAmountTextBox.Size = new System.Drawing.Size(216, 22);
+            this.incomeAmountTextBox.TabIndex = 3;
+            this.incomeAmountTextBox.TextChanged += new System.EventHandler(this.txt_TransactionAmt_TextChanged);
             // 
             // lbl_label2
             // 
             this.lbl_label2.AutoSize = true;
-            this.lbl_label2.Location = new System.Drawing.Point(52, 43);
+            this.lbl_label2.Location = new System.Drawing.Point(69, 53);
+            this.lbl_label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_label2.Name = "lbl_label2";
-            this.lbl_label2.Size = new System.Drawing.Size(25, 13);
+            this.lbl_label2.Size = new System.Drawing.Size(32, 17);
             this.lbl_label2.TabIndex = 2;
             this.lbl_label2.Text = "Amt";
             // 
-            // btn_OK
+            // okButton
             // 
-            this.btn_OK.Location = new System.Drawing.Point(83, 76);
-            this.btn_OK.Name = "btn_OK";
-            this.btn_OK.Size = new System.Drawing.Size(75, 33);
-            this.btn_OK.TabIndex = 4;
-            this.btn_OK.Text = "OK";
-            this.btn_OK.UseVisualStyleBackColor = true;
-            this.btn_OK.Click += new System.EventHandler(this.btn_OK_Click);
+            this.okButton.Location = new System.Drawing.Point(111, 94);
+            this.okButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(100, 41);
+            this.okButton.TabIndex = 4;
+            this.okButton.Text = "OK";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.btn_OK_Click);
             // 
-            // btn_Cancel
+            // cancelButton
             // 
-            this.btn_Cancel.Location = new System.Drawing.Point(173, 76);
-            this.btn_Cancel.Name = "btn_Cancel";
-            this.btn_Cancel.Size = new System.Drawing.Size(75, 33);
-            this.btn_Cancel.TabIndex = 5;
-            this.btn_Cancel.Text = "Cancel";
-            this.btn_Cancel.UseVisualStyleBackColor = true;
-            this.btn_Cancel.Click += new System.EventHandler(this.btn_Cancel_Click);
+            this.cancelButton.Location = new System.Drawing.Point(231, 94);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(100, 41);
+            this.cancelButton.TabIndex = 5;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.btn_Cancel_Click);
             // 
-            // cmbo_BudgetName
+            // budgetNameComboBox
             // 
-            this.cmbo_BudgetName.AllowDrop = true;
-            this.cmbo_BudgetName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbo_BudgetName.FormattingEnabled = true;
-            this.cmbo_BudgetName.Location = new System.Drawing.Point(83, 14);
-            this.cmbo_BudgetName.Name = "cmbo_BudgetName";
-            this.cmbo_BudgetName.Size = new System.Drawing.Size(163, 21);
-            this.cmbo_BudgetName.TabIndex = 6;
+            this.budgetNameComboBox.AllowDrop = true;
+            this.budgetNameComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.budgetNameComboBox.FormattingEnabled = true;
+            this.budgetNameComboBox.Location = new System.Drawing.Point(111, 17);
+            this.budgetNameComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.budgetNameComboBox.Name = "budgetNameComboBox";
+            this.budgetNameComboBox.Size = new System.Drawing.Size(216, 24);
+            this.budgetNameComboBox.TabIndex = 6;
             // 
             // IncomeEntryForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(259, 121);
-            this.Controls.Add(this.cmbo_BudgetName);
-            this.Controls.Add(this.btn_Cancel);
-            this.Controls.Add(this.btn_OK);
-            this.Controls.Add(this.txt_TransactionAmt);
+            this.ClientSize = new System.Drawing.Size(345, 149);
+            this.Controls.Add(this.budgetNameComboBox);
+            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.okButton);
+            this.Controls.Add(this.incomeAmountTextBox);
             this.Controls.Add(this.lbl_label2);
             this.Controls.Add(this.lbl_label1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "IncomeEntryForm";
             this.Text = "Money Received Entry";
-            this.Load += new System.EventHandler(this.MoneyReceivedEntry_Load);
             this.VisibleChanged += new System.EventHandler(this.IncomeEntryForm_VisibleChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -115,10 +121,10 @@
         #endregion
 
         private System.Windows.Forms.Label lbl_label1;
-        private System.Windows.Forms.TextBox txt_TransactionAmt;
+        private System.Windows.Forms.TextBox incomeAmountTextBox;
         private System.Windows.Forms.Label lbl_label2;
-        private System.Windows.Forms.Button btn_OK;
-        private System.Windows.Forms.Button btn_Cancel;
-        private System.Windows.Forms.ComboBox cmbo_BudgetName;
+        private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.ComboBox budgetNameComboBox;
     }
 }

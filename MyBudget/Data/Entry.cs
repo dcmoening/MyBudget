@@ -3,26 +3,21 @@ using System.ComponentModel;
 
 namespace MyBudget.Data
 {
-    public class Transaction : INotifyPropertyChanged
+    public class Entry : INotifyPropertyChanged
     {
-        public Transaction()
+        public Entry()
         {
             Id = Guid.NewGuid();
             Budget = null;
             Amount = 0;
         }
-        public Transaction(Transaction transaction)
+
+        public Entry(Entry entry)
         {
-            Id = transaction.Id;
-            Budget = transaction.Budget;
+            Id = entry.Id;
+            Budget = entry.Budget;
+            Amount = entry.Amount;
             Budget.PropertyChanged += (o, e) => { NotifyPropertyChanged(); };
-            Amount = transaction.Amount;
-        }
-        public Transaction(Budget budget, string name, decimal amount)
-        {
-            Id = Guid.NewGuid();
-            Budget = budget;
-            Amount = amount;
         }
 
         public Guid Id { get; set; }
@@ -49,7 +44,7 @@ namespace MyBudget.Data
         public decimal Amount { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged()
+        protected void NotifyPropertyChanged()
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
         }

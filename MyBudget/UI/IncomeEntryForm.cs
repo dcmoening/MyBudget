@@ -26,45 +26,42 @@ namespace MyBudget
         {
             InitializeComponent();
             this.budgetData = budgetData;
-            txt_TransactionAmt.DataBindings.Add(new Binding("Text", someIncome, "Amount"));
-            cmbo_BudgetName.DataSource = budgetData.Budgets;
-            cmbo_BudgetName.DisplayMember = "Name";
-        }
-
-        private void MoneyReceivedEntry_Load(object sender, EventArgs e)
-        {
-                        
+            incomeAmountTextBox.DataBindings.Add(new Binding("Text", someIncome, "Amount"));
+            budgetNameComboBox.DisplayMember = "Name";
         }
 
         private void IncomeEntryForm_VisibleChanged(object sender, EventArgs e)
         {
+            //TODO remove and use modal dialog
             if (Visible)
             {
                 if(budgetData.Budgets.Count > 0)
                 {
+                    budgetNameComboBox.DataSource = budgetData.Budgets.Where(b => b.IsIncome).ToList();
                     var modifiedIncome = budgetData.Incomes.Where(i => i.Id == someIncome.Id).FirstOrDefault();
                     var selectIndex = modifiedIncome != null ? budgetData.Budgets.IndexOf(modifiedIncome.Budget) : 0;
-                    cmbo_BudgetName.SelectedIndex = selectIndex == -1 ? 0 : selectIndex;
-                    cmbo_BudgetName.Focus();
-                    btn_OK.Enabled = true;
+                    budgetNameComboBox.SelectedIndex = selectIndex == -1 ? 0 : selectIndex;
+                    budgetNameComboBox.Focus();
+                    okButton.Enabled = true;
                 }
                 else
                 {
-                    btn_OK.Enabled = false;
+                    okButton.Enabled = false;
                 }
-                cmbo_BudgetName.Focus();
+                budgetNameComboBox.Focus();
             }
         }
 
         private void btn_OK_Click(object sender, EventArgs e)
         {
-            someIncome.Budget = budgetData.Budgets[cmbo_BudgetName.SelectedIndex];
+            //TODO remove and use modal dialog
+            someIncome.Budget = budgetData.Budgets[budgetNameComboBox.SelectedIndex];
             var modifiedIncome = budgetData.Incomes.Where(i => i.Id == someIncome.Id).FirstOrDefault();
             if (modifiedIncome != null)
             {
                 //modifying income
                 modifiedIncome.Budget = someIncome.Budget;
-                modifiedIncome.Amount = decimal.Parse(txt_TransactionAmt.Text);
+                modifiedIncome.Amount = decimal.Parse(incomeAmountTextBox.Text);
             }
             else
             {
@@ -77,16 +74,18 @@ namespace MyBudget
 
         private void btn_Cancel_Click(object sender, EventArgs e)
         {
+            //TODO remove and use modal dialog
             Close();
         }
 
         private void txt_TransactionAmt_TextChanged(object sender, EventArgs e)
         {
+            //TODO remove and just do check on submission
             decimal val;
-            if (!decimal.TryParse(txt_TransactionAmt.Text, out val) &&
-                !string.IsNullOrEmpty(txt_TransactionAmt.Text))
+            if (!decimal.TryParse(incomeAmountTextBox.Text, out val) &&
+                !string.IsNullOrEmpty(incomeAmountTextBox.Text))
             {
-                txt_TransactionAmt.Text = txt_TransactionAmt.Text.Remove(txt_TransactionAmt.Text.Length - 1, 1);
+                incomeAmountTextBox.Text = incomeAmountTextBox.Text.Remove(incomeAmountTextBox.Text.Length - 1, 1);
             }
             else
             {
